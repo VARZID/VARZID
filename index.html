@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html lang="tg" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +11,25 @@
             --card-bg: #ffffff;
             --header-bg: #198754;
             --accent: #198754;
+            --border-color: #dee2e6;
         }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --header-bg: #1b5e20;
+            --accent: #2e7d32;
+            --border-color: #333333;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
         }
         header {
             background-color: var(--header-bg);
@@ -29,20 +41,32 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         h1 { margin: 0; font-size: 22px; }
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
         .container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 0 15px;
         }
-        .lang-select {
-            padding: 5px 10px;
+        .select-box, .theme-btn {
+            padding: 6px 12px;
             border-radius: 5px;
             border: none;
             font-weight: bold;
+            cursor: pointer;
+            background: white;
+            color: #333;
+        }
+        .theme-btn {
+            background: #ffc107;
+            color: #000;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
         }
         .card {
@@ -50,6 +74,7 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             transition: transform 0.2s;
@@ -57,16 +82,20 @@
         .card:hover {
             transform: translateY(-5px);
         }
+        .card-img-container {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+            background-color: #e9ecef;
+        }
         .card-img {
             width: 100%;
-            height: 140px;
-            background-color: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-            font-size: 14px;
-            font-weight: bold;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .card:hover .card-img {
+            transform: scale(1.05);
         }
         .card-body {
             padding: 15px;
@@ -98,11 +127,18 @@
             width: 100%;
         }
         .btn:active { opacity: 0.8; }
+        .whatsapp-btn {
+            background-color: #25d366;
+            color: white;
+            margin-top: 15px;
+            display: none;
+        }
         .cart-section, .map-section {
             margin-top: 30px;
-            background: white;
+            background: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
+            border: 1px solid var(--border-color);
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         iframe {
@@ -118,11 +154,14 @@
 
     <header>
         <h1>VARZID | Фархор</h1>
-        <select class="lang-select" id="langSelect" onchange="changeLanguage()">
-            <option value="tg">Тоҷикӣ</option>
-            <option value="ru">Русский</option>
-            <option value="uz">O'zbekcha</option>
-        </select>
+        <div class="header-controls">
+            <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Тема</button>
+            <select class="select-box" id="langSelect" onchange="changeLanguage()">
+                <option value="tg">Тоҷикӣ</option>
+                <option value="ru">Русский</option>
+                <option value="uz">O'zbekcha</option>
+            </select>
+        </div>
     </header>
 
     <div class="container">
@@ -131,97 +170,99 @@
         <div class="grid" id="productGrid">
             <!-- Орд -->
             <div class="card">
-                <div class="card-img">📦 Орд</div>
+                <div class="card-img-container">
+                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80" alt="Орд" class="card-img">
+                </div>
                 <div class="card-body">
                     <div>
-                        <div class="card-title">Орд</div>
-                        <div class="card-price">320 сомонӣ</div>
+                        <div class="card-title">Орд (халтаи 50кг)</div>
+                        <div class="card-price">340 сомонӣ</div>
                     </div>
-                    <button class="btn" onclick="addToCart('Орд', 320)">Илова ба саватча</button>
+                    <button class="btn" onclick="addToCart('Орд (50кг)', 340)">Илова ба саватча</button>
                 </div>
             </div>
 
             <!-- Гандум -->
             <div class="card">
-                <div class="card-img">🌾 Гандум</div>
+                <div class="card-img-container">
+                    <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=500&q=80" alt="Гандум" class="card-img">
+                </div>
                 <div class="card-body">
                     <div>
-                        <div class="card-title">Гандум</div>
-                        <div class="card-price">280 сомонӣ</div>
+                        <div class="card-title">Гандум (1 халта / 40кг)</div>
+                        <div class="card-price">180 сомонӣ</div>
                     </div>
-                    <button class="btn" onclick="addToCart('Гандум', 280)">Илова ба саватча</button>
+                    <button class="btn" onclick="addToCart('Гандум (40кг)', 180)">Илова ба саватча</button>
                 </div>
             </div>
 
             <!-- Ҷав -->
             <div class="card">
-                <div class="card-img">🌾 Ҷав</div>
+                <div class="card-img-container">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80" alt="Ҷав" class="card-img">
+                </div>
                 <div class="card-body">
                     <div>
-                        <div class="card-title">Ҷав</div>
-                        <div class="card-price">260 сомонӣ</div>
+                        <div class="card-title">Ҷав (1 халта / 40кг)</div>
+                        <div class="card-price">160 сомонӣ</div>
                     </div>
-                    <button class="btn" onclick="addToCart('Ҷав', 260)">Илова ба саватча</button>
+                    <button class="btn" onclick="addToCart('Ҷав (40кг)', 160)">Илова ба саватча</button>
                 </div>
             </div>
 
             <!-- Ҷуворимакка -->
             <div class="card">
-                <div class="card-img">🌽 Ҷуворимакка</div>
+                <div class="card-img-container">
+                    <img src="https://images.unsplash.com/photo-1551754655-cd97e68d2047?auto=format&fit=crop&w=500&q=80" alt="Ҷуворимакка" class="card-img">
+                </div>
                 <div class="card-body">
                     <div>
-                        <div class="card-title">Ҷуворимакка</div>
-                        <div class="card-price">300 сомонӣ</div>
+                        <div class="card-title">Ҷуворимакка (донадор)</div>
+                        <div class="card-price">220 сомонӣ</div>
                     </div>
-                    <button class="btn" onclick="addToCart('Ҷуворимакка', 300)">Илова ба саватча</button>
+                    <button class="btn" onclick="addToCart('Ҷуворимакка', 220)">Илова ба саватча</button>
                 </div>
             </div>
 
-            <!-- Корм -->
+            <!-- Корм (Хўроки чорво) -->
             <div class="card">
-                <div class="card-img">🐂 Корм</div>
-                <div class="card-body">
-                    <div>
-                        <div class="card-title">Корм</div>
-                        <div class="card-price">250 сомонӣ</div>
-                    </div>
-                    <button class="btn" onclick="addToCart('Корм', 250)">Илова ба саватча</button>
+                <div class="card-img-container">
+                    <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=500&q=80" alt="Корм" class="card-img">
                 </div>
-            </div>
-
-            <!-- Каду -->
-            <div class="card">
-                <div class="card-img">🎃 Каду</div>
                 <div class="card-body">
                     <div>
-                        <div class="card-title">Каду</div>
-                        <div class="card-price">150 сомонӣ</div>
+                        <div class="card-title">Корм (Хўроки омехта)</div>
+                        <div class="card-price">200 сомонӣ</div>
                     </div>
-                    <button class="btn" onclick="addToCart('Каду', 150)">Илова ба саватча</button>
+                    <button class="btn" onclick="addToCart('Корм', 200)">Илова ба саватча</button>
                 </div>
             </div>
 
             <!-- Селитра -->
             <div class="card">
-                <div class="card-img">🧪 Селитра</div>
+                <div class="card-img-container">
+                    <img src="https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=500&q=80" alt="Селитра" class="card-img">
+                </div>
                 <div class="card-body">
                     <div>
-                        <div class="card-title">Селитра</div>
-                        <div class="card-price">400 сомонӣ</div>
+                        <div class="card-title">Селитра (Аммиакӣ)</div>
+                        <div class="card-price">380 сомонӣ</div>
                     </div>
-                    <button class="btn" onclick="addToCart('Селитра', 400)">Илова ба саватча</button>
+                    <button class="btn" onclick="addToCart('Селитра', 380)">Илова ба саватча</button>
                 </div>
             </div>
 
-            <!-- Карбамид -->
+            <!-- Карбамид (Мочевина) -->
             <div class="card">
-                <div class="card-img">🧪 Карбамид</div>
+                <div class="card-img-container">
+                    <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=500&q=80" alt="Карбамид" class="card-img">
+                </div>
                 <div class="card-body">
                     <div>
-                        <div class="card-title">Карбамид</div>
-                        <div class="card-price">420 сомонӣ</div>
+                        <div class="card-title">Карбамид (Мочевина)</div>
+                        <div class="card-price">410 сомонӣ</div>
                     </div>
-                    <button class="btn" onclick="addToCart('Карбамид', 420)">Илова ба саватча</button>
+                    <button class="btn" onclick="addToCart('Карбамид', 410)">Илова ба саватча</button>
                 </div>
             </div>
         </div>
@@ -232,11 +273,12 @@
                 <li id="emptyCartText">Саватча холӣ аст</li>
             </ul>
             <div style="font-weight: bold; font-size: 18px;" id="totalText">Ҷамъ: 0 сомонӣ</div>
+            <button class="btn whatsapp-btn" id="whatsappBtn" onclick="sendToWhatsApp()">📤 Фристодан ба WhatsApp</button>
         </div>
 
         <div class="map-section">
             <h3 id="mapTitle">Ҷойгиршавии мо дар Фархор</h3>
-            <p id="mapDesc" style="font-size: 14px; color: #666;">Анбор ва нуқтаи савдои ВАРЗИД дар ноҳияи Фархор.</p>
+            <p id="mapDesc" style="font-size: 14px; opacity: 0.8;">Анбор ва нуқтаи савдои ВАРЗИД дар ноҳияи Фархор.</p>
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3213.3!2d69.4!3d37.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zThe+Farkhor+District!5e0!3m2!1sen!2s-4!4v1" allowfullscreen="" loading="lazy"></iframe>
         </div>
     </div>
@@ -251,12 +293,16 @@
 
         function updateCartDisplay() {
             const list = document.getElementById('cartItems');
+            const whatsappBtn = document.getElementById('whatsappBtn');
             list.innerHTML = '';
+            
             if (cart.length === 0) {
                 list.innerHTML = '<li id="emptyCartText">Саватча холӣ аст</li>';
                 document.getElementById('totalText').innerText = 'Ҷамъ: 0 сомонӣ';
+                whatsappBtn.style.display = 'none';
                 return;
             }
+            
             let total = 0;
             cart.forEach((item) => {
                 total += item.price;
@@ -265,6 +311,33 @@
                 list.appendChild(li);
             });
             document.getElementById('totalText').innerText = `Ҷамъ: ${total} сомонӣ`;
+            whatsappBtn.style.display = 'block';
+        }
+
+        function sendToWhatsApp() {
+            let message = "Салом! Ман аз сомонаи ВАРЗИД ин молҳои зеринро фармоиш медиҳам:%0A";
+            let total = 0;
+            cart.forEach(item => {
+                message += `- ${item.name}: ${item.price} сомонӣ%0A`;
+                total += item.price;
+            });
+            message += `%0AҶамъи умумӣ: ${total} сомонӣ`;
+            
+            let phone = "992000001606";
+            let url = `https://wa.me/${phone}?text=${message}`;
+            window.open(url, '_blank');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('themeBtn');
+            if (html.getAttribute('data-theme') === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeBtn.innerText = '☀️ Тема';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeBtn.innerText = '🌙 Тема';
+            }
         }
 
         function changeLanguage() {
@@ -273,22 +346,26 @@
             const cartTitle = document.getElementById('cartTitle');
             const mapTitle = document.getElementById('mapTitle');
             const mapDesc = document.getElementById('mapDesc');
+            const whatsappBtn = document.getElementById('whatsappBtn');
 
             if (lang === 'ru') {
                 catalogTitle.innerText = 'Наши товары';
                 cartTitle.innerText = 'Корзина покупок';
                 mapTitle.innerText = 'Наше расположение в Фархоре';
                 mapDesc.innerText = 'Склад и пункт продаж VARZID в Фархоре.';
+                if(whatsappBtn.style.display === 'block') whatsappBtn.innerText = '📤 Отправить в WhatsApp';
             } else if (lang === 'uz') {
                 catalogTitle.innerText = 'Bizning mahsulotlar';
                 cartTitle.innerText = 'Savatcha';
                 mapTitle.innerText = 'Farxordagi manzilimiz';
                 mapDesc.innerText = 'Farxor tumanidagi VARZID ombori va savdo nuqtasi.';
+                if(whatsappBtn.style.display === 'block') whatsappBtn.innerText = '📤 WhatsApp ga yuborish';
             } else {
                 catalogTitle.innerText = 'Маҳсулоти мо';
                 cartTitle.innerText = 'Саватчаи харид';
                 mapTitle.innerText = 'Ҷойгиршавии мо дар Фархор';
                 mapDesc.innerText = 'Анбор ва нуқтаи савдои ВАРЗИД дар ноҳияи Фархор.';
+                if(whatsappBtn.style.display === 'block') whatsappBtn.innerText = '📤 Фристодан ба WhatsApp';
             }
         }
     </script>
