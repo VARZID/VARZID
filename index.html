@@ -1,309 +1,791 @@
 <!DOCTYPE html>
 <html lang="tg">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ВАРЗИД - Фархор</title>
-    <style>
-        :root {
-            --bg-color: #f4f4f4;
-            --text-color: #333;
-            --card-bg: #fff;
-            --header-bg: #1e3d2f;
-            --accent: #27ae60;
-            --danger: #e74c3c;
-        }
-        [data-theme="dark"] {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --card-bg: #1e1e1e;
-            --header-bg: #14261e;
-            --accent: #2ecc71;
-            --danger: #ff6b6b;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            transition: 0.3s;
-        }
-        header {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
-        header h1 {
-            color: #2ecc71;
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: 1px;
-        }
-        .controls {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            background: var(--card-bg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .container {
-            padding: 15px;
-            max-width: 600px;
-            margin: auto;
-        }
-        .card {
-            background: var(--card-bg);
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        button, select {
-            padding: 8px 12px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            background-color: var(--accent);
-            color: white;
-            font-weight: bold;
-        }
-        select {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid var(--accent);
-        }
-        .item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #ddd;
-        }
-        .cart-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            border: 2px dashed var(--accent);
-        }
-        .delivery-alert {
-            background-color: var(--danger);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        .map-box {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .map-box iframe {
-            width: 100%;
-            height: 200px;
-            border: 0;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ВАРЗИД — Фархор</title>
+
+<style>
+:root{
+    --bg:#f7f8f6;
+    --card:#ffffff;
+    --text:#172019;
+    --muted:#68736b;
+    --green:#167a45;
+    --green2:#20a35c;
+    --line:#e5e9e6;
+    --shadow:0 12px 35px rgba(0,0,0,.07);
+}
+
+[data-theme="dark"]{
+    --bg:#0e1511;
+    --card:#17201a;
+    --text:#f1f5f2;
+    --muted:#aab5ad;
+    --green:#35c978;
+    --green2:#20a35c;
+    --line:#29342d;
+    --shadow:0 12px 35px rgba(0,0,0,.25);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    transition:.3s;
+}
+
+/* HEADER */
+
+header{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(135deg,#0c3b24,#167a45,#20a35c);
+    color:white;
+    padding:55px 20px 70px;
+    border-radius:0 0 35px 35px;
+}
+
+header:after{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    background:rgba(255,255,255,.07);
+    right:-100px;
+    top:-100px;
+}
+
+.header-content{
+    max-width:1000px;
+    margin:auto;
+    position:relative;
+    z-index:2;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+.brand-icon{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    background:white;
+    color:#167a45;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+header h1{
+    font-size:clamp(38px,8vw,70px);
+    margin:45px 0 10px;
+    letter-spacing:-2px;
+}
+
+header p{
+    max-width:650px;
+    font-size:18px;
+    line-height:1.7;
+    opacity:.9;
+    margin:0;
+}
+
+/* CONTROLS */
+
+.controls{
+    max-width:1000px;
+    margin:-28px auto 0;
+    padding:0 15px;
+    position:relative;
+    z-index:5;
+}
+
+.control-box{
+    background:var(--card);
+    box-shadow:var(--shadow);
+    border-radius:18px;
+    padding:12px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+select,
+.theme-btn{
+    border:0;
+    background:var(--bg);
+    color:var(--text);
+    padding:12px 16px;
+    border-radius:12px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.theme-btn{
+    font-weight:bold;
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:1000px;
+    margin:35px auto;
+    padding:0 15px;
+}
+
+.section-title{
+    margin-bottom:18px;
+}
+
+.section-title h2{
+    margin:0 0 5px;
+    font-size:28px;
+}
+
+.section-title p{
+    color:var(--muted);
+    margin:0;
+}
+
+/* PRODUCTS */
+
+.goods{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.product{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:20px;
+    transition:.25s;
+    box-shadow:0 5px 20px rgba(0,0,0,.03);
+}
+
+.product:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow);
+}
+
+.product-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.product-icon{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    background:#e9f6ee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:23px;
+}
+
+[data-theme="dark"] .product-icon{
+    background:#213a2a;
+}
+
+.product-name{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.price{
+    color:var(--green);
+    font-size:19px;
+    font-weight:900;
+}
+
+.add-btn{
+    width:100%;
+    margin-top:18px;
+    padding:12px;
+    border:0;
+    border-radius:12px;
+    background:var(--green);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.add-btn:hover{
+    background:var(--green2);
+    transform:scale(1.02);
+}
+
+/* CART */
+
+.cart{
+    margin-top:30px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:22px;
+    box-shadow:var(--shadow);
+}
+
+.cart-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.cart-head h2{
+    margin:0;
+}
+
+.cart-count{
+    background:var(--green);
+    color:white;
+    padding:7px 11px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+#cartItems{
+    list-style:none;
+    padding:0;
+    margin:20px 0;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
+}
+
+.remove{
+    border:0;
+    background:transparent;
+    color:#e74c3c;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:20px;
+    font-weight:bold;
+    padding-top:10px;
+}
+
+.total span:last-child{
+    color:var(--green);
+}
+
+/* DELIVERY */
+
+.delivery{
+    margin-top:25px;
+    padding:20px;
+    border-radius:18px;
+    background:#fff5df;
+    color:#684b12;
+    line-height:1.6;
+}
+
+[data-theme="dark"] .delivery{
+    background:#302815;
+    color:#f0d99b;
+}
+
+/* MAP */
+
+.map{
+    margin-top:30px;
+    background:var(--card);
+    padding:22px;
+    border-radius:22px;
+    border:1px solid var(--line);
+}
+
+.map h2{
+    margin-top:0;
+}
+
+.map iframe{
+    width:100%;
+    height:300px;
+    border:0;
+    border-radius:17px;
+    margin-top:15px;
+}
+
+.map-link{
+    display:inline-block;
+    margin-top:15px;
+    color:var(--green);
+    font-weight:bold;
+    text-decoration:none;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    color:var(--muted);
+    padding:35px 15px;
+    font-size:14px;
+}
+
+footer strong{
+    color:var(--green);
+}
+
+/* MOBILE */
+
+@media(max-width:750px){
+
+    header{
+        padding:40px 20px 60px;
+    }
+
+    header h1{
+        margin-top:35px;
+    }
+
+    .goods{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:480px){
+
+    .goods{
+        grid-template-columns:1fr;
+    }
+
+    .control-box{
+        padding:9px;
+    }
+
+    select,
+    .theme-btn{
+        padding:11px 12px;
+    }
+
+    header p{
+        font-size:16px;
+    }
+
+}
+</style>
 </head>
+
 <body>
 
 <header>
-    <h1 id="title">ВАРЗИД</h1>
-    <p id="subtitle" style="margin: 5px 0 0 0; font-weight: bold;">Маҳсулоти кишоварзӣ ва хӯроки чорво дар Фархор</p>
+
+<div class="header-content">
+
+<div class="brand">
+    <div class="brand-icon">В</div>
+    ВАРЗИД
+</div>
+
+<h1>ВАРЗИД</h1>
+
+<p id="subtitle">
+    Роҳи осони интихоби маҳсулот барои зиндагии беҳтар.
+    Маҳсулоти кишоварзӣ ва хӯроки чорво дар Фархор.
+</p>
+
+</div>
+
 </header>
 
+
 <div class="controls">
-    <select id="langSelect" onchange="changeLanguage()">
-        <option value="tg">Тоҷикӣ</option>
-        <option value="ru">Русский</option>
-        <option value="uz">O'zbekcha</option>
-    </select>
-    <button onclick="toggleTheme()" style="background: #27ae60;">🌓 Тема</button>
+
+<div class="control-box">
+
+<select id="langSelect" onchange="changeLanguage()">
+    <option value="tg">Тоҷикӣ</option>
+    <option value="ru">Русский</option>
+    <option value="uz">O'zbekcha</option>
+</select>
+
+<button class="theme-btn" onclick="toggleTheme()" id="themeBtn">
+    ◐ Намоиш
+</button>
+
 </div>
 
-<div class="container">
-    <div class="card">
-        <h3 id="goodsTitle" style="color: var(--accent);">Феҳристи молҳо:</h3>
-        <div id="goodsList"></div>
-    </div>
-
-    <div class="cart-box">
-        <div class="delivery-alert" id="alertText">
-            ⚠️ Доставка дар шаҳраки Фархор. Ба деҳаҳо ва ноҳияҳои дигар танҳо бо шарте ки харидор пули доставкаро медиҳад!
-        </div>
-        <h3 id="cartTitle" style="color: var(--accent);">🛒 Сабади харид</h3>
-        <ul id="cartItems" style="padding-left: 20px;">
-            <li id="emptyCartText">Сабад холӣ аст</li>
-        </ul>
-        <h4 id="totalText">Ҳамагӣ: 0 сомонӣ</h4>
-    </div>
-
-    <div class="card map-box">
-        <h3 id="mapTitle" style="color: var(--accent);">Ҷойгиршавии мо (Фархор)</h3>
-        <p id="mapDesc">Анбор ва нуқтаи савдои ВАРЗИД</p>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25211.75!2d69.39!3d37.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bca8!2z0JfabjKg0L7QtNC40YDQsA!5e0!3m2!1stg!2stj!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
-        <br><br>
-        <a href="https://maps.google.com/?q=Фархор" target="_blank" id="mapLink" style="color: var(--accent); font-weight: bold;">Кушодани харитаи калон дар Google Maps</a>
-    </div>
 </div>
+
+
+<main class="container">
+
+<section>
+
+<div class="section-title">
+    <h2 id="goodsTitle">Маҳсулоти мо</h2>
+    <p id="goodsDesc">
+        Маҳсулотро интихоб кунед ва ба сабад илова намоед.
+    </p>
+</div>
+
+<div class="goods" id="goodsList"></div>
+
+</section>
+
+
+<section class="cart">
+
+<div class="cart-head">
+
+<h2 id="cartTitle">🛒 Сабади шумо</h2>
+
+<div class="cart-count" id="cartCount">
+    0
+</div>
+
+</div>
+
+<ul id="cartItems">
+    <li id="emptyCartText">Сабади шумо ҳоло холӣ аст.</li>
+</ul>
+
+<div class="total">
+    <span id="totalLabel">Ҳамагӣ</span>
+    <span id="totalText">0 сомонӣ</span>
+</div>
+
+</section>
+
+
+<div class="delivery" id="deliveryText">
+    🚚 <strong>Расонидан:</strong>
+    дар ҳудуди шаҳраки Фархор.
+    Барои деҳаҳо ва ноҳияҳои дигар расонидан бо мувофиқа ва пардохти харидор анҷом дода мешавад.
+</div>
+
+
+<section class="map">
+
+<h2 id="mapTitle">📍 Мо дар Фархор</h2>
+
+<p id="mapDesc">
+    Нуқтаи савдо ва анбори ВАРЗИД
+</p>
+
+<iframe
+src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25211.75!2d69.39!3d37.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bca8!2z0JfabjKg0L7QtNC40YDQsA!5e0!3m2!1stg!2stj!4v1234567890"
+allowfullscreen=""
+loading="lazy">
+</iframe>
+
+<a
+class="map-link"
+href="https://maps.google.com/?q=Фархор"
+target="_blank"
+id="mapLink">
+Кушодани харита дар Google Maps →
+</a>
+
+</section>
+
+</main>
+
+
+<footer>
+    © 2026 <strong>ВАРЗИД</strong> — Фархор
+    <br>
+    <span id="footerText">Интихоби хуб аз як қадами одӣ оғоз мешавад.</span>
+</footer>
+
 
 <script>
-    const translations = {
-        tg: {
-            subtitle: "Маҳсулоти кишоварзӣ ва хӯроки чорво дар Фархор",
-            goodsTitle: "Феҳристи молҳо:",
-            cartTitle: "🛒 Сабади харид",
-            emptyCart: "Сабад холӣ аст",
-            total: "Ҳамагӣ: ",
-            addBtn: "Илова ба сабад",
-            alertMsg: "⚠️ Доставка дар шаҳраки Фархор. Ба деҳаҳо ва ноҳияҳои дигар танҳо бо шарте ки харидор пули доставкаро медиҳад!",
-            mapTitle: "Ҷойгиршавии мо (Фархор)",
-            mapDesc: "Анбор ва нуқтаи савдои ВАРЗИД",
-            mapLink: "Кушодани харитаи калон дар Google Maps",
-            items: [
-                {name: "Орд", price: 250},
-                {name: "Гандум", price: 350},
-                {name: "Ҷав", price: 300},
-                {name: "Ҷуворимакка", price: 320},
-                {name: "Корм (Хӯроки чорво)", price: 280},
-                {name: "Каду", price: 150},
-                {name: "Силитра", price: 400},
-                {name: "Карбамид", price: 420},
-                {name: "Сабзавот (чанд намуд)", price: 100},
-                {name: "Тухмӣ (чанд намуд)", price: 500},
-                {name: "Паранда", price: 60}
-            ]
-        },
-        ru: {
-            subtitle: "Сельхозпродукция и корма в Фархоре",
-            goodsTitle: "Список товаров:",
-            cartTitle: "🛒 Корзина покупок",
-            emptyCart: "Корзина пуста",
-            total: "Итого: ",
-            addBtn: "В корзину",
-            alertMsg: "⚠️ Доставка по пос. Фархор. В кишлаки и другие районы доставка только при условии оплаты доставки покупателем!",
-            mapTitle: "Наше местоположение (Фархор)",
-            mapDesc: "Склад и торговая точка ВАРЗИД",
-            mapLink: "Открыть большую карту в Google Maps",
-            items: [
-                {name: "Мука", price: 250},
-                {name: "Пшеница", price: 350},
-                {name: "Ячмень", price: 300},
-                {name: "Кукуруза", price: 320},
-                {name: "Корм для животных", price: 280},
-                {name: "Тыква", price: 150},
-                {name: "Селитра", price: 400},
-                {name: "Карбамид", price: 420},
-                {name: "Овощи (несколько видов)", price: 100},
-                {name: "Семена (несколько видов)", price: 500},
-                {name: "Птица", price: 60}
-            ]
-        },
-        uz: {
-            subtitle: "Qishloq xo'jaligi mahsulotlari va ozuqa Farkhor",
-            goodsTitle: "Mahsulotlar ro'yxati:",
-            cartTitle: "🛒 Savatcha",
-            emptyCart: "Savatcha bo'sh",
-            total: "Jami: ",
-            addBtn: "Savatga qo'shish",
-            alertMsg: "⚠️ Farkhor shaharchasida dostavka. Qishloq va boshqa tumanlarga faqat xaridor dostavka pulini o'zi to'lasagina yetkaziladi!",
-            mapTitle: "Joylashuvimiz (Farkhor)",
-            mapDesc: "VARZID ombori va savdo nuqtasi",
-            mapLink: "Google Maps'da katta xaritani ochish",
-            items: [
-                {name: "Un", price: 250},
-                {name: "Bug'doy", price: 350},
-                {name: "Arpa", price: 300},
-                {name: "Makkajo'xori", price: 320},
-                {name: "Ozuqa (chorva uchun)", price: 280},
-                {name: "Qovoq", price: 150},
-                {name: "Selitra", price: 400},
-                {name: "Karbamid", price: 420},
-                {name: "Sabzavotlar (bir nechta tur)", price: 100},
-                {name: "Urug'lar (bir nechta tur)", price: 500},
-                {name: "Parranda", price: 60}
-            ]
-        }
-    };
 
-    let cart = [];
+const translations = {
 
-    function changeLanguage() {
-        const lang = document.getElementById('langSelect').value;
-        const t = translations[lang];
-        
-        document.getElementById('subtitle').innerText = t.subtitle;
-        document.getElementById('goodsTitle').innerText = t.goodsTitle;
-        document.getElementById('cartTitle').innerText = t.cartTitle;
-        document.getElementById('alertText').innerText = t.alertMsg;
-        document.getElementById('mapTitle').innerText = t.mapTitle;
-        document.getElementById('mapDesc').innerText = t.mapDesc;
-        document.getElementById('mapLink').innerText = t.mapLink;
+tg:{
+subtitle:"Роҳи осони интихоби маҳсулот барои зиндагии беҳтар. Маҳсулоти кишоварзӣ ва хӯроки чорво дар Фархор.",
+goodsTitle:"Маҳсулоти мо",
+goodsDesc:"Маҳсулотро интихоб кунед ва ба сабад илова намоед.",
+cartTitle:"🛒 Сабади шумо",
+emptyCart:"Сабади шумо ҳоло холӣ аст.",
+total:"Ҳамагӣ",
+add:"Ба сабад",
+delivery:"🚚 Расонидан: дар ҳудуди шаҳраки Фархор. Барои деҳаҳо ва ноҳияҳои дигар расонидан бо мувофиқа ва пардохти харидор анҷом дода мешавад.",
+mapTitle:"📍 Мо дар Фархор",
+mapDesc:"Нуқтаи савдо ва анбори ВАРЗИД",
+mapLink:"Кушодани харита дар Google Maps →",
+footer:"Интихоби хуб аз як қадами одӣ оғоз мешавад.",
 
-        const listContainer = document.getElementById('goodsList');
-        listContainer.innerHTML = "";
-        
-        t.items.forEach((item, index) => {
-            const row = document.createElement('div');
-            row.className = 'item-row';
-            row.innerHTML = `
-                <span><b>${item.name}</b> (${item.price} сомонӣ)</span>
-                <button onclick="addToCart(${index})">${t.addBtn}</button>
-            `;
-            listContainer.appendChild(row);
-        });
-        updateCartDisplay();
-    }
+items:[
+{name:"Орд",price:250,icon:"🌾"},
+{name:"Гандум",price:350,icon:"🌾"},
+{name:"Ҷав",price:300,icon:"🌿"},
+{name:"Ҷуворимакка",price:320,icon:"🌽"},
+{name:"Хӯроки чорво",price:280,icon:"🐄"},
+{name:"Каду",price:150,icon:"🎃"},
+{name:"Силитра",price:400,icon:"🌱"},
+{name:"Карбамид",price:420,icon:"🌱"},
+{name:"Сабзавот",price:100,icon:"🥬"},
+{name:"Тухмӣ",price:500,icon:"🌱"},
+{name:"Паранда",price:60,icon:"🐔"}
+]
+},
 
-    function addToCart(index) {
-        const lang = document.getElementById('langSelect').value;
-        const item = translations[lang].items[index];
-        cart.push(item);
-        updateCartDisplay();
-    }
+ru:{
+subtitle:"Простой способ выбрать нужные товары. Сельхозпродукция и корма в Фархоре.",
+goodsTitle:"Наши товары",
+goodsDesc:"Выберите товар и добавьте его в корзину.",
+cartTitle:"🛒 Ваша корзина",
+emptyCart:"Ваша корзина пока пуста.",
+total:"Итого",
+add:"В корзину",
+delivery:"🚚 Доставка: по территории посёлка Фархор. В сёла и другие районы доставка осуществляется по договорённости и за счёт покупателя.",
+mapTitle:"📍 Мы в Фархоре",
+mapDesc:"Торговая точка и склад ВАРЗИД",
+mapLink:"Открыть карту в Google Maps →",
+footer:"Хороший выбор начинается с простого шага.",
 
-    function updateCartDisplay() {
-        const lang = document.getElementById('langSelect').value;
-        const t = translations[lang];
-        const cartList = document.getElementById('cartItems');
-        cartList.innerHTML = "";
+items:[
+{name:"Мука",price:250,icon:"🌾"},
+{name:"Пшеница",price:350,icon:"🌾"},
+{name:"Ячмень",price:300,icon:"🌿"},
+{name:"Кукуруза",price:320,icon:"🌽"},
+{name:"Корм для животных",price:280,icon:"🐄"},
+{name:"Тыква",price:150,icon:"🎃"},
+{name:"Селитра",price:400,icon:"🌱"},
+{name:"Карбамид",price:420,icon:"🌱"},
+{name:"Овощи",price:100,icon:"🥬"},
+{name:"Семена",price:500,icon:"🌱"},
+{name:"Птица",price:60,icon:"🐔"}
+]
+},
 
-        if (cart.length === 0) {
-            cartList.innerHTML = `<li>${t.emptyCart}</li>`;
-            document.getElementById('totalText').innerText = t.total + "0 сомонӣ";
-            return;
-        }
+uz:{
+subtitle:"Kerakli mahsulotlarni tanlashning oson yo‘li. Farkhorda qishloq xo‘jaligi mahsulotlari va ozuqa.",
+goodsTitle:"Mahsulotlarimiz",
+goodsDesc:"Mahsulotni tanlang va savatchaga qo‘shing.",
+cartTitle:"🛒 Savatingiz",
+emptyCart:"Savatingiz hozircha bo‘sh.",
+total:"Jami",
+add:"Savatga",
+delivery:"🚚 Yetkazib berish: Farkhor shaharchasi hududida. Qishloqlar va boshqa tumanlarga yetkazib berish kelishuv asosida va xaridor hisobidan amalga oshiriladi.",
+mapTitle:"📍 Biz Farkhorda",
+mapDesc:"VARZID savdo nuqtasi va ombori",
+mapLink:"Google Maps'da xaritani ochish →",
+footer:"Yaxshi tanlov oddiy qadamdan boshlanadi.",
 
-        let total = 0;
-        cart.forEach((cartItem, i) => {
-            total += cartItem.price;
-            const li = document.createElement('li');
-            li.innerText = `${i + 1}. ${cartItem.name} — ${cartItem.price} сомонӣ`;
-            cartList.appendChild(li);
-        });
+items:[
+{name:"Un",price:250,icon:"🌾"},
+{name:"Bug‘doy",price:350,icon:"🌾"},
+{name:"Arpa",price:300,icon:"🌿"},
+{name:"Makkajo‘xori",price:320,icon:"🌽"},
+{name:"Chorva ozuqasi",price:280,icon:"🐄"},
+{name:"Qovoq",price:150,icon:"🎃"},
+{name:"Selitra",price:400,icon:"🌱"},
+{name:"Karbamid",price:420,icon:"🌱"},
+{name:"Sabzavotlar",price:100,icon:"🥬"},
+{name:"Urug‘lar",price:500,icon:"🌱"},
+{name:"Parranda",price:60,icon:"🐔"}
+]
+}
 
-        document.getElementById('totalText').innerText = t.total + total + " сомонӣ";
-    }
+};
 
-    function toggleTheme() {
-        const body = document.body;
-        if (body.getAttribute('data-theme') === 'dark') {
-            body.setAttribute('data-theme', 'light');
-        } else {
-            body.setAttribute('data-theme', 'dark');
-        }
-    }
 
-    changeLanguage();
+let cart=[];
+
+
+function changeLanguage(){
+
+const lang=document.getElementById("langSelect").value;
+const t=translations[lang];
+
+document.getElementById("subtitle").innerText=t.subtitle;
+document.getElementById("goodsTitle").innerText=t.goodsTitle;
+document.getElementById("goodsDesc").innerText=t.goodsDesc;
+document.getElementById("cartTitle").innerText=t.cartTitle;
+document.getElementById("deliveryText").innerText=t.delivery;
+document.getElementById("mapTitle").innerText=t.mapTitle;
+document.getElementById("mapDesc").innerText=t.mapDesc;
+document.getElementById("mapLink").innerText=t.mapLink;
+document.getElementById("footerText").innerText=t.footer;
+document.getElementById("totalLabel").innerText=t.total;
+
+const list=document.getElementById("goodsList");
+
+list.innerHTML="";
+
+t.items.forEach((item,index)=>{
+
+const card=document.createElement("div");
+
+card.className="product";
+
+card.innerHTML=`
+
+<div class="product-top">
+
+<div class="product-icon">
+${item.icon}
+</div>
+
+<div class="price">
+${item.price} сомонӣ
+</div>
+
+</div>
+
+<div class="product-name">
+${item.name}
+</div>
+
+<button class="add-btn" onclick="addToCart(${index})">
+${t.add}
+</button>
+
+`;
+
+list.appendChild(card);
+
+});
+
+updateCart();
+
+}
+
+
+function addToCart(index){
+
+const lang=document.getElementById("langSelect").value;
+
+const item=translations[lang].items[index];
+
+cart.push({...item});
+
+updateCart();
+
+}
+
+
+function removeFromCart(index){
+
+cart.splice(index,1);
+
+updateCart();
+
+}
+
+
+function updateCart(){
+
+const lang=document.getElementById("langSelect").value;
+
+const t=translations[lang];
+
+const list=document.getElementById("cartItems");
+
+list.innerHTML="";
+
+let total=0;
+
+if(cart.length===0){
+
+list.innerHTML=`
+<li id="emptyCartText">
+${t.emptyCart}
+</li>
+`;
+
+}else{
+
+cart.forEach((item,index)=>{
+
+total+=item.price;
+
+const li=document.createElement("li");
+
+li.className="cart-item";
+
+li.innerHTML=`
+
+<span>
+${item.icon} ${item.name}
+<br>
+<small>${item.price} сомонӣ</small>
+</span>
+
+<button
+class="remove"
+onclick="removeFromCart(${index})">
+×
+</button>
+
+`;
+
+list.appendChild(li);
+
+});
+
+}
+
+document.getElementById("totalText").innerText=
+total+" сомонӣ";
+
+document.getElementById("cartCount").innerText=
+cart.length;
+
+}
+
+
+function toggleTheme(){
+
+const body=document.body;
+
+if(body.getAttribute("data-theme")==="dark"){
+
+body.removeAttribute("data-theme");
+
+}else{
+
+body.setAttribute("data-theme","dark");
+
+}
+
+}
+
+
+changeLanguage();
+
 </script>
 
 </body>
