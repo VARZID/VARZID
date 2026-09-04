@@ -31,9 +31,7 @@ body{
   color:var(--text);
   padding-bottom:78px;
 }
-button,input{
-  font:inherit;
-}
+button,input{font:inherit}
 button{cursor:pointer}
 
 /* HEADER */
@@ -451,7 +449,8 @@ main{
 <header>
   <div class="top">
     <div class="brand">
-      <!-- VARZID water-ring style logo built directly into index.html -->
+
+      <!-- VARZID LOGO — БЕЗ ДАВРА -->
       <svg class="logo" viewBox="0 0 100 100">
         <defs>
           <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -459,9 +458,17 @@ main{
             <stop offset="1" stop-color="#075c29"/>
           </linearGradient>
         </defs>
-        <circle cx="50" cy="50" r="39" fill="none" stroke="url(#g)" stroke-width="9"/>
-        <path d="M29 31 L50 70 L71 31" fill="none" stroke="#16843a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <path
+          d="M25 27 L50 73 L75 27"
+          fill="none"
+          stroke="url(#g)"
+          stroke-width="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
+
       <div class="brand-name">VARZID</div>
     </div>
 
@@ -471,11 +478,22 @@ main{
   <div class="search-wrap">
     <div class="search">
       <span>🔎</span>
-      <input id="search" type="search" placeholder="Ҷустуҷӯ..." oninput="renderProducts()">
+
+      <input
+        id="search"
+        type="search"
+        placeholder="Ҷустуҷӯ..."
+        oninput="renderProducts()"
+      >
 
       <label class="camera">
         📷
-        <input type="file" accept="image/*" capture="environment" onchange="photoSelected(this)">
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onchange="photoSelected(this)"
+        >
       </label>
     </div>
   </div>
@@ -486,17 +504,57 @@ main{
   <!-- HOME -->
   <section id="homePage" class="page active">
 
-    <div class="section-title" data-t="categories">Категорияҳо</div>
-
-    <div class="categories">
-      <button class="cat active" data-cat="all" onclick="setCategory('all',this)">🏪 <span data-t="all">Ҳама</span></button>
-      <button class="cat" data-cat="farm" onclick="setCategory('farm',this)">🌾 <span data-t="farm">Кишоварзӣ</span></button>
-      <button class="cat" data-cat="vegetable" onclick="setCategory('vegetable',this)">🥕 <span data-t="vegetable">Сабзавот</span></button>
-      <button class="cat" data-cat="vitamin" onclick="setCategory('vitamin',this)">💊 <span data-t="vitamin">Витаминҳо</span></button>
-      <button class="cat" data-cat="equipment" onclick="setCategory('equipment',this)">🔧 <span data-t="equipment">Таҷҳизот</span></button>
+    <div class="section-title" data-t="categories">
+      Категорияҳо
     </div>
 
-    <div class="section-title" data-t="products">Маҳсулот</div>
+    <div class="categories">
+
+      <button
+        class="cat active"
+        data-cat="all"
+        onclick="setCategory('all',this)"
+      >
+        🏪 <span data-t="all">Ҳама</span>
+      </button>
+
+      <button
+        class="cat"
+        data-cat="farm"
+        onclick="setCategory('farm',this)"
+      >
+        🌾 <span data-t="farm">Кишоварзӣ</span>
+      </button>
+
+      <button
+        class="cat"
+        data-cat="vegetable"
+        onclick="setCategory('vegetable',this)"
+      >
+        🥕 <span data-t="vegetable">Сабзавот</span>
+      </button>
+
+      <button
+        class="cat"
+        data-cat="vitamin"
+        onclick="setCategory('vitamin',this)"
+      >
+        💊 <span data-t="vitamin">Витаминҳо</span>
+      </button>
+
+      <button
+        class="cat"
+        data-cat="equipment"
+        onclick="setCategory('equipment',this)"
+      >
+        🔧 <span data-t="equipment">Таҷҳизот</span>
+      </button>
+
+    </div>
+
+    <div class="section-title" data-t="products">
+      Маҳсулот
+    </div>
 
     <div id="products" class="products"></div>
 
@@ -504,7 +562,13 @@ main{
       🔎 <span data-t="notfound">Маҳсулот ёфт нашуд</span>
     </div>
 
-    <div class="section-title" style="margin-top:25px" data-t="map">Харита</div>
+    <div
+      class="section-title"
+      style="margin-top:25px"
+      data-t="map"
+    >
+      Харита
+    </div>
 
     <iframe
       class="map"
@@ -516,65 +580,113 @@ main{
 
   <!-- FAVORITES -->
   <section id="favoritesPage" class="page">
-    <div class="section-title" data-t="favorites">Дӯстдоштаҳо</div>
-    <div id="favoritesList" class="products"></div>
-    <div id="favoritesEmpty" class="empty" style="display:none">
-      ❤️ <span data-t="emptyFav">Ҳоло маҳсулоти дӯстдошта нест</span>
+
+    <div class="section-title" data-t="favorites">
+      Дӯстдоштаҳо
     </div>
+
+    <div id="favoritesList" class="products"></div>
+
+    <div
+      id="favoritesEmpty"
+      class="empty"
+      style="display:none"
+    >
+      ❤️
+      <span data-t="emptyFav">
+        Ҳоло маҳсулоти дӯстдошта нест
+      </span>
+    </div>
+
   </section>
 
 
   <!-- CART -->
   <section id="cartPage" class="page">
-    <div class="section-title" data-t="cart">Сабад</div>
+
+    <div class="section-title" data-t="cart">
+      Сабад
+    </div>
 
     <div id="cartList"></div>
 
-    <div id="cartEmpty" class="empty" style="display:none">
-      🛒 <span data-t="emptyCart">Сабад холӣ аст</span>
+    <div
+      id="cartEmpty"
+      class="empty"
+      style="display:none"
+    >
+      🛒
+      <span data-t="emptyCart">
+        Сабад холӣ аст
+      </span>
     </div>
 
     <div id="cartBottom" style="display:none">
+
       <div class="total">
         <span data-t="total">Ҳамагӣ</span>
         <span id="total">0 сомонӣ</span>
       </div>
 
       <button class="checkout" onclick="openOrder()">
-        📲 <span data-t="order">Фармоиш додан</span>
+        📲
+        <span data-t="order">
+          Фармоиш додан
+        </span>
       </button>
+
     </div>
+
   </section>
 
 
   <!-- PROFILE -->
   <section id="profilePage" class="page">
-    <div class="section-title" data-t="profile">Профил</div>
+
+    <div class="section-title" data-t="profile">
+      Профил
+    </div>
 
     <div class="profile-card">
 
       <div class="profile-row">
         <button onclick="showOrders()">
-          📦 <span data-t="orders">Фармоишҳои ман</span>
+          📦
+          <span data-t="orders">
+            Фармоишҳои ман
+          </span>
         </button>
       </div>
 
       <div class="profile-row">
         <button onclick="changeLang()">
-          🌐 <span data-t="language">Забон</span>:
-          <strong id="langName">Тоҷикӣ</strong>
+          🌐
+          <span data-t="language">
+            Забон
+          </span>:
+
+          <strong id="langName">
+            Тоҷикӣ
+          </strong>
         </button>
       </div>
 
       <div class="profile-row">
         <button onclick="goHome()">
-          🏠 <span data-t="home">Асосӣ</span>
+          🏠
+          <span data-t="home">
+            Асосӣ
+          </span>
         </button>
       </div>
 
     </div>
 
-    <div id="ordersBox" style="margin-top:15px"></div>
+    <div
+      id="ordersBox"
+      style="margin-top:15px"
+    ></div>
+
   </section>
 
 </main>
@@ -582,26 +694,52 @@ main{
 
 <!-- BOTTOM NAV -->
 <nav class="bottom">
-  <button class="nav active" onclick="showPage('homePage',this)">
+
+  <button
+    class="nav active"
+    onclick="showPage('homePage',this)"
+  >
     <span class="nav-icon">🏠</span>
     <span data-t="home">Асосӣ</span>
   </button>
 
-  <button class="nav" onclick="showPage('favoritesPage',this)">
+  <button
+    class="nav"
+    onclick="showPage('favoritesPage',this)"
+  >
     <span class="nav-icon">❤️</span>
-    <span data-t="favorites">Дӯстдошта</span>
+    <span data-t="favorites">
+      Дӯстдошта
+    </span>
   </button>
 
-  <button class="nav" onclick="showPage('cartPage',this)">
+  <button
+    class="nav"
+    onclick="showPage('cartPage',this)"
+  >
     <span class="nav-icon">🛒</span>
-    <span data-t="cart">Сабад</span>
-    <span id="cartBadge" class="badge">0</span>
+    <span data-t="cart">
+      Сабад
+    </span>
+
+    <span
+      id="cartBadge"
+      class="badge"
+    >
+      0
+    </span>
   </button>
 
-  <button class="nav" onclick="showPage('profilePage',this)">
+  <button
+    class="nav"
+    onclick="showPage('profilePage',this)"
+  >
     <span class="nav-icon">👤</span>
-    <span data-t="profile">Профил</span>
+    <span data-t="profile">
+      Профил
+    </span>
   </button>
+
 </nav>
 
 
@@ -610,18 +748,54 @@ main{
 
 
 <!-- ORDER MODAL -->
-<div id="orderModal" class="modal-bg" onclick="closeModalOutside(event)">
+<div
+  id="orderModal"
+  class="modal-bg"
+  onclick="closeModalOutside(event)"
+>
+
   <div class="modal">
 
-    <h3 data-t="orderTitle">Фармоиш</h3>
+    <h3 data-t="orderTitle">
+      Фармоиш
+    </h3>
 
-    <input id="customerName" type="text" placeholder="Ном">
-    <input id="customerPhone" type="tel" placeholder="Телефон">
-    <input id="customerAddress" type="text" placeholder="Суроға">
+    <input
+      id="customerName"
+      type="text"
+      placeholder="Ном"
+    >
+
+    <input
+      id="customerPhone"
+      type="tel"
+      placeholder="Телефон"
+    >
+
+    <input
+      id="customerAddress"
+      type="text"
+      placeholder="Суроға"
+    >
 
     <div class="modal-buttons">
-      <button class="cancel" onclick="closeOrder()" data-t="cancel">Бекор кардан</button>
-      <button class="send" onclick="sendOrder()" data-t="send">Ирсол кардан</button>
+
+      <button
+        class="cancel"
+        onclick="closeOrder()"
+        data-t="cancel"
+      >
+        Бекор кардан
+      </button>
+
+      <button
+        class="send"
+        onclick="sendOrder()"
+        data-t="send"
+      >
+        Ирсол кардан
+      </button>
+
     </div>
 
   </div>
@@ -631,6 +805,7 @@ main{
 <script>
 
 const products = [
+
   {
     id:1,
     cat:"farm",
@@ -641,6 +816,7 @@ const products = [
     uz:"Bug‘doy",
     stock:10
   },
+
   {
     id:2,
     cat:"farm",
@@ -651,6 +827,7 @@ const products = [
     uz:"Un",
     stock:10
   },
+
   {
     id:3,
     cat:"farm",
@@ -661,6 +838,7 @@ const products = [
     uz:"Makkajo‘xori",
     stock:10
   },
+
   {
     id:4,
     cat:"vegetable",
@@ -671,6 +849,7 @@ const products = [
     uz:"Qovoq",
     stock:10
   },
+
   {
     id:5,
     cat:"vegetable",
@@ -682,6 +861,7 @@ const products = [
     stock:10,
     noPrice:true
   },
+
   {
     id:6,
     cat:"vitamin",
@@ -693,6 +873,7 @@ const products = [
     stock:0,
     noPrice:true
   },
+
   {
     id:7,
     cat:"farm",
@@ -703,6 +884,7 @@ const products = [
     uz:"Yem",
     stock:10
   },
+
   {
     id:8,
     cat:"equipment",
@@ -713,9 +895,12 @@ const products = [
     uz:"Uskunalar",
     stock:10
   }
+
 ];
 
+
 const translations = {
+
   tj:{
     categories:"Категорияҳо",
     all:"Ҳама",
@@ -741,8 +926,11 @@ const translations = {
     send:"Ирсол кардан",
     add:"Ба сабад",
     added:"✓ Дар сабад",
-    inStock:"Дар мавҷудият",
-    outStock:"Тамом шудааст",
+
+    /* ФАКАТ ИН ИВАЗ ШУД */
+    inStock:"Дастрас",
+    outStock:"Нест",
+
     som:"сомонӣ",
     search:"Ҷустуҷӯ..."
   },
@@ -808,13 +996,29 @@ const translations = {
     som:"somoni",
     search:"Qidirish..."
   }
+
 };
 
-let lang = localStorage.getItem("varzid_lang") || "tj";
+
+let lang =
+  localStorage.getItem("varzid_lang") || "tj";
+
 let category = "all";
-let cart = JSON.parse(localStorage.getItem("varzid_cart") || "[]");
-let favorites = JSON.parse(localStorage.getItem("varzid_favorites") || "[]");
-let orders = JSON.parse(localStorage.getItem("varzid_orders") || "[]");
+
+let cart =
+  JSON.parse(
+    localStorage.getItem("varzid_cart") || "[]"
+  );
+
+let favorites =
+  JSON.parse(
+    localStorage.getItem("varzid_favorites") || "[]"
+  );
+
+let orders =
+  JSON.parse(
+    localStorage.getItem("varzid_orders") || "[]"
+  );
 
 
 function t(key){
@@ -828,36 +1032,67 @@ function productName(p){
 
 
 function save(){
-  localStorage.setItem("varzid_cart",JSON.stringify(cart));
-  localStorage.setItem("varzid_favorites",JSON.stringify(favorites));
-  localStorage.setItem("varzid_orders",JSON.stringify(orders));
+
+  localStorage.setItem(
+    "varzid_cart",
+    JSON.stringify(cart)
+  );
+
+  localStorage.setItem(
+    "varzid_favorites",
+    JSON.stringify(favorites)
+  );
+
+  localStorage.setItem(
+    "varzid_orders",
+    JSON.stringify(orders)
+  );
 }
 
 
 function renderProducts(){
 
-  const box=document.getElementById("products");
-  const empty=document.getElementById("empty");
+  const box =
+    document.getElementById("products");
 
-  const q=document.getElementById("search").value.toLowerCase().trim();
+  const empty =
+    document.getElementById("empty");
 
-  const filtered=products.filter(p=>{
+  const q =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
 
-    const matchesCategory =
-      category==="all" || p.cat===category;
+  const filtered =
+    products.filter(p=>{
 
-    const text =
-      (p.tj+" "+p.ru+" "+p.uz).toLowerCase();
+      const matchesCategory =
+        category==="all" ||
+        p.cat===category;
 
-    const matchesSearch =
-      !q || text.includes(q);
+      const text =
+        (
+          p.tj+" "+
+          p.ru+" "+
+          p.uz
+        ).toLowerCase();
 
-    return matchesCategory && matchesSearch;
-  });
+      const matchesSearch =
+        !q ||
+        text.includes(q);
+
+      return (
+        matchesCategory &&
+        matchesSearch
+      );
+    });
 
   box.innerHTML="";
 
   if(!filtered.length){
+
     empty.style.display="block";
     return;
   }
@@ -866,41 +1101,74 @@ function renderProducts(){
 
   filtered.forEach(p=>{
 
-    const fav=favorites.includes(p.id);
-    const inCart=cart.includes(p.id);
+    const fav =
+      favorites.includes(p.id);
 
-    const card=document.createElement("div");
+    const inCart =
+      cart.includes(p.id);
+
+    const card =
+      document.createElement("div");
+
     card.className="product";
 
     card.innerHTML=`
-      <div class="product-img">${p.emoji}</div>
 
-      <button class="heart"
-        onclick="toggleFavorite(${p.id})">
+      <div class="product-img">
+        ${p.emoji}
+      </div>
+
+      <button
+        class="heart"
+        onclick="toggleFavorite(${p.id})"
+      >
         ${fav ? "❤️" : "🤍"}
       </button>
 
       <div class="info">
 
-        <div class="name">${productName(p)}</div>
+        <div class="name">
+          ${productName(p)}
+        </div>
 
         ${
           p.noPrice
           ? ""
-          : `<div class="price">${p.price} ${t("som")}</div>`
+          : `
+            <div class="price">
+              ${p.price} ${t("som")}
+            </div>
+          `
         }
 
-        <div class="stock ${p.stock>0 ? "in":"out"}">
-          ${p.stock>0 ? "✓ "+t("inStock") : "✕ "+t("outStock")}
+        <div
+          class="stock ${
+            p.stock>0 ? "in":"out"
+          }"
+        >
+
+          ${
+            p.stock>0
+            ? "✓ "+t("inStock")
+            : "✕ "+t("outStock")
+          }
+
         </div>
 
         ${
           p.stock>0 && !p.noPrice
           ? `
             <button
-              class="add ${inCart ? "added":""}"
-              onclick="toggleCart(${p.id})">
-              ${inCart ? t("added") : t("add")}
+              class="add ${
+                inCart ? "added":""
+              }"
+              onclick="toggleCart(${p.id})"
+            >
+              ${
+                inCart
+                ? t("added")
+                : t("add")
+              }
             </button>
           `
           : ""
@@ -910,13 +1178,15 @@ function renderProducts(){
     `;
 
     box.appendChild(card);
+
   });
 }
 
 
 function toggleCart(id){
 
-  const index=cart.indexOf(id);
+  const index =
+    cart.indexOf(id);
 
   if(index===-1){
 
@@ -925,7 +1195,9 @@ function toggleCart(id){
     save();
     updateCart();
 
-    showToast("✓ "+t("added"));
+    showToast(
+      "✓ "+t("added")
+    );
 
   }else{
 
@@ -934,7 +1206,8 @@ function toggleCart(id){
     save();
     updateCart();
 
-    showToast(lang==="ru"
+    showToast(
+      lang==="ru"
       ? "Товар удалён из корзины"
       : lang==="uz"
       ? "Mahsulot savatdan olib tashlandi"
@@ -948,10 +1221,14 @@ function toggleCart(id){
 
 function updateCart(){
 
-  const badge=document.getElementById("cartBadge");
+  const badge =
+    document.getElementById("cartBadge");
 
-  badge.textContent=cart.length;
-  badge.style.display=cart.length ? "flex":"none";
+  badge.textContent =
+    cart.length;
+
+  badge.style.display =
+    cart.length ? "flex":"none";
 
   renderCart();
 }
@@ -959,9 +1236,14 @@ function updateCart(){
 
 function renderCart(){
 
-  const box=document.getElementById("cartList");
-  const empty=document.getElementById("cartEmpty");
-  const bottom=document.getElementById("cartBottom");
+  const box =
+    document.getElementById("cartList");
+
+  const empty =
+    document.getElementById("cartEmpty");
+
+  const bottom =
+    document.getElementById("cartBottom");
 
   box.innerHTML="";
 
@@ -969,6 +1251,7 @@ function renderCart(){
 
     empty.style.display="block";
     bottom.style.display="none";
+
     return;
   }
 
@@ -979,48 +1262,76 @@ function renderCart(){
 
   cart.forEach(id=>{
 
-    const p=products.find(x=>x.id===id);
+    const p =
+      products.find(
+        x=>x.id===id
+      );
 
     if(!p)return;
 
     total+=p.price;
 
-    const item=document.createElement("div");
+    const item =
+      document.createElement("div");
+
     item.className="cart-item";
 
     item.innerHTML=`
-      <div class="cart-emoji">${p.emoji}</div>
 
-      <div class="cart-info">
-        <div class="cart-name">${productName(p)}</div>
-        <div class="cart-price">${p.price} ${t("som")}</div>
+      <div class="cart-emoji">
+        ${p.emoji}
       </div>
 
-      <button class="remove"
-        onclick="toggleCart(${p.id})">🗑️</button>
+      <div class="cart-info">
+
+        <div class="cart-name">
+          ${productName(p)}
+        </div>
+
+        <div class="cart-price">
+          ${p.price} ${t("som")}
+        </div>
+
+      </div>
+
+      <button
+        class="remove"
+        onclick="toggleCart(${p.id})"
+      >
+        🗑️
+      </button>
+
     `;
 
     box.appendChild(item);
+
   });
 
-  document.getElementById("total").textContent=
-    total+" "+t("som");
+  document.getElementById("total")
+    .textContent =
+      total+" "+t("som");
 }
 
 
 function toggleFavorite(id){
 
-  const index=favorites.indexOf(id);
+  const index =
+    favorites.indexOf(id);
 
   if(index===-1){
+
     favorites.push(id);
     showToast("❤️");
+
   }else{
+
     favorites.splice(index,1);
     showToast("♡");
+
   }
 
   save();
+
   renderProducts();
   renderFavorites();
 }
@@ -1028,12 +1339,20 @@ function toggleFavorite(id){
 
 function renderFavorites(){
 
-  const box=document.getElementById("favoritesList");
-  const empty=document.getElementById("favoritesEmpty");
+  const box =
+    document.getElementById(
+      "favoritesList"
+    );
+
+  const empty =
+    document.getElementById(
+      "favoritesEmpty"
+    );
 
   box.innerHTML="";
 
   if(!favorites.length){
+
     empty.style.display="block";
     return;
   }
@@ -1042,42 +1361,83 @@ function renderFavorites(){
 
   favorites.forEach(id=>{
 
-    const p=products.find(x=>x.id===id);
+    const p =
+      products.find(
+        x=>x.id===id
+      );
+
     if(!p)return;
 
-    const inCart=cart.includes(p.id);
+    const inCart =
+      cart.includes(p.id);
 
-    const card=document.createElement("div");
+    const card =
+      document.createElement("div");
+
     card.className="product";
 
     card.innerHTML=`
-      <div class="product-img">${p.emoji}</div>
 
-      <button class="heart"
-        onclick="toggleFavorite(${p.id})">❤️</button>
+      <div class="product-img">
+        ${p.emoji}
+      </div>
+
+      <button
+        class="heart"
+        onclick="toggleFavorite(${p.id})"
+      >
+        ❤️
+      </button>
 
       <div class="info">
 
-        <div class="name">${productName(p)}</div>
+        <div class="name">
+          ${productName(p)}
+        </div>
 
         ${
           p.noPrice
           ? ""
-          : `<div class="price">${p.price} ${t("som")}</div>`
+          : `
+            <div class="price">
+              ${p.price} ${t("som")}
+            </div>
+          `
         }
 
-        <div class="stock ${p.stock>0?"in":"out"}">
-          ${p.stock>0 ? "✓ "+t("inStock") : "✕ "+t("outStock")}
+        <div
+          class="stock ${
+            p.stock>0
+            ? "in"
+            : "out"
+          }"
+        >
+
+          ${
+            p.stock>0
+            ? "✓ "+t("inStock")
+            : "✕ "+t("outStock")
+          }
+
         </div>
 
         ${
           p.stock>0 && !p.noPrice
           ? `
-          <button
-            class="add ${inCart?"added":""}"
-            onclick="toggleCart(${p.id})">
-            ${inCart ? t("added") : t("add")}
-          </button>
+            <button
+              class="add ${
+                inCart
+                ? "added"
+                : ""
+              }"
+              onclick="toggleCart(${p.id})"
+            >
+              ${
+                inCart
+                ? t("added")
+                : t("add")
+              }
+            </button>
           `
           : ""
         }
@@ -1086,6 +1446,7 @@ function renderFavorites(){
     `;
 
     box.appendChild(card);
+
   });
 }
 
@@ -1094,8 +1455,11 @@ function setCategory(cat,btn){
 
   category=cat;
 
-  document.querySelectorAll(".cat")
-    .forEach(x=>x.classList.remove("active"));
+  document
+    .querySelectorAll(".cat")
+    .forEach(x=>
+      x.classList.remove("active")
+    );
 
   btn.classList.add("active");
 
@@ -1105,42 +1469,63 @@ function setCategory(cat,btn){
 
 function showPage(id,btn){
 
-  document.querySelectorAll(".page")
-    .forEach(x=>x.classList.remove("active"));
+  document
+    .querySelectorAll(".page")
+    .forEach(x=>
+      x.classList.remove("active")
+    );
 
-  document.getElementById(id)
+  document
+    .getElementById(id)
     .classList.add("active");
 
-  document.querySelectorAll(".nav")
-    .forEach(x=>x.classList.remove("active"));
+  document
+    .querySelectorAll(".nav")
+    .forEach(x=>
+      x.classList.remove("active")
+    );
 
   btn.classList.add("active");
 
-  if(id==="favoritesPage")renderFavorites();
-  if(id==="cartPage")renderCart();
+  if(id==="favoritesPage")
+    renderFavorites();
+
+  if(id==="cartPage")
+    renderCart();
 }
 
 
 function goHome(){
 
-  const nav=document.querySelector(".nav");
+  const nav =
+    document.querySelector(".nav");
 
-  showPage("homePage",nav);
+  showPage(
+    "homePage",
+    nav
+  );
 }
 
 
 function showToast(text){
 
-  const toast=document.getElementById("toast");
+  const toast =
+    document.getElementById("toast");
 
   toast.textContent=text;
+
   toast.classList.add("show");
 
-  clearTimeout(window.toastTimer);
+  clearTimeout(
+    window.toastTimer
+  );
 
-  window.toastTimer=setTimeout(()=>{
-    toast.classList.remove("show");
-  },1800);
+  window.toastTimer =
+    setTimeout(()=>{
+
+      toast.classList.remove("show");
+
+    },1800);
 }
 
 
@@ -1150,14 +1535,17 @@ function toggleTheme(){
 
   localStorage.setItem(
     "varzid_theme",
-    document.body.classList.contains("dark") ? "dark":"light"
+    document.body.classList.contains("dark")
+    ? "dark"
+    : "light"
   );
 }
 
 
 function photoSelected(input){
 
-  if(!input.files.length)return;
+  if(!input.files.length)
+    return;
 
   showToast(
     lang==="ru"
@@ -1172,37 +1560,68 @@ function photoSelected(input){
 function openOrder(){
 
   if(!cart.length){
-    showToast(t("emptyCart"));
+
+    showToast(
+      t("emptyCart")
+    );
+
     return;
   }
 
-  document.getElementById("orderModal")
+  document
+    .getElementById("orderModal")
     .classList.add("show");
 }
 
 
 function closeOrder(){
 
-  document.getElementById("orderModal")
+  document
+    .getElementById("orderModal")
     .classList.remove("show");
 }
 
 
 function closeModalOutside(e){
 
-  if(e.target===document.getElementById("orderModal")){
+  if(
+    e.target===
+    document.getElementById(
+      "orderModal"
+    )
+  ){
+
     closeOrder();
+
   }
 }
 
 
 function sendOrder(){
 
-  const name=document.getElementById("customerName").value.trim();
-  const phone=document.getElementById("customerPhone").value.trim();
-  const address=document.getElementById("customerAddress").value.trim();
+  const name =
+    document
+      .getElementById("customerName")
+      .value
+      .trim();
 
-  if(!name || !phone || !address){
+  const phone =
+    document
+      .getElementById("customerPhone")
+      .value
+      .trim();
+
+  const address =
+    document
+      .getElementById("customerAddress")
+      .value
+      .trim();
+
+  if(
+    !name ||
+    !phone ||
+    !address
+  ){
 
     showToast(
       lang==="ru"
@@ -1215,83 +1634,165 @@ function sendOrder(){
     return;
   }
 
-  let text=
+  let text =
     lang==="ru"
     ? "Новый заказ%0A%0A"
     : lang==="uz"
     ? "Yangi buyurtma%0A%0A"
     : "Фармоиши нав%0A%0A";
 
-  text+=
-    (lang==="ru" ? "Имя: " :
-     lang==="uz" ? "Ism: " :
-     "Ном: ")
-     +encodeURIComponent(name)+"%0A";
 
-  text+=
-    (lang==="ru" ? "Телефон: " :
-     lang==="uz" ? "Telefon: " :
-     "Телефон: ")
-     +encodeURIComponent(phone)+"%0A";
+  text +=
+    (
+      lang==="ru"
+      ? "Имя: "
+      : lang==="uz"
+      ? "Ism: "
+      : "Ном: "
+    )
+    +
+    encodeURIComponent(name)
+    +
+    "%0A";
 
-  text+=
-    (lang==="ru" ? "Адрес: " :
-     lang==="uz" ? "Manzil: " :
-     "Суроға: ")
-     +encodeURIComponent(address)+"%0A%0A";
 
-  text+=
-    (lang==="ru" ? "Товары:%0A" :
-     lang==="uz" ? "Mahsulotlar:%0A" :
-     "Маҳсулотҳо:%0A");
+  text +=
+    (
+      lang==="ru"
+      ? "Телефон: "
+      : lang==="uz"
+      ? "Telefon: "
+      : "Телефон: "
+    )
+    +
+    encodeURIComponent(phone)
+    +
+    "%0A";
+
+
+  text +=
+    (
+      lang==="ru"
+      ? "Адрес: "
+      : lang==="uz"
+      ? "Manzil: "
+      : "Суроға: "
+    )
+    +
+    encodeURIComponent(address)
+    +
+    "%0A%0A";
+
+
+  text +=
+    (
+      lang==="ru"
+      ? "Товары:%0A"
+      : lang==="uz"
+      ? "Mahsulotlar:%0A"
+      : "Маҳсулотҳо:%0A"
+    );
+
 
   let total=0;
 
   cart.forEach(id=>{
 
-    const p=products.find(x=>x.id===id);
+    const p =
+      products.find(
+        x=>x.id===id
+      );
 
     if(!p)return;
 
-    total+=p.price;
+    total += p.price;
 
-    text+=
+    text +=
       encodeURIComponent(
-        productName(p)+" — "+p.price+" "+t("som")
-      )+"%0A";
+        productName(p)
+        +
+        " — "
+        +
+        p.price
+        +
+        " "
+        +
+        t("som")
+      )
+      +
+      "%0A";
+
   });
 
-  text+="%0A"+encodeURIComponent(
-    (lang==="ru" ? "Итого: " :
-     lang==="uz" ? "Jami: " :
-     "Ҳамагӣ: ")
-    +total+" "+t("som")
-  );
+
+  text +=
+    "%0A"
+    +
+    encodeURIComponent(
+      (
+        lang==="ru"
+        ? "Итого: "
+        : lang==="uz"
+        ? "Jami: "
+        : "Ҳамагӣ: "
+      )
+      +
+      total
+      +
+      " "
+      +
+      t("som")
+    );
+
 
   orders.unshift({
+
     id:Date.now(),
-    name,
-    phone,
-    address,
+
+    name:name,
+
+    phone:phone,
+
+    address:address,
+
     products:[...cart],
-    total
+
+    total:total
+
   });
 
   save();
 
-  const whatsapp="https://wa.me/?text="+text;
+
+  /*
+    WHATSAPP VARZID
+    Рақами соҳиби фармоиш:
+    +992 000 001 606
+  */
+
+  const whatsapp =
+    "https://wa.me/992000001606?text="
+    +
+    text;
+
 
   closeOrder();
 
   cart=[];
 
   save();
+
   updateCart();
+
   renderProducts();
 
-  window.location.href=whatsapp;
+
+  window.location.href =
+    whatsapp;
+
 
   setTimeout(()=>{
+
     showToast(
       lang==="ru"
       ? "✓ WhatsApp открыт для отправки заказа"
@@ -1299,100 +1800,160 @@ function sendOrder(){
       ? "✓ Buyurtmani yuborish uchun WhatsApp ochildi"
       : "✓ WhatsApp барои ирсоли фармоиш кушода шуд"
     );
+
   },500);
+
 }
 
 
 function showOrders(){
 
-  const box=document.getElementById("ordersBox");
+  const box =
+    document.getElementById(
+      "ordersBox"
+    );
 
   if(!orders.length){
 
     box.innerHTML=`
-      <div class="empty" style="display:block">
-        📦 ${lang==="ru"
-        ?"Заказов пока нет"
-        :lang==="uz"
-        ?"Buyurtmalar yo‘q"
-        :"Ҳоло фармоиш нест"}
+
+      <div
+        class="empty"
+        style="display:block"
+      >
+
+        📦
+
+        ${
+          lang==="ru"
+          ? "Заказов пока нет"
+          : lang==="uz"
+          ? "Buyurtmalar yo‘q"
+          : "Ҳоло фармоиш нест"
+        }
+
       </div>
+
     `;
 
     return;
   }
 
-  box.innerHTML=orders.map(o=>`
 
-    <div class="profile-card" style="margin-bottom:10px">
+  box.innerHTML =
+    orders.map(o=>`
 
-      <b>📦 ${lang==="ru"
-        ?"Заказ"
-        :lang==="uz"
-        ?"Buyurtma"
-        :"Фармоиш"} #${o.id}</b>
+      <div
+        class="profile-card"
+        style="margin-bottom:10px"
+      >
 
-      <p style="margin-top:8px">
-        ${o.name}
-      </p>
+        <b>
+          📦
 
-      <p style="color:var(--muted);margin-top:4px">
-        ${o.phone}
-      </p>
+          ${
+            lang==="ru"
+            ? "Заказ"
+            : lang==="uz"
+            ? "Buyurtma"
+            : "Фармоиш"
+          }
 
-      <p style="margin-top:8px">
-        <b>${o.total} ${t("som")}</b>
-      </p>
+          #${o.id}
+        </b>
 
-      <button
-        onclick="deleteOrder(${o.id})"
-        style="
-          margin-top:10px;
-          border:0;
-          padding:9px 12px;
-          border-radius:9px;
-          background:#fee;
-          color:#c33;
-        ">
-        🗑️ ${lang==="ru"
-          ?"Удалить"
-          :lang==="uz"
-          ?"O‘chirish"
-          :"Нест кардан"}
-      </button>
 
-    </div>
+        <p style="margin-top:8px">
+          ${o.name}
+        </p>
 
-  `).join("");
+
+        <p
+          style="
+            color:var(--muted);
+            margin-top:4px
+          "
+        >
+          ${o.phone}
+        </p>
+
+
+        <p style="margin-top:8px">
+
+          <b>
+            ${o.total}
+            ${t("som")}
+          </b>
+
+        </p>
+
+
+        <button
+          onclick="deleteOrder(${o.id})"
+          style="
+            margin-top:10px;
+            border:0;
+            padding:9px 12px;
+            border-radius:9px;
+            background:#fee;
+            color:#c33;
+          "
+        >
+
+          🗑️
+
+          ${
+            lang==="ru"
+            ? "Удалить"
+            : lang==="uz"
+            ? "O‘chirish"
+            : "Нест кардан"
+          }
+
+        </button>
+
+      </div>
+
+    `).join("");
 }
 
 
 function deleteOrder(id){
 
-  orders=orders.filter(x=>x.id!==id);
+  orders =
+    orders.filter(
+      x=>x.id!==id
+    );
 
   save();
+
   showOrders();
 
   showToast(
     lang==="ru"
     ? "Заказ удалён"
-    :lang==="uz"
+    : lang==="uz"
     ? "Buyurtma o‘chirildi"
-    :"Фармоиш нест карда шуд"
+    : "Фармоиш нест карда шуд"
   );
 }
 
 
 function changeLang(){
 
-  const next=
-    lang==="tj" ? "ru" :
-    lang==="ru" ? "uz" : "tj";
+  const next =
+    lang==="tj"
+    ? "ru"
+    : lang==="ru"
+    ? "uz"
+    : "tj";
 
   lang=next;
 
-  localStorage.setItem("varzid_lang",lang);
+  localStorage.setItem(
+    "varzid_lang",
+    lang
+  );
 
   applyLanguage();
 
@@ -1405,29 +1966,56 @@ function changeLang(){
 
 function applyLanguage(){
 
-  document.querySelectorAll("[data-t]")
+  document
+    .querySelectorAll("[data-t]")
     .forEach(el=>{
-      const key=el.getAttribute("data-t");
-      el.textContent=t(key);
+
+      const key =
+        el.getAttribute("data-t");
+
+      el.textContent =
+        t(key);
+
     });
 
-  document.getElementById("langName").textContent=
-    lang==="tj" ? "Тоҷикӣ" :
-    lang==="ru" ? "Русский" :
-    "O‘zbekcha";
 
-  document.getElementById("search").placeholder=
-    t("search");
+  document
+    .getElementById("langName")
+    .textContent =
+
+      lang==="tj"
+      ? "Тоҷикӣ"
+      : lang==="ru"
+      ? "Русский"
+      : "O‘zbekcha";
+
+
+  document
+    .getElementById("search")
+    .placeholder =
+      t("search");
 }
 
 
-if(localStorage.getItem("varzid_theme")==="dark"){
-  document.body.classList.add("dark");
+if(
+  localStorage.getItem(
+    "varzid_theme"
+  )==="dark"
+){
+
+  document.body
+    .classList
+    .add("dark");
+
 }
+
 
 applyLanguage();
+
 renderProducts();
+
 renderFavorites();
+
 updateCart();
 
 </script>
