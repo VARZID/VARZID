@@ -1,1064 +1,1435 @@
-
 <!DOCTYPE html>
 <html lang="tg">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#16833b">
-<title>VARZID — Мағозаи онлайн</title>
+<title>VARZID — Marketplace</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
- --green:#16833b;
- --green2:#0d6b2d;
- --bg:#f5f7f6;
- --card:#fff;
- --text:#172019;
- --muted:#718078;
- --border:#e3e9e5;
- --danger:#d92d20;
- --shadow:0 5px 20px rgba(0,0,0,.06);
+  --green:#16843a;
+  --green2:#0d6b2d;
+  --bg:#f5f7f6;
+  --card:#fff;
+  --text:#18231c;
+  --muted:#718078;
+  --border:#e5ebe7;
+  --shadow:0 5px 20px rgba(0,0,0,.07);
 }
 body.dark{
- --bg:#101512;
- --card:#18201b;
- --text:#f2f6f3;
- --muted:#aab6ae;
- --border:#29352e;
- --shadow:0 5px 20px rgba(0,0,0,.25);
+  --bg:#101512;
+  --card:#18201b;
+  --text:#f2f5f3;
+  --muted:#a7b2ab;
+  --border:#2b362f;
+  --shadow:0 5px 20px rgba(0,0,0,.25);
 }
 body{
- font-family:Arial,sans-serif;
- background:var(--bg);
- color:var(--text);
- padding-bottom:82px;
- transition:.2s;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding-bottom:78px;
 }
-button,input,select{font:inherit}
-button{cursor:pointer;border:0}
-.header{
- position:sticky;top:0;z-index:20;
- background:var(--card);
- border-bottom:1px solid var(--border);
- padding:12px 15px;
+button,input{
+  font:inherit;
+}
+button{cursor:pointer}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
 }
 .top{
- display:flex;align-items:center;justify-content:space-between;
- max-width:900px;margin:auto;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 14px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 .logo{
- display:flex;align-items:center;gap:9px;
- font-size:23px;font-weight:900;color:var(--green);
+  width:43px;
+  height:43px;
 }
-.logoMark{
- width:38px;height:38px;border-radius:50%;
- border:4px solid var(--green);
- display:flex;align-items:center;justify-content:center;
- font-size:14px;
+.brand-name{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:.5px;
 }
-.top button{
- background:var(--bg);color:var(--text);
- width:40px;height:40px;border-radius:50%;
+.icon-btn{
+  width:42px;
+  height:42px;
+  border:0;
+  background:var(--bg);
+  color:var(--text);
+  border-radius:50%;
+  font-size:20px;
+}
+
+/* SEARCH */
+.search-wrap{
+  padding:0 12px 11px;
 }
 .search{
- max-width:900px;margin:12px auto 0;
- position:relative;
-}
-.search input{
- width:100%;height:45px;border:1px solid var(--border);
- background:var(--bg);color:var(--text);
- border-radius:13px;padding:0 15px 0 43px;outline:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:0 12px;
+  height:48px;
 }
 .search span{
- position:absolute;left:15px;top:12px;font-size:18px;
+  font-size:19px;
 }
-.container{max-width:900px;margin:auto;padding:15px}
-.hero{
- background:linear-gradient(135deg,#16833b,#54b86f);
- color:white;border-radius:20px;padding:22px;margin-bottom:18px;
+.search input{
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  font-size:15px;
 }
-.hero h1{font-size:25px;margin-bottom:7px}
-.hero p{opacity:.9;font-size:14px}
-.sectionHead{
- display:flex;align-items:center;justify-content:space-between;
- margin:20px 0 12px;
+.camera{
+  position:relative;
+  width:35px;
+  height:35px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
 }
-.sectionHead h2{font-size:19px}
+.camera input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+
+/* CONTENT */
+main{
+  max-width:900px;
+  margin:auto;
+  padding:15px 12px;
+}
+.section-title{
+  font-size:20px;
+  font-weight:800;
+  margin:8px 2px 12px;
+}
+
+/* CATEGORIES */
 .categories{
- display:grid;grid-template-columns:repeat(4,1fr);gap:9px;
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  padding:3px 1px 12px;
+  scrollbar-width:none;
 }
+.categories::-webkit-scrollbar{display:none}
 .cat{
- background:var(--card);border:1px solid var(--border);
- border-radius:15px;padding:13px 5px;text-align:center;
- color:var(--text);box-shadow:var(--shadow);
+  flex:0 0 auto;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:15px;
+  padding:10px 13px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  box-shadow:var(--shadow);
 }
-.cat .ico{font-size:26px;margin-bottom:6px}
-.cat small{font-size:11px}
+.cat.active{
+  background:var(--green);
+  color:white;
+  border-color:var(--green);
+}
+
+/* PRODUCTS */
 .products{
- display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
 .product{
- background:var(--card);border:1px solid var(--border);
- border-radius:17px;overflow:hidden;box-shadow:var(--shadow);
- position:relative;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  position:relative;
 }
-.productImg{
- width:100%;height:155px;object-fit:cover;
- background:#eef2ef;display:block;
- cursor:pointer;
+.product-img{
+  height:145px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#edf7ef,#f8fbf9);
+  font-size:70px;
+}
+.dark .product-img{
+  background:#202a24;
 }
 .heart{
- position:absolute;right:9px;top:9px;
- width:35px;height:35px;border-radius:50%;
- background:rgba(255,255,255,.94);
- font-size:19px;
+  position:absolute;
+  right:9px;
+  top:9px;
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.92);
+  font-size:19px;
 }
-.heart.active{color:#e32645}
-.productInfo{padding:11px}
-.productName{font-weight:700;margin-bottom:6px}
-.price{font-size:17px;font-weight:800;color:var(--green)}
-.unit{font-size:11px;color:var(--muted)}
+.info{
+  padding:11px;
+}
+.name{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+.price{
+  font-weight:800;
+  color:var(--green);
+  margin-bottom:9px;
+}
 .stock{
- display:inline-block;margin-top:7px;
- padding:4px 7px;border-radius:7px;
- font-size:11px;font-weight:bold;
+  font-size:13px;
+  margin-bottom:9px;
 }
-.stock.ok{background:#e5f7ea;color:#16833b}
-.stock.no{background:#ffe7e5;color:#d92d20}
+.in{color:#16843a}
+.out{color:#d33}
 .add{
- width:100%;margin-top:9px;padding:10px;
- border-radius:10px;background:var(--green);color:white;
- font-weight:bold;
+  width:100%;
+  border:0;
+  border-radius:11px;
+  background:var(--green);
+  color:#fff;
+  padding:10px;
+  font-weight:700;
 }
-.add:disabled{background:#8c9790;cursor:not-allowed}
+.add.added{
+  background:#e8f4eb;
+  color:var(--green);
+}
+
+/* NO RESULT */
 .empty{
- text-align:center;padding:45px 15px;color:var(--muted);
+  text-align:center;
+  padding:35px 10px;
+  color:var(--muted);
+  display:none;
 }
-.bottom{
- position:fixed;left:0;right:0;bottom:0;z-index:30;
- background:var(--card);border-top:1px solid var(--border);
- display:flex;justify-content:center;
-}
-.nav{
- width:100%;max-width:600px;
- display:grid;grid-template-columns:repeat(4,1fr);
-}
-.nav button{
- background:none;color:var(--muted);padding:10px 3px 8px;
- font-size:11px;
-}
-.nav button b{display:block;font-size:21px;margin-bottom:3px}
-.nav button.active{color:var(--green)}
-.badge{
- position:absolute;margin:-5px 0 0 -7px;
- background:#e32645;color:#fff;border-radius:20px;
- font-size:9px;padding:2px 5px;
-}
+
+/* PAGES */
 .page{display:none}
 .page.active{display:block}
-.card{
- background:var(--card);border:1px solid var(--border);
- border-radius:16px;padding:15px;margin-bottom:12px;
+
+/* CART */
+.cart-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:10px;
+  margin-bottom:10px;
 }
-.profileRow{
- display:flex;align-items:center;justify-content:space-between;
- padding:14px 0;border-bottom:1px solid var(--border);
+.cart-emoji{
+  width:55px;
+  height:55px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  font-size:30px;
 }
-.profileRow:last-child{border-bottom:0}
-select{
- background:var(--bg);color:var(--text);
- border:1px solid var(--border);padding:9px;border-radius:9px;
-}
-.cartItem{
- display:flex;gap:10px;padding:12px 0;
- border-bottom:1px solid var(--border);
-}
-.cartItem img{width:70px;height:70px;object-fit:cover;border-radius:10px}
-.cartInfo{flex:1}
-.qty{
- display:flex;align-items:center;gap:8px;margin-top:7px;
-}
-.qty button{
- width:28px;height:28px;border-radius:8px;
- background:var(--bg);color:var(--text);
+.cart-info{flex:1}
+.cart-name{font-weight:700;margin-bottom:4px}
+.cart-price{color:var(--green);font-weight:700}
+.remove{
+  border:0;
+  background:transparent;
+  font-size:20px;
 }
 .total{
- display:flex;justify-content:space-between;
- font-size:19px;font-weight:800;margin:15px 0;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:15px;
+  margin-top:15px;
+  display:flex;
+  justify-content:space-between;
+  font-size:18px;
+  font-weight:800;
 }
-.primary{
- width:100%;padding:13px;border-radius:12px;
- background:var(--green);color:white;font-weight:bold;
+.checkout{
+  width:100%;
+  margin-top:12px;
+  border:0;
+  border-radius:13px;
+  background:var(--green);
+  color:white;
+  padding:13px;
+  font-weight:800;
 }
-.secondary{
- width:100%;padding:12px;border-radius:12px;
- background:var(--bg);color:var(--text);
- margin-top:8px;
+
+/* PROFILE */
+.profile-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
 }
-.order{
- border:1px solid var(--border);border-radius:12px;
- padding:12px;margin-top:10px;
+.profile-row{
+  padding:13px 0;
+  border-bottom:1px solid var(--border);
 }
-.orderStatus{color:var(--green);font-size:13px;font-weight:bold}
-.viewer{
- display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);
- z-index:100;align-items:center;justify-content:center;
+.profile-row:last-child{border-bottom:0}
+.profile-row button{
+  width:100%;
+  padding:12px;
+  border:0;
+  border-radius:11px;
+  background:var(--bg);
+  color:var(--text);
 }
-.viewer.show{display:flex}
-.viewer img{max-width:94%;max-height:82%;object-fit:contain}
-.closeViewer{
- position:absolute;right:18px;top:18px;
- width:42px;height:42px;border-radius:50%;
- background:white;font-size:24px;
+
+/* MAP */
+.map{
+  width:100%;
+  height:270px;
+  border:0;
+  border-radius:18px;
+  margin-top:12px;
 }
-.viewerArrow{
- position:absolute;top:50%;transform:translateY(-50%);
- width:42px;height:42px;border-radius:50%;
- background:white;font-size:22px;
+
+/* BOTTOM NAV */
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:70px;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  z-index:100;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
 }
-.prev{left:12px}.next{right:12px}
+.nav{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:3px;
+  font-size:12px;
+  position:relative;
+}
+.nav-icon{font-size:21px}
+.nav.active{
+  color:var(--green);
+  font-weight:700;
+}
+.badge{
+  position:absolute;
+  top:6px;
+  right:24%;
+  min-width:17px;
+  height:17px;
+  padding:0 4px;
+  border-radius:20px;
+  background:#e53935;
+  color:white;
+  font-size:10px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:88px;
+  transform:translate(-50%,20px);
+  background:#18201b;
+  color:white;
+  padding:12px 17px;
+  border-radius:13px;
+  z-index:300;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  white-space:nowrap;
+  box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* MODAL */
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:200;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+}
+.modal-bg.show{display:flex}
 .modal{
- display:none;position:fixed;inset:0;
- background:rgba(0,0,0,.55);z-index:90;
- align-items:flex-end;
+  width:100%;
+  max-width:520px;
+  background:var(--card);
+  border-radius:22px 22px 0 0;
+  padding:20px;
 }
-.modal.show{display:flex}
-.modalBox{
- width:100%;max-height:90vh;overflow:auto;
- background:var(--card);border-radius:22px 22px 0 0;
- padding:18px;max-width:600px;margin:auto;
+.modal h3{
+  margin-bottom:15px;
 }
-.modalHead{
- display:flex;justify-content:space-between;align-items:center;
- margin-bottom:15px;
+.modal input{
+  width:100%;
+  height:46px;
+  margin-bottom:10px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:0 12px;
+  background:var(--bg);
+  color:var(--text);
+  outline:none;
 }
-.close{background:var(--bg);color:var(--text);
- width:35px;height:35px;border-radius:50%}
-.form input,.form textarea{
- width:100%;padding:12px;margin-bottom:10px;
- border:1px solid var(--border);border-radius:10px;
- background:var(--bg);color:var(--text);outline:none;
+.modal-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
-.form textarea{height:80px;resize:none}
-.langs{
- display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+.modal-buttons button{
+  padding:12px;
+  border-radius:11px;
+  border:0;
 }
-.langBtn{
- padding:11px 4px;border-radius:10px;
- background:var(--bg);color:var(--text);
- border:1px solid var(--border);
+.cancel{
+  background:var(--bg);
+  color:var(--text);
 }
-.langBtn.active{background:var(--green);color:white}
-@media(min-width:650px){
- .products{grid-template-columns:repeat(4,1fr)}
- .productImg{height:180px}
+.send{
+  background:var(--green);
+  color:white;
+}
+
+/* DESKTOP */
+@media(min-width:700px){
+  .products{
+    grid-template-columns:repeat(4,1fr);
+  }
+  .product-img{height:160px}
 }
 </style>
 </head>
 
 <body>
 
-<header class="header">
- <div class="top">
-  <div class="logo">
-   <div class="logoMark">V</div>
-   <span>VARZID</span>
+<header>
+  <div class="top">
+    <div class="brand">
+      <!-- VARZID water-ring style logo built directly into index.html -->
+      <svg class="logo" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1e9d4b"/>
+            <stop offset="1" stop-color="#075c29"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="39" fill="none" stroke="url(#g)" stroke-width="9"/>
+        <path d="M29 31 L50 70 L71 31" fill="none" stroke="#16843a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="brand-name">VARZID</div>
+    </div>
+
+    <button class="icon-btn" onclick="toggleTheme()">🌙</button>
   </div>
-  <button onclick="toggleTheme()" id="themeBtn">☀️</button>
- </div>
- <div class="search">
-  <span>🔎</span>
-  <input id="searchInput" oninput="renderProducts()" placeholder="Ҷустуҷӯ...">
- </div>
+
+  <div class="search-wrap">
+    <div class="search">
+      <span>🔎</span>
+      <input id="search" type="search" placeholder="Ҷустуҷӯ..." oninput="renderProducts()">
+
+      <label class="camera">
+        📷
+        <input type="file" accept="image/*" capture="environment" onchange="photoSelected(this)">
+      </label>
+    </div>
+  </div>
 </header>
 
-<main class="container">
+<main>
 
-<section id="homePage" class="page active">
+  <!-- HOME -->
+  <section id="homePage" class="page active">
 
- <div class="hero">
-  <h1 id="heroTitle">Хуш омадед ба VARZID</h1>
-  <p id="heroText">Маҳсулоти зарурӣ — осон ва қулай.</p>
- </div>
+    <div class="section-title" data-t="categories">Категорияҳо</div>
 
- <div class="sectionHead">
-  <h2 id="catTitle">Категорияҳо</h2>
- </div>
+    <div class="categories">
+      <button class="cat active" data-cat="all" onclick="setCategory('all',this)">🏪 <span data-t="all">Ҳама</span></button>
+      <button class="cat" data-cat="farm" onclick="setCategory('farm',this)">🌾 <span data-t="farm">Кишоварзӣ</span></button>
+      <button class="cat" data-cat="vegetable" onclick="setCategory('vegetable',this)">🥕 <span data-t="vegetable">Сабзавот</span></button>
+      <button class="cat" data-cat="vitamin" onclick="setCategory('vitamin',this)">💊 <span data-t="vitamin">Витаминҳо</span></button>
+      <button class="cat" data-cat="equipment" onclick="setCategory('equipment',this)">🔧 <span data-t="equipment">Таҷҳизот</span></button>
+    </div>
 
- <div class="categories">
-  <button class="cat" onclick="filterCategory('Кишоварзӣ')">
-   <div class="ico">🌾</div><small data-cat="Кишоварзӣ">Кишоварзӣ</small>
-  </button>
-  <button class="cat" onclick="filterCategory('Сабзавот')">
-   <div class="ico">🥕</div><small data-cat="Сабзавот">Сабзавот</small>
-  </button>
-  <button class="cat" onclick="filterCategory('Витаминҳо')">
-   <div class="ico">💊</div><small data-cat="Витаминҳо">Витаминҳо</small>
-  </button>
-  <button class="cat" onclick="filterCategory('Таҷҳизот')">
-   <div class="ico">🛠️</div><small data-cat="Таҷҳизот">Таҷҳизот</small>
-  </button>
- </div>
+    <div class="section-title" data-t="products">Маҳсулот</div>
 
- <div class="sectionHead">
-  <h2 id="productTitle">Маҳсулот</h2>
-  <button onclick="filterCategory('Ҳама')" id="allBtn"
-   style="background:none;color:var(--green);font-weight:bold">
-   Ҳама
-  </button>
- </div>
+    <div id="products" class="products"></div>
 
- <div id="products" class="products"></div>
-</section>
+    <div id="empty" class="empty">
+      🔎 <span data-t="notfound">Маҳсулот ёфт нашуд</span>
+    </div>
 
-<section id="favoritesPage" class="page">
- <div class="sectionHead"><h2 id="favTitle">Дӯстдоштаҳо</h2></div>
- <div id="favorites" class="products"></div>
-</section>
+    <div class="section-title" style="margin-top:25px" data-t="map">Харита</div>
 
-<section id="cartPage" class="page">
- <div class="sectionHead"><h2 id="cartTitle">Сабад</h2></div>
- <div id="cart"></div>
-</section>
+    <iframe
+      class="map"
+      src="https://www.openstreetmap.org/export/embed.html?bbox=69.55%2C37.80%2C69.70%2C37.90&layer=mapnik">
+    </iframe>
 
-<section id="profilePage" class="page">
- <div class="sectionHead"><h2 id="profileTitle">Профил</h2></div>
+  </section>
 
- <div class="card">
-  <div class="profileRow">
-   <span id="languageLabel">Забон</span>
-   <div class="langs">
-    <button class="langBtn" onclick="setLang('tg')">🇹🇯</button>
-    <button class="langBtn" onclick="setLang('ru')">🇷🇺</button>
-    <button class="langBtn" onclick="setLang('uz')">🇺🇿</button>
-   </div>
-  </div>
 
-  <div class="profileRow">
-   <span id="dayNightLabel">Рӯз / Шаб</span>
-   <button onclick="toggleTheme()" class="secondary"
-    style="width:auto;padding:8px 12px;margin:0" id="themeText">
-    Рӯз
-   </button>
-  </div>
+  <!-- FAVORITES -->
+  <section id="favoritesPage" class="page">
+    <div class="section-title" data-t="favorites">Дӯстдоштаҳо</div>
+    <div id="favoritesList" class="products"></div>
+    <div id="favoritesEmpty" class="empty" style="display:none">
+      ❤️ <span data-t="emptyFav">Ҳоло маҳсулоти дӯстдошта нест</span>
+    </div>
+  </section>
 
-  <div class="profileRow">
-   <span id="ordersLabel">Фармоишҳо</span>
-   <button onclick="showOrders()" class="secondary"
-    style="width:auto;padding:8px 12px;margin:0" id="ordersBtn">
-    Кушодан
-   </button>
-  </div>
- </div>
 
- <div id="ordersBox"></div>
-</section>
+  <!-- CART -->
+  <section id="cartPage" class="page">
+    <div class="section-title" data-t="cart">Сабад</div>
+
+    <div id="cartList"></div>
+
+    <div id="cartEmpty" class="empty" style="display:none">
+      🛒 <span data-t="emptyCart">Сабад холӣ аст</span>
+    </div>
+
+    <div id="cartBottom" style="display:none">
+      <div class="total">
+        <span data-t="total">Ҳамагӣ</span>
+        <span id="total">0 сомонӣ</span>
+      </div>
+
+      <button class="checkout" onclick="openOrder()">
+        📲 <span data-t="order">Фармоиш додан</span>
+      </button>
+    </div>
+  </section>
+
+
+  <!-- PROFILE -->
+  <section id="profilePage" class="page">
+    <div class="section-title" data-t="profile">Профил</div>
+
+    <div class="profile-card">
+
+      <div class="profile-row">
+        <button onclick="showOrders()">
+          📦 <span data-t="orders">Фармоишҳои ман</span>
+        </button>
+      </div>
+
+      <div class="profile-row">
+        <button onclick="changeLang()">
+          🌐 <span data-t="language">Забон</span>:
+          <strong id="langName">Тоҷикӣ</strong>
+        </button>
+      </div>
+
+      <div class="profile-row">
+        <button onclick="goHome()">
+          🏠 <span data-t="home">Асосӣ</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div id="ordersBox" style="margin-top:15px"></div>
+  </section>
 
 </main>
 
+
+<!-- BOTTOM NAV -->
 <nav class="bottom">
- <div class="nav">
-  <button class="active" onclick="go('homePage',this)">
-   <b>⌂</b><span id="navHome">Асосӣ</span>
+  <button class="nav active" onclick="showPage('homePage',this)">
+    <span class="nav-icon">🏠</span>
+    <span data-t="home">Асосӣ</span>
   </button>
-  <button onclick="go('favoritesPage',this)">
-   <b>♡</b><span id="navFav">Дӯстдоштаҳо</span>
+
+  <button class="nav" onclick="showPage('favoritesPage',this)">
+    <span class="nav-icon">❤️</span>
+    <span data-t="favorites">Дӯстдошта</span>
   </button>
-  <button onclick="go('cartPage',this)">
-   <b>🛒</b><i class="badge" id="cartBadge">0</i>
-   <span id="navCart">Сабад</span>
+
+  <button class="nav" onclick="showPage('cartPage',this)">
+    <span class="nav-icon">🛒</span>
+    <span data-t="cart">Сабад</span>
+    <span id="cartBadge" class="badge">0</span>
   </button>
-  <button onclick="go('profilePage',this)">
-   <b>♙</b><span id="navProfile">Профил</span>
+
+  <button class="nav" onclick="showPage('profilePage',this)">
+    <span class="nav-icon">👤</span>
+    <span data-t="profile">Профил</span>
   </button>
- </div>
 </nav>
 
-<!-- IMAGE VIEWER -->
-<div class="viewer" id="viewer">
- <button class="closeViewer" onclick="closeViewer()">×</button>
- <button class="viewerArrow prev" onclick="changeImage(-1)">‹</button>
- <img id="viewerImg">
- <button class="viewerArrow next" onclick="changeImage(1)">›</button>
-</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
 
 <!-- ORDER MODAL -->
-<div class="modal" id="orderModal">
- <div class="modalBox">
-  <div class="modalHead">
-   <h2 id="orderTitle">Фармоиш додан</h2>
-   <button class="close" onclick="closeOrder()">×</button>
+<div id="orderModal" class="modal-bg" onclick="closeModalOutside(event)">
+  <div class="modal">
+
+    <h3 data-t="orderTitle">Фармоиш</h3>
+
+    <input id="customerName" type="text" placeholder="Ном">
+    <input id="customerPhone" type="tel" placeholder="Телефон">
+    <input id="customerAddress" type="text" placeholder="Суроға">
+
+    <div class="modal-buttons">
+      <button class="cancel" onclick="closeOrder()" data-t="cancel">Бекор кардан</button>
+      <button class="send" onclick="sendOrder()" data-t="send">Ирсол кардан</button>
+    </div>
+
   </div>
-
-  <div class="form">
-   <input id="name" placeholder="Ном">
-   <input id="phone" placeholder="Телефон">
-   <input id="address" placeholder="Суроға">
-   <textarea id="comment" placeholder="Шарҳ"></textarea>
-  </div>
-
-  <button class="primary" onclick="submitOrder('site')" id="siteOrderBtn">
-   📩 Фармоиш ба VARZID
-  </button>
-
-  <button class="secondary" onclick="submitOrder('whatsapp')" id="whatsappBtn">
-   WhatsApp
-  </button>
- </div>
 </div>
 
+
 <script>
-const products=[
- {
-  id:1,
-  name:"Гандум",
-  category:"Кишоварзӣ",
-  price:55,
-  unit:"халта",
-  stock:10,
-  images:[
-   "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"
-  ]
- },
- {
-  id:2,
-  name:"Орд",
-  category:"Кишоварзӣ",
-  price:180,
-  unit:"халта",
-  stock:8,
-  images:[
-   "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80"
-  ]
- },
- {
-  id:3,
-  name:"Каду",
-  category:"Сабзавот",
-  price:8,
-  unit:"кг",
-  stock:25,
-  images:[
-   "https://images.unsplash.com/photo-1570586437263-ab629fccc818?auto=format&fit=crop&w=800&q=80"
-  ]
- },
- {
-  id:4,
-  name:"Сабзӣ",
-  category:"Сабзавот",
-  price:7,
-  unit:"кг",
-  stock:0,
-  images:[
-   "https://images.unsplash.com/photo-1445282768818-728615cc910a?auto=format&fit=crop&w=800&q=80"
-  ]
- },
- {
-  id:5,
-  name:"Витаминҳо",
-  category:"Витаминҳо",
-  price:45,
-  unit:"дона",
-  stock:12,
-  images:[
-   "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80"
-  ]
- },
- {
-  id:6,
-  name:"Асбоби кишоварзӣ",
-  category:"Таҷҳизот",
-  price:120,
-  unit:"дона",
-  stock:5,
-  images:[
-   "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=800&q=80"
-  ]
- }
+
+const products = [
+  {
+    id:1,
+    cat:"farm",
+    emoji:"🌾",
+    price:12,
+    tj:"Гандум",
+    ru:"Пшеница",
+    uz:"Bug‘doy",
+    stock:10
+  },
+  {
+    id:2,
+    cat:"farm",
+    emoji:"🥣",
+    price:15,
+    tj:"Орд",
+    ru:"Мука",
+    uz:"Un",
+    stock:10
+  },
+  {
+    id:3,
+    cat:"farm",
+    emoji:"🌽",
+    price:10,
+    tj:"Чуворимакка",
+    ru:"Кукуруза",
+    uz:"Makkajo‘xori",
+    stock:10
+  },
+  {
+    id:4,
+    cat:"vegetable",
+    emoji:"🎃",
+    price:8,
+    tj:"Каду",
+    ru:"Тыква",
+    uz:"Qovoq",
+    stock:10
+  },
+  {
+    id:5,
+    cat:"vegetable",
+    emoji:"🥬",
+    price:0,
+    tj:"Сабзавот",
+    ru:"Овощи",
+    uz:"Sabzavotlar",
+    stock:10,
+    noPrice:true
+  },
+  {
+    id:6,
+    cat:"vitamin",
+    emoji:"💊",
+    price:0,
+    tj:"Витаминҳо",
+    ru:"Витамины",
+    uz:"Vitaminlar",
+    stock:0,
+    noPrice:true
+  },
+  {
+    id:7,
+    cat:"farm",
+    emoji:"🌾",
+    price:20,
+    tj:"Корм",
+    ru:"Корм",
+    uz:"Yem",
+    stock:10
+  },
+  {
+    id:8,
+    cat:"equipment",
+    emoji:"🔧",
+    price:50,
+    tj:"Таҷҳизот",
+    ru:"Оборудование",
+    uz:"Uskunalar",
+    stock:10
+  }
 ];
 
-const translations={
- tg:{
-  search:"Ҷустуҷӯ...",
-  welcome:"Хуш омадед ба VARZID",
-  welcomeText:"Маҳсулоти зарурӣ — осон ва қулай.",
-  categories:"Категорияҳо",
-  products:"Маҳсулот",
-  all:"Ҳама",
-  home:"Асосӣ",
-  fav:"Дӯстдоштаҳо",
-  cart:"Сабад",
-  profile:"Профил",
-  available:"Дастрас",
-  out:"Нест",
-  add:"Ба сабад",
-  added:"Илова шуд",
-  price:"Нарх",
-  unit:"воҳид",
-  favoritesEmpty:"Ҳоло маҳсулоти дӯстдошта нест.",
-  cartEmpty:"Сабад холӣ аст.",
-  total:"Ҳамагӣ",
-  order:"Фармоиш додан",
-  language:"Забон",
-  dayNight:"Рӯз / Шаб",
-  day:"Рӯз",
-  night:"Шаб",
-  orders:"Фармоишҳо",
-  open:"Кушодан",
-  noOrders:"Ҳоло фармоиш нест.",
-  orderTitle:"Фармоиш додан",
-  name:"Ном",
-  phone:"Телефон",
-  address:"Суроға",
-  comment:"Шарҳ",
-  siteOrder:"📩 Фармоиш ба VARZID",
-  whatsapp:"WhatsApp",
-  orderAccepted:"Фармоиш қабул шуд",
-  delete:"Нест кардан",
-  kg:"кг",
-  bag:"халта",
-  piece:"дона",
-  agriculture:"Кишоварзӣ",
-  vegetables:"Сабзавот",
-  vitamins:"Витаминҳо",
-  equipment:"Таҷҳизот"
- },
- ru:{
-  search:"Поиск...",
-  welcome:"Добро пожаловать в VARZID",
-  welcomeText:"Нужные товары — просто и удобно.",
-  categories:"Категории",
-  products:"Товары",
-  all:"Все",
-  home:"Главная",
-  fav:"Избранное",
-  cart:"Корзина",
-  profile:"Профиль",
-  available:"В наличии",
-  out:"Нет",
-  add:"В корзину",
-  added:"Добавлено",
-  price:"Цена",
-  unit:"ед.",
-  favoritesEmpty:"Избранных товаров пока нет.",
-  cartEmpty:"Корзина пуста.",
-  total:"Итого",
-  order:"Оформить заказ",
-  language:"Язык",
-  dayNight:"День / Ночь",
-  day:"День",
-  night:"Ночь",
-  orders:"Заказы",
-  open:"Открыть",
-  noOrders:"Заказов пока нет.",
-  orderTitle:"Оформить заказ",
-  name:"Имя",
-  phone:"Телефон",
-  address:"Адрес",
-  comment:"Комментарий",
-  siteOrder:"📩 Заказ в VARZID",
-  whatsapp:"WhatsApp",
-  orderAccepted:"Заказ принят",
-  delete:"Удалить",
-  kg:"кг",
-  bag:"мешок",
-  piece:"шт.",
-  agriculture:"Сельхоз",
-  vegetables:"Овощи",
-  vitamins:"Витамины",
-  equipment:"Оборудование"
- },
- uz:{
-  search:"Qidirish...",
-  welcome:"VARZID ga xush kelibsiz",
-  welcomeText:"Kerakli mahsulotlar — oson va qulay.",
-  categories:"Kategoriyalar",
-  products:"Mahsulotlar",
-  all:"Barchasi",
-  home:"Asosiy",
-  fav:"Sevimlilar",
-  cart:"Savat",
-  profile:"Profil",
-  available:"Mavjud",
-  out:"Yo‘q",
-  add:"Savatga",
-  added:"Qo‘shildi",
-  price:"Narx",
-  unit:"dona",
-  favoritesEmpty:"Hozircha sevimli mahsulotlar yo‘q.",
-  cartEmpty:"Savat bo‘sh.",
-  total:"Jami",
-  order:"Buyurtma berish",
-  language:"Til",
-  dayNight:"Kun / Tun",
-  day:"Kun",
-  night:"Tun",
-  orders:"Buyurtmalar",
-  open:"Ochish",
-  noOrders:"Hozircha buyurtma yo‘q.",
-  orderTitle:"Buyurtma berish",
-  name:"Ism",
-  phone:"Telefon",
-  address:"Manzil",
-  comment:"Izoh",
-  siteOrder:"📩 VARZID ga buyurtma",
-  whatsapp:"WhatsApp",
-  orderAccepted:"Buyurtma qabul qilindi",
-  delete:"O‘chirish",
-  kg:"kg",
-  bag:"qop",
-  piece:"dona",
-  agriculture:"Qishloq xo‘jaligi",
-  vegetables:"Sabzavotlar",
-  vitamins:"Vitaminlar",
-  equipment:"Jihozlar"
- }
+const translations = {
+  tj:{
+    categories:"Категорияҳо",
+    all:"Ҳама",
+    farm:"Кишоварзӣ",
+    vegetable:"Сабзавот",
+    vitamin:"Витаминҳо",
+    equipment:"Таҷҳизот",
+    products:"Маҳсулот",
+    notfound:"Маҳсулот ёфт нашуд",
+    map:"Харита",
+    favorites:"Дӯстдошта",
+    emptyFav:"Ҳоло маҳсулоти дӯстдошта нест",
+    cart:"Сабад",
+    emptyCart:"Сабад холӣ аст",
+    total:"Ҳамагӣ",
+    order:"Фармоиш додан",
+    profile:"Профил",
+    orders:"Фармоишҳои ман",
+    language:"Забон",
+    home:"Асосӣ",
+    orderTitle:"Фармоиш",
+    cancel:"Бекор кардан",
+    send:"Ирсол кардан",
+    add:"Ба сабад",
+    added:"✓ Дар сабад",
+    inStock:"Дар мавҷудият",
+    outStock:"Тамом шудааст",
+    som:"сомонӣ",
+    search:"Ҷустуҷӯ..."
+  },
+
+  ru:{
+    categories:"Категории",
+    all:"Все",
+    farm:"Сельхоз",
+    vegetable:"Овощи",
+    vitamin:"Витамины",
+    equipment:"Оборудование",
+    products:"Товары",
+    notfound:"Товар не найден",
+    map:"Карта",
+    favorites:"Избранное",
+    emptyFav:"Избранных товаров пока нет",
+    cart:"Корзина",
+    emptyCart:"Корзина пуста",
+    total:"Итого",
+    order:"Оформить заказ",
+    profile:"Профиль",
+    orders:"Мои заказы",
+    language:"Язык",
+    home:"Главная",
+    orderTitle:"Заказ",
+    cancel:"Отмена",
+    send:"Отправить",
+    add:"В корзину",
+    added:"✓ В корзине",
+    inStock:"В наличии",
+    outStock:"Нет в наличии",
+    som:"сомони",
+    search:"Поиск..."
+  },
+
+  uz:{
+    categories:"Kategoriyalar",
+    all:"Hammasi",
+    farm:"Qishloq xo‘jaligi",
+    vegetable:"Sabzavotlar",
+    vitamin:"Vitaminlar",
+    equipment:"Uskunalar",
+    products:"Mahsulotlar",
+    notfound:"Mahsulot topilmadi",
+    map:"Xarita",
+    favorites:"Sevimlilar",
+    emptyFav:"Sevimli mahsulotlar yo‘q",
+    cart:"Savat",
+    emptyCart:"Savat bo‘sh",
+    total:"Jami",
+    order:"Buyurtma berish",
+    profile:"Profil",
+    orders:"Buyurtmalarim",
+    language:"Til",
+    home:"Asosiy",
+    orderTitle:"Buyurtma",
+    cancel:"Bekor qilish",
+    send:"Yuborish",
+    add:"Savatga",
+    added:"✓ Savatda",
+    inStock:"Mavjud",
+    outStock:"Tugagan",
+    som:"somoni",
+    search:"Qidirish..."
+  }
 };
 
-let lang=localStorage.getItem("varzid_lang")||"tg";
-let favorites=JSON.parse(localStorage.getItem("varzid_favorites")||"[]");
-let cart=JSON.parse(localStorage.getItem("varzid_cart")||"[]");
-let orders=JSON.parse(localStorage.getItem("varzid_orders")||"[]");
-let currentCategory="Ҳама";
-let viewerProduct=null;
-let viewerIndex=0;
+let lang = localStorage.getItem("varzid_lang") || "tj";
+let category = "all";
+let cart = JSON.parse(localStorage.getItem("varzid_cart") || "[]");
+let favorites = JSON.parse(localStorage.getItem("varzid_favorites") || "[]");
+let orders = JSON.parse(localStorage.getItem("varzid_orders") || "[]");
+
 
 function t(key){
- return translations[lang][key]||key;
+  return translations[lang][key] || key;
 }
 
-function save(){
- localStorage.setItem("varzid_favorites",JSON.stringify(favorites));
- localStorage.setItem("varzid_cart",JSON.stringify(cart));
- localStorage.setItem("varzid_orders",JSON.stringify(orders));
-}
-
-function setLang(l){
- lang=l;
- localStorage.setItem("varzid_lang",l);
- applyLanguage();
- renderProducts();
- renderFavorites();
- renderCart();
- showOrders();
-}
-
-function applyLanguage(){
- document.documentElement.lang=lang;
-
- document.getElementById("searchInput").placeholder=t("search");
- document.getElementById("heroTitle").textContent=t("welcome");
- document.getElementById("heroText").textContent=t("welcomeText");
- document.getElementById("catTitle").textContent=t("categories");
- document.getElementById("productTitle").textContent=t("products");
- document.getElementById("allBtn").textContent=t("all");
-
- document.getElementById("navHome").textContent=t("home");
- document.getElementById("navFav").textContent=t("fav");
- document.getElementById("navCart").textContent=t("cart");
- document.getElementById("navProfile").textContent=t("profile");
-
- document.getElementById("favTitle").textContent=t("fav");
- document.getElementById("cartTitle").textContent=t("cart");
- document.getElementById("profileTitle").textContent=t("profile");
-
- document.getElementById("languageLabel").textContent=t("language");
- document.getElementById("dayNightLabel").textContent=t("dayNight");
- document.getElementById("ordersLabel").textContent=t("orders");
- document.getElementById("ordersBtn").textContent=t("open");
-
- document.getElementById("orderTitle").textContent=t("orderTitle");
- document.getElementById("name").placeholder=t("name");
- document.getElementById("phone").placeholder=t("phone");
- document.getElementById("address").placeholder=t("address");
- document.getElementById("comment").placeholder=t("comment");
- document.getElementById("siteOrderBtn").textContent=t("siteOrder");
- document.getElementById("whatsappBtn").textContent=t("whatsapp");
-
- document.querySelectorAll("[data-cat]").forEach(el=>{
-   const c=el.dataset.cat;
-   el.textContent=
-    c==="Кишоварзӣ"?t("agriculture"):
-    c==="Сабзавот"?t("vegetables"):
-    c==="Витаминҳо"?t("vitamins"):
-    t("equipment");
- });
-
- document.querySelectorAll(".langBtn").forEach(b=>b.classList.remove("active"));
- document.querySelectorAll(".langBtn")[lang==="tg"?0:lang==="ru"?1:2].classList.add("active");
-
- updateThemeText();
-}
 
 function productName(p){
- const names={
-  "Гандум":{ru:"Пшеница",uz:"Bug‘doy"},
-  "Орд":{ru:"Мука",uz:"Un"},
-  "Каду":{ru:"Тыква",uz:"Qovoq"},
-  "Сабзӣ":{ru:"Морковь",uz:"Sabzi"},
-  "Витаминҳо":{ru:"Витамины",uz:"Vitaminlar"},
-  "Асбоби кишоварзӣ":{ru:"Сельхозинструмент",uz:"Qishloq xo‘jaligi asbobi"}
- };
- return lang==="tg"?p.name:(names[p.name]?.[lang]||p.name);
+  return p[lang] || p.tj;
 }
 
-function productCategory(p){
- if(lang==="tg")return p.category;
- if(p.category==="Кишоварзӣ")return t("agriculture");
- if(p.category==="Сабзавот")return t("vegetables");
- if(p.category==="Витаминҳо")return t("vitamins");
- return t("equipment");
+
+function save(){
+  localStorage.setItem("varzid_cart",JSON.stringify(cart));
+  localStorage.setItem("varzid_favorites",JSON.stringify(favorites));
+  localStorage.setItem("varzid_orders",JSON.stringify(orders));
 }
 
-function unitText(unit){
- if(unit==="кг")return t("kg");
- if(unit==="халта")return t("bag");
- return t("piece");
-}
 
 function renderProducts(){
- const box=document.getElementById("products");
- const q=document.getElementById("searchInput").value.toLowerCase();
 
- let list=products.filter(p=>{
-  const categoryOK=currentCategory==="Ҳама"||p.category===currentCategory;
-  const searchOK=
-   productName(p).toLowerCase().includes(q)||
-   p.name.toLowerCase().includes(q);
-  return categoryOK&&searchOK;
- });
+  const box=document.getElementById("products");
+  const empty=document.getElementById("empty");
 
- if(!list.length){
-  box.innerHTML=`<div class="empty" style="grid-column:1/-1">😕</div>`;
-  return;
- }
+  const q=document.getElementById("search").value.toLowerCase().trim();
 
- box.innerHTML=list.map(p=>productCard(p)).join("");
-}
+  const filtered=products.filter(p=>{
 
-function productCard(p){
- const fav=favorites.includes(p.id);
- const available=p.stock>0;
+    const matchesCategory =
+      category==="all" || p.cat===category;
 
- return `
- <article class="product">
-   <img class="productImg"
-    src="${p.images[0]}"
-    onclick="openViewer(${p.id})"
-    onerror="this.src='https://via.placeholder.com/600x400?text=VARZID'">
+    const text =
+      (p.tj+" "+p.ru+" "+p.uz).toLowerCase();
 
-   <button class="heart ${fav?"active":""}"
-    onclick="toggleFavorite(${p.id})">
-    ${fav?"♥":"♡"}
-   </button>
+    const matchesSearch =
+      !q || text.includes(q);
 
-   <div class="productInfo">
-    <div class="productName">${productName(p)}</div>
-    <div class="unit">${productCategory(p)} · ${unitText(p.unit)}</div>
-    <div class="price">${p.price} сомонӣ</div>
-
-    <span class="stock ${available?"ok":"no"}">
-     ${available?"✓ "+t("available"):"− "+t("out")}
-    </span>
-
-    <button class="add"
-     ${available?"":"disabled"}
-     onclick="addToCart(${p.id})">
-     ${available?t("add"):t("out")}
-    </button>
-   </div>
- </article>`;
-}
-
-function toggleFavorite(id){
- if(favorites.includes(id))
-  favorites=favorites.filter(x=>x!==id);
- else favorites.push(id);
-
- save();
- renderProducts();
- renderFavorites();
-}
-
-function renderFavorites(){
- const box=document.getElementById("favorites");
- const list=products.filter(p=>favorites.includes(p.id));
-
- if(!list.length){
-  box.innerHTML=`<div class="empty" style="grid-column:1/-1">♡<br>${t("favoritesEmpty")}</div>`;
-  return;
- }
- box.innerHTML=list.map(p=>productCard(p)).join("");
-}
-
-function addToCart(id){
- const p=products.find(x=>x.id===id);
- if(!p||p.stock<=0)return;
-
- const item=cart.find(x=>x.id===id);
- if(item){
-  if(item.qty<p.stock)item.qty++;
- }else{
-  cart.push({id,qty:1});
- }
-
- save();
- renderCart();
- updateBadge();
-}
-
-function changeQty(id,d){
- const item=cart.find(x=>x.id===id);
- const p=products.find(x=>x.id===id);
- if(!item||!p)return;
-
- item.qty+=d;
-
- if(item.qty<=0)
-  cart=cart.filter(x=>x.id!==id);
-
- if(item.qty>p.stock)
-  item.qty=p.stock;
-
- save();
- renderCart();
- updateBadge();
-}
-
-function renderCart(){
- const box=document.getElementById("cart");
-
- if(!cart.length){
-  box.innerHTML=`<div class="empty">🛒<br>${t("cartEmpty")}</div>`;
-  return;
- }
-
- let total=0;
-
- let html=cart.map(item=>{
-  const p=products.find(x=>x.id===item.id);
-  if(!p)return "";
-
-  total+=p.price*item.qty;
-
-  return `
-  <div class="card cartItem">
-   <img src="${p.images[0]}">
-   <div class="cartInfo">
-    <b>${productName(p)}</b>
-    <div class="unit">${p.price} сомонӣ / ${unitText(p.unit)}</div>
-    <div class="qty">
-     <button onclick="changeQty(${p.id},-1)">−</button>
-     <b>${item.qty}</b>
-     <button onclick="changeQty(${p.id},1)"
-      ${item.qty>=p.stock?"disabled":""}>+</button>
-    </div>
-   </div>
-   <b>${p.price*item.qty} с.</b>
-  </div>`;
- }).join("");
-
- html+=`
- <div class="card">
-  <div class="total">
-   <span>${t("total")}</span>
-   <span>${total} сомонӣ</span>
-  </div>
-  <button class="primary" onclick="openOrder()">
-   ${t("order")}
-  </button>
- </div>`;
-
- box.innerHTML=html;
-}
-
-function updateBadge(){
- document.getElementById("cartBadge").textContent=
-  cart.reduce((a,b)=>a+b.qty,0);
-}
-
-function filterCategory(c){
- currentCategory=c;
- go("homePage",document.querySelector(".nav button"));
- renderProducts();
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function go(page,btn){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.getElementById(page).classList.add("active");
-
- document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
- if(btn)btn.classList.add("active");
-
- if(page==="favoritesPage")renderFavorites();
- if(page==="cartPage")renderCart();
- if(page==="profilePage")showOrders();
-
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function openViewer(id){
- viewerProduct=products.find(x=>x.id===id);
- viewerIndex=0;
-
- if(!viewerProduct)return;
-
- document.getElementById("viewerImg").src=
-  viewerProduct.images[viewerIndex];
-
- document.getElementById("viewer").classList.add("show");
-}
-
-function changeImage(d){
- if(!viewerProduct)return;
-
- viewerIndex+=d;
-
- if(viewerIndex<0)
-  viewerIndex=viewerProduct.images.length-1;
-
- if(viewerIndex>=viewerProduct.images.length)
-  viewerIndex=0;
-
- document.getElementById("viewerImg").src=
-  viewerProduct.images[viewerIndex];
-}
-
-function closeViewer(){
- document.getElementById("viewer").classList.remove("show");
-}
-
-function openOrder(){
- if(!cart.length)return;
- document.getElementById("orderModal").classList.add("show");
-}
-
-function closeOrder(){
- document.getElementById("orderModal").classList.remove("show");
-}
-
-function submitOrder(method){
- const name=document.getElementById("name").value.trim();
- const phone=document.getElementById("phone").value.trim();
- const address=document.getElementById("address").value.trim();
- const comment=document.getElementById("comment").value.trim();
-
- if(!name||!phone||!address){
-  alert(lang==="tg"?
-   "Лутфан Ном, Телефон ва Суроғаро пур кунед.":
-   lang==="ru"?
-   "Пожалуйста, заполните имя, телефон и адрес.":
-   "Iltimos, ism, telefon va manzilni kiriting.");
-  return;
- }
-
- const items=cart.map(item=>{
-  const p=products.find(x=>x.id===item.id);
-  return {
-   name:p.name,
-   qty:item.qty,
-   price:p.price
-  };
- });
-
- const order={
-  id:Date.now(),
-  date:new Date().toLocaleString(),
-  name,phone,address,comment,method,items
- };
-
- orders.unshift(order);
- save();
-
- if(method==="whatsapp"){
-  let text=
-   `VARZID - ${t("order")}\n`+
-   `${t("name")}: ${name}\n`+
-   `${t("phone")}: ${phone}\n`+
-   `${t("address")}: ${address}\n\n`;
-
-  cart.forEach(item=>{
-   const p=products.find(x=>x.id===item.id);
-   text+=`${p.name} × ${item.qty} = ${p.price*item.qty} сомонӣ\n`;
+    return matchesCategory && matchesSearch;
   });
 
-  window.open(
-   "https://wa.me/992000001606?text="+encodeURIComponent(text),
-   "_blank"
-  );
- }else{
-  alert(t("orderAccepted"));
- }
+  box.innerHTML="";
 
- cart=[];
- save();
- closeOrder();
- renderCart();
- updateBadge();
- showOrders();
+  if(!filtered.length){
+    empty.style.display="block";
+    return;
+  }
 
- document.getElementById("name").value="";
- document.getElementById("phone").value="";
- document.getElementById("address").value="";
- document.getElementById("comment").value="";
+  empty.style.display="none";
+
+  filtered.forEach(p=>{
+
+    const fav=favorites.includes(p.id);
+    const inCart=cart.includes(p.id);
+
+    const card=document.createElement("div");
+    card.className="product";
+
+    card.innerHTML=`
+      <div class="product-img">${p.emoji}</div>
+
+      <button class="heart"
+        onclick="toggleFavorite(${p.id})">
+        ${fav ? "❤️" : "🤍"}
+      </button>
+
+      <div class="info">
+
+        <div class="name">${productName(p)}</div>
+
+        ${
+          p.noPrice
+          ? ""
+          : `<div class="price">${p.price} ${t("som")}</div>`
+        }
+
+        <div class="stock ${p.stock>0 ? "in":"out"}">
+          ${p.stock>0 ? "✓ "+t("inStock") : "✕ "+t("outStock")}
+        </div>
+
+        ${
+          p.stock>0 && !p.noPrice
+          ? `
+            <button
+              class="add ${inCart ? "added":""}"
+              onclick="toggleCart(${p.id})">
+              ${inCart ? t("added") : t("add")}
+            </button>
+          `
+          : ""
+        }
+
+      </div>
+    `;
+
+    box.appendChild(card);
+  });
 }
 
-function showOrders(){
- const box=document.getElementById("ordersBox");
 
- if(!orders.length){
-  box.innerHTML=`<div class="card empty">${t("noOrders")}</div>`;
-  return;
- }
+function toggleCart(id){
 
- box.innerHTML=orders.map(o=>`
-  <div class="card order">
-   <b>#${String(o.id).slice(-5)}</b>
-   <div style="color:var(--muted);font-size:12px;margin:5px 0">
-    ${o.date}
-   </div>
-   <div>${o.name} · ${o.phone}</div>
-   <div>${o.address}</div>
-   <div class="orderStatus">✓ ${t("orderAccepted")}</div>
-   <button class="secondary"
-    onclick="deleteOrder(${o.id})">${t("delete")}</button>
-  </div>
- `).join("");
+  const index=cart.indexOf(id);
+
+  if(index===-1){
+
+    cart.push(id);
+
+    save();
+    updateCart();
+
+    showToast("✓ "+t("added"));
+
+  }else{
+
+    cart.splice(index,1);
+
+    save();
+    updateCart();
+
+    showToast(lang==="ru"
+      ? "Товар удалён из корзины"
+      : lang==="uz"
+      ? "Mahsulot savatdan olib tashlandi"
+      : "Маҳсулот аз сабад хориҷ шуд"
+    );
+  }
+
+  renderProducts();
 }
 
-function deleteOrder(id){
- orders=orders.filter(o=>o.id!==id);
- save();
- showOrders();
+
+function updateCart(){
+
+  const badge=document.getElementById("cartBadge");
+
+  badge.textContent=cart.length;
+  badge.style.display=cart.length ? "flex":"none";
+
+  renderCart();
 }
+
+
+function renderCart(){
+
+  const box=document.getElementById("cartList");
+  const empty=document.getElementById("cartEmpty");
+  const bottom=document.getElementById("cartBottom");
+
+  box.innerHTML="";
+
+  if(!cart.length){
+
+    empty.style.display="block";
+    bottom.style.display="none";
+    return;
+  }
+
+  empty.style.display="none";
+  bottom.style.display="block";
+
+  let total=0;
+
+  cart.forEach(id=>{
+
+    const p=products.find(x=>x.id===id);
+
+    if(!p)return;
+
+    total+=p.price;
+
+    const item=document.createElement("div");
+    item.className="cart-item";
+
+    item.innerHTML=`
+      <div class="cart-emoji">${p.emoji}</div>
+
+      <div class="cart-info">
+        <div class="cart-name">${productName(p)}</div>
+        <div class="cart-price">${p.price} ${t("som")}</div>
+      </div>
+
+      <button class="remove"
+        onclick="toggleCart(${p.id})">🗑️</button>
+    `;
+
+    box.appendChild(item);
+  });
+
+  document.getElementById("total").textContent=
+    total+" "+t("som");
+}
+
+
+function toggleFavorite(id){
+
+  const index=favorites.indexOf(id);
+
+  if(index===-1){
+    favorites.push(id);
+    showToast("❤️");
+  }else{
+    favorites.splice(index,1);
+    showToast("♡");
+  }
+
+  save();
+  renderProducts();
+  renderFavorites();
+}
+
+
+function renderFavorites(){
+
+  const box=document.getElementById("favoritesList");
+  const empty=document.getElementById("favoritesEmpty");
+
+  box.innerHTML="";
+
+  if(!favorites.length){
+    empty.style.display="block";
+    return;
+  }
+
+  empty.style.display="none";
+
+  favorites.forEach(id=>{
+
+    const p=products.find(x=>x.id===id);
+    if(!p)return;
+
+    const inCart=cart.includes(p.id);
+
+    const card=document.createElement("div");
+    card.className="product";
+
+    card.innerHTML=`
+      <div class="product-img">${p.emoji}</div>
+
+      <button class="heart"
+        onclick="toggleFavorite(${p.id})">❤️</button>
+
+      <div class="info">
+
+        <div class="name">${productName(p)}</div>
+
+        ${
+          p.noPrice
+          ? ""
+          : `<div class="price">${p.price} ${t("som")}</div>`
+        }
+
+        <div class="stock ${p.stock>0?"in":"out"}">
+          ${p.stock>0 ? "✓ "+t("inStock") : "✕ "+t("outStock")}
+        </div>
+
+        ${
+          p.stock>0 && !p.noPrice
+          ? `
+          <button
+            class="add ${inCart?"added":""}"
+            onclick="toggleCart(${p.id})">
+            ${inCart ? t("added") : t("add")}
+          </button>
+          `
+          : ""
+        }
+
+      </div>
+    `;
+
+    box.appendChild(card);
+  });
+}
+
+
+function setCategory(cat,btn){
+
+  category=cat;
+
+  document.querySelectorAll(".cat")
+    .forEach(x=>x.classList.remove("active"));
+
+  btn.classList.add("active");
+
+  renderProducts();
+}
+
+
+function showPage(id,btn){
+
+  document.querySelectorAll(".page")
+    .forEach(x=>x.classList.remove("active"));
+
+  document.getElementById(id)
+    .classList.add("active");
+
+  document.querySelectorAll(".nav")
+    .forEach(x=>x.classList.remove("active"));
+
+  btn.classList.add("active");
+
+  if(id==="favoritesPage")renderFavorites();
+  if(id==="cartPage")renderCart();
+}
+
+
+function goHome(){
+
+  const nav=document.querySelector(".nav");
+
+  showPage("homePage",nav);
+}
+
+
+function showToast(text){
+
+  const toast=document.getElementById("toast");
+
+  toast.textContent=text;
+  toast.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer=setTimeout(()=>{
+    toast.classList.remove("show");
+  },1800);
+}
+
 
 function toggleTheme(){
- document.body.classList.toggle("dark");
- const dark=document.body.classList.contains("dark");
- localStorage.setItem("varzid_theme",dark?"dark":"light");
- updateThemeText();
+
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "varzid_theme",
+    document.body.classList.contains("dark") ? "dark":"light"
+  );
 }
 
-function updateThemeText(){
- const dark=document.body.classList.contains("dark");
- document.getElementById("themeBtn").textContent=dark?"🌙":"☀️";
- document.getElementById("themeText").textContent=dark?t("night"):t("day");
+
+function photoSelected(input){
+
+  if(!input.files.length)return;
+
+  showToast(
+    lang==="ru"
+    ? "📷 Фото выбрано"
+    : lang==="uz"
+    ? "📷 Rasm tanlandi"
+    : "📷 Сурат интихоб шуд"
+  );
 }
 
-function loadTheme(){
- if(localStorage.getItem("varzid_theme")==="dark")
+
+function openOrder(){
+
+  if(!cart.length){
+    showToast(t("emptyCart"));
+    return;
+  }
+
+  document.getElementById("orderModal")
+    .classList.add("show");
+}
+
+
+function closeOrder(){
+
+  document.getElementById("orderModal")
+    .classList.remove("show");
+}
+
+
+function closeModalOutside(e){
+
+  if(e.target===document.getElementById("orderModal")){
+    closeOrder();
+  }
+}
+
+
+function sendOrder(){
+
+  const name=document.getElementById("customerName").value.trim();
+  const phone=document.getElementById("customerPhone").value.trim();
+  const address=document.getElementById("customerAddress").value.trim();
+
+  if(!name || !phone || !address){
+
+    showToast(
+      lang==="ru"
+      ? "Заполните все поля"
+      : lang==="uz"
+      ? "Barcha maydonlarni to‘ldiring"
+      : "Ҳамаи майдонҳоро пур кунед"
+    );
+
+    return;
+  }
+
+  let text=
+    lang==="ru"
+    ? "Новый заказ%0A%0A"
+    : lang==="uz"
+    ? "Yangi buyurtma%0A%0A"
+    : "Фармоиши нав%0A%0A";
+
+  text+=
+    (lang==="ru" ? "Имя: " :
+     lang==="uz" ? "Ism: " :
+     "Ном: ")
+     +encodeURIComponent(name)+"%0A";
+
+  text+=
+    (lang==="ru" ? "Телефон: " :
+     lang==="uz" ? "Telefon: " :
+     "Телефон: ")
+     +encodeURIComponent(phone)+"%0A";
+
+  text+=
+    (lang==="ru" ? "Адрес: " :
+     lang==="uz" ? "Manzil: " :
+     "Суроға: ")
+     +encodeURIComponent(address)+"%0A%0A";
+
+  text+=
+    (lang==="ru" ? "Товары:%0A" :
+     lang==="uz" ? "Mahsulotlar:%0A" :
+     "Маҳсулотҳо:%0A");
+
+  let total=0;
+
+  cart.forEach(id=>{
+
+    const p=products.find(x=>x.id===id);
+
+    if(!p)return;
+
+    total+=p.price;
+
+    text+=
+      encodeURIComponent(
+        productName(p)+" — "+p.price+" "+t("som")
+      )+"%0A";
+  });
+
+  text+="%0A"+encodeURIComponent(
+    (lang==="ru" ? "Итого: " :
+     lang==="uz" ? "Jami: " :
+     "Ҳамагӣ: ")
+    +total+" "+t("som")
+  );
+
+  orders.unshift({
+    id:Date.now(),
+    name,
+    phone,
+    address,
+    products:[...cart],
+    total
+  });
+
+  save();
+
+  const whatsapp="https://wa.me/?text="+text;
+
+  closeOrder();
+
+  cart=[];
+
+  save();
+  updateCart();
+  renderProducts();
+
+  window.location.href=whatsapp;
+
+  setTimeout(()=>{
+    showToast(
+      lang==="ru"
+      ? "✓ WhatsApp открыт для отправки заказа"
+      : lang==="uz"
+      ? "✓ Buyurtmani yuborish uchun WhatsApp ochildi"
+      : "✓ WhatsApp барои ирсоли фармоиш кушода шуд"
+    );
+  },500);
+}
+
+
+function showOrders(){
+
+  const box=document.getElementById("ordersBox");
+
+  if(!orders.length){
+
+    box.innerHTML=`
+      <div class="empty" style="display:block">
+        📦 ${lang==="ru"
+        ?"Заказов пока нет"
+        :lang==="uz"
+        ?"Buyurtmalar yo‘q"
+        :"Ҳоло фармоиш нест"}
+      </div>
+    `;
+
+    return;
+  }
+
+  box.innerHTML=orders.map(o=>`
+
+    <div class="profile-card" style="margin-bottom:10px">
+
+      <b>📦 ${lang==="ru"
+        ?"Заказ"
+        :lang==="uz"
+        ?"Buyurtma"
+        :"Фармоиш"} #${o.id}</b>
+
+      <p style="margin-top:8px">
+        ${o.name}
+      </p>
+
+      <p style="color:var(--muted);margin-top:4px">
+        ${o.phone}
+      </p>
+
+      <p style="margin-top:8px">
+        <b>${o.total} ${t("som")}</b>
+      </p>
+
+      <button
+        onclick="deleteOrder(${o.id})"
+        style="
+          margin-top:10px;
+          border:0;
+          padding:9px 12px;
+          border-radius:9px;
+          background:#fee;
+          color:#c33;
+        ">
+        🗑️ ${lang==="ru"
+          ?"Удалить"
+          :lang==="uz"
+          ?"O‘chirish"
+          :"Нест кардан"}
+      </button>
+
+    </div>
+
+  `).join("");
+}
+
+
+function deleteOrder(id){
+
+  orders=orders.filter(x=>x.id!==id);
+
+  save();
+  showOrders();
+
+  showToast(
+    lang==="ru"
+    ? "Заказ удалён"
+    :lang==="uz"
+    ? "Buyurtma o‘chirildi"
+    :"Фармоиш нест карда шуд"
+  );
+}
+
+
+function changeLang(){
+
+  const next=
+    lang==="tj" ? "ru" :
+    lang==="ru" ? "uz" : "tj";
+
+  lang=next;
+
+  localStorage.setItem("varzid_lang",lang);
+
+  applyLanguage();
+
+  renderProducts();
+  renderFavorites();
+  renderCart();
+  showOrders();
+}
+
+
+function applyLanguage(){
+
+  document.querySelectorAll("[data-t]")
+    .forEach(el=>{
+      const key=el.getAttribute("data-t");
+      el.textContent=t(key);
+    });
+
+  document.getElementById("langName").textContent=
+    lang==="tj" ? "Тоҷикӣ" :
+    lang==="ru" ? "Русский" :
+    "O‘zbekcha";
+
+  document.getElementById("search").placeholder=
+    t("search");
+}
+
+
+if(localStorage.getItem("varzid_theme")==="dark"){
   document.body.classList.add("dark");
 }
 
-loadTheme();
 applyLanguage();
 renderProducts();
 renderFavorites();
-renderCart();
-updateBadge();
-showOrders();
+updateCart();
+
 </script>
 
 </body>
