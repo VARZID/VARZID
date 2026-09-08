@@ -8,6 +8,11 @@ menuToggle.addEventListener('click', () => {
     arrowIcon.classList.toggle('rotate');
 });
 
+closeMenu.addEventListener('click', () => {
+    dropdownMenu.classList.remove('show');
+    arrowIcon.classList.remove('rotate');
+});
+
 const settingsIcon = document.getElementById('settingsIcon');
 const settingsModal = document.getElementById('settingsModal');
 const closeSettings = document.getElementById('closeSettings');
@@ -37,12 +42,7 @@ function setLanguage(lang) {
         document.getElementById('lightText').textContent = 'Дневной режим';
         document.getElementById('darkText').textContent = 'Ночной режим';
         document.getElementById('langLabel').textContent = 'Язык:';
-        
-        const subTextLabel = document.getElementById('subTextLabel');
-        if (subTextLabel) {
-            subTextLabel.textContent = subCountNum === 1 ? 'подписчик' : 'подписчиков';
-        }
-        
+        document.getElementById('subTextLabel').textContent = isSubscribed ? 'подписчик' : 'подписчиков';
         document.getElementById('subBtn').textContent = isSubscribed ? 'Вы подписаны' : 'Подписаться';
         document.getElementById('postTime').textContent = 'Только что';
         document.getElementById('postText').innerHTML = '✅ <b>НОВОЕ ОБЪЯВЛЕНИЕ</b><br>Новый товар и видеообзор:';
@@ -51,7 +51,6 @@ function setLanguage(lang) {
         document.getElementById('clientName').placeholder = 'Ваше имя...';
         document.getElementById('clientPhone').placeholder = 'Номер телефона (например: 900000000)...';
         document.getElementById('orderBtn').textContent = '📲 Отправить заказ в WhatsApp';
-        document.getElementById('searchInput').placeholder = 'Поиск на сайте...';
     } else {
         document.getElementById('catMenuTitle').textContent = 'Интихоби категория';
         document.getElementById('catVarzidName').textContent = 'Варзидан';
@@ -60,12 +59,7 @@ function setLanguage(lang) {
         document.getElementById('lightText').textContent = 'Режими рӯзона';
         document.getElementById('darkText').textContent = 'Режими шабона';
         document.getElementById('langLabel').textContent = 'Забон:';
-        
-        const subTextLabel = document.getElementById('subTextLabel');
-        if (subTextLabel) {
-            subTextLabel.textContent = 'обуначиён';
-        }
-        
+        document.getElementById('subTextLabel').textContent = 'обуначиён';
         document.getElementById('subBtn').textContent = isSubscribed ? 'Обуна ҳастед' : 'Обуна шудан';
         document.getElementById('postTime').textContent = 'Ҳоло';
         document.getElementById('postText').innerHTML = '✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти нав ва навори он:';
@@ -74,12 +68,10 @@ function setLanguage(lang) {
         document.getElementById('clientName').placeholder = 'Номи шумо...';
         document.getElementById('clientPhone').placeholder = 'Рақами телефон (масалан: 900000000)...';
         document.getElementById('orderBtn').textContent = '📲 Фиристодани фармоиш ба WhatsApp';
-        document.getElementById('searchInput').placeholder = 'Ҷустуҷӯ дар сомона...';
     }
     settingsModal.style.display = 'none';
 }
 
-// Низоми ҳисоби обуначиён
 const subBtn = document.getElementById('subBtn');
 const subCount = document.getElementById('subCount');
 let subCountNum = 0;
@@ -96,23 +88,7 @@ subBtn.addEventListener('click', () => {
         subBtn.style.backgroundColor = '#e53935';
         subBtn.textContent = currentLang === 'ru' ? 'Подписаться' : 'Обуна шудан';
     }
-    
-    const labelText = currentLang === 'ru' ? (subCountNum === 1 ? 'подписчик' : 'подписчиков') : 'обуначиён';
-    subCount.innerHTML = `${subCountNum} <span id="subTextLabel">${labelText}</span>`;
-});
-
-// Тугмаи зангула (YouTube style)
-const bellBtn = document.getElementById('bellBtn');
-let isBellActive = false;
-bellBtn.addEventListener('click', () => {
-    isBellActive = !isBellActive;
-    if (isBellActive) {
-        bellBtn.classList.add('active');
-        bellBtn.textContent = '🔔';
-    } else {
-        bellBtn.classList.remove('active');
-        bellBtn.textContent = '🔔';
-    }
+    subCount.innerHTML = `${subCountNum} <span id="subTextLabel">${currentLang === 'ru' ? 'подписчиков' : 'обуначиён'}</span>`;
 });
 
 const likeBtn = document.getElementById('likeBtn');
