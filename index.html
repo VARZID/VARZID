@@ -1,206 +1,103 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html lang="tg" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VARZID</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-        }
-        /* Қисми болоии сомона (Header) */
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #1e1e1e;
-            padding: 12px 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .brand-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        /* Тугмаи обуна шудан (YouTube услуб) */
-        .btn-subscribe {
-            background-color: #cc0000;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn-subscribe.subscribed {
-            background-color: #272727;
-            color: #aaa;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        /* Поиски хурди замонавӣ */
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: #2a2a2a;
-            border-radius: 20px;
-            padding: 4px 10px;
-            border: 1px solid #444;
-        }
-        .search-input {
-            background: transparent;
-            border: none;
-            color: white;
-            outline: none;
-            font-size: 13px;
-            width: 90px;
-            transition: width 0.3s;
-        }
-        .search-input:focus {
-            width: 130px;
-        }
-        .search-btn, .bell-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 0;
-        }
-        /* Карточкаҳо ва дигар элементҳо */
-        .card {
-            background: #1e1e1e;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-        video {
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 8px;
-        }
-        input.form-control {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 10px;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        .btn-wa {
-            background: #25d366;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-    <!-- Қисми боло (Варзид, Обуна шудан, Зангула, Поиски хурд) -->
-    <div class="main-header">
-        <div class="header-left">
-            <span class="brand-name">Варзид</span>
-            <button id="subBtn" class="btn-subscribe" onclick="toggleSubscribe()">Обуна шудан</button>
+<body class="dark-theme">
+    <header class="header">
+        <div class="brand-selector" id="menuToggle">
+            <span class="brand-title">VARZID</span>
+            <span class="arrow" id="arrowIcon">▼</span>
         </div>
-        <div class="header-right">
-            <!-- Зангула -->
-            <button class="bell-btn" title="Огоҳиномаҳо" onclick="alert('Шумо ба хабарҳо обуна ҳастед!')">🔔</button>
-            <!-- Поиски хурд мисли Ютуб -->
-            <div class="search-box">
-                <input type="text" id="searchInput" class="search-input" placeholder="Ҷустуҷӯ...">
-                <button class="search-btn" onclick="performSearch()">🔍</button>
+        <div class="header-icons">
+            <span class="icon" id="settingsIcon">⚙️</span>
+        </div>
+    </header>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div class="menu-header">
+            <span id="catMenuTitle">Интихоби категория</span>
+            <span class="close-btn" id="closeMenu">✕</span>
+        </div>
+        <div class="category-list">
+            <div class="category-item active">
+                <span class="cat-icon">⚽</span>
+                <span class="cat-name" id="catVarzidName">Варзидан</span>
+                <span class="cat-count">1</span>
             </div>
         </div>
     </div>
 
-    <!-- Эълони нав ва видео -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #aaa; margin-bottom: 8px;">
-            <span>Варзидан</span>
-            <span>Ҳоло</span>
-        </div>
-        <div>
-            ✅ <b>ЭЪЛОНИ НАВ</b><br>
-            Молу маҳсулоти нав ва навори он:
-        </div>
-        <video controls>
-            <source src="video.mp4" type="video/mp4">
-            Видео дастгирӣ намешавад.
-        </video>
-        <div style="margin-top: 10px; font-size: 14px; color: #ccc;">
-            👍 0 &nbsp;&nbsp;&nbsp; ❤️ 0
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3 id="settingsTitle">Танзимоти VARZID</h3>
+                <span class="close-btn" id="closeSettings">✕</span>
+            </div>
+            <div class="settings-section">
+                <label id="themeLabel">Мавзӯи рангӣ:</label>
+                <div class="settings-options">
+                    <button class="option-btn" onclick="setTheme('light')">☀️ <span id="lightText">Режими рӯзона</span></button>
+                    <button class="option-btn" onclick="setTheme('dark')">🌙 <span id="darkText">Режими шабона</span></button>
+                </div>
+            </div>
+            <div class="settings-section">
+                <label id="langLabel">Забон:</label>
+                <div class="settings-options">
+                    <button class="option-btn" onclick="setLanguage('tg')">🇹🇯 Тоҷикӣ</button>
+                    <button class="option-btn" onclick="setLanguage('ru')">🇷🇺 Русский</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Бахши Фармоиш -->
-    <div class="card">
-        <h3 style="margin-top: 0; margin-bottom: 5px;">🛒 Заказ / Фармоиш</h3>
-        <p style="font-size: 13px; color: #aaa; margin-bottom: 10px;">Барои фармоиш ном ва рақами худро фиристед:</p>
-        <input type="text" class="form-control" placeholder="Номи шумо...">
-        <input type="tel" class="form-control" placeholder="Рақами телефон (масалан: 900000000)...">
-        <button class="btn-wa">📲 Фиристодани фармоиш ба WhatsApp</button>
-    </div>
+    <main class="main-content">
+        <div class="channel-info">
+            <div class="channel-avatar">V</div>
+            <div class="channel-details">
+                <h2 id="channelName">Варзидан</h2>
+                <span class="sub-count" id="subCount">0 <span id="subTextLabel">обуначиён</span></span>
+            </div>
+            <button class="sub-btn" id="subBtn">Обуна шудан</button>
+        </div>
 
-    <script>
-        // Санҷиши ҳолати обуна ҳангоми боршавии саҳифа
-        window.onload = function() {
-            if (localStorage.getItem('varzid_subscribed') === 'true') {
-                setSubscribedStyle();
-            }
-        };
+        <div class="post-card">
+            <div class="post-header">
+                <span class="post-channel-name">Варзидан</span>
+                <span class="post-time" id="postTime">Ҳоло</span>
+            </div>
+            <div class="post-text" id="postText">
+                ✅ <b>ЭЪЛОНИ НАВ</b><br>
+                Молу маҳсулоти нав ва навори он:
+            </div>
+            <div class="post-media-box">
+                <video class="post-video" controls>
+                    <source src="video.mp4" type="video/mp4">
+                    Видео дастгирӣ намешавад.
+                </video>
+            </div>
+            <div class="post-footer">
+                <button class="reaction-btn" id="likeBtn">👍 <span id="likeCount">0</span></button>
+                <button class="reaction-btn" id="loveBtn">❤️ <span id="loveCount">0</span></button>
+            </div>
+        </div>
 
-        function toggleSubscribe() {
-            let subBtn = document.getElementById('subBtn');
-            if (localStorage.getItem('varzid_subscribed') === 'true') {
-                localStorage.setItem('varzid_subscribed', 'false');
-                subBtn.innerText = 'Обуна шудан';
-                subBtn.classList.remove('subscribed');
-            } else {
-                localStorage.setItem('varzid_subscribed', 'true');
-                setSubscribedStyle();
-            }
-        }
+        <div class="order-section">
+            <div class="order-box">
+                <h3 id="orderTitle">🛒 Заказ / Фармоиш</h3>
+                <p id="orderDesc">Барои фармоиш ном ва рақами худро фиристед:</p>
+                <form id="orderForm" onsubmit="sendToWhatsApp(event)">
+                    <input type="text" id="clientName" placeholder="Номи шумо..." required class="order-input">
+                    <input type="tel" id="clientPhone" placeholder="Рақами телефон (масалан: 900000000)..." required class="order-input">
+                    <button type="submit" class="whatsapp-btn" id="orderBtn">📲 Фиристодани фармоиш ба WhatsApp</button>
+                </form>
+            </div>
+        </div>
+    </main>
 
-        function setSubscribedStyle() {
-            let subBtn = document.getElementById('subBtn');
-            subBtn.innerText = 'Обуна шудаед ✓';
-            subBtn.classList.add('subscribed');
-        }
-
-        function performSearch() {
-            let query = document.getElementById('searchInput').value;
-            if(query.trim() !== "") {
-                alert('Ҷустуҷӯ аз рӯи: ' + query);
-            } else {
-                document.getElementById('searchInput').focus();
-            }
-        }
-    </script>
-
+    <script src="app.js"></script>
 </body>
 </html>
