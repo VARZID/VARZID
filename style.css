@@ -46,15 +46,20 @@ body.light-theme .post-card { background: #ffffff; }
 .post-footer { display: flex; gap: 15px; }
 .reaction-btn { background: none; border: none; color: inherit; cursor: pointer; font-size: 15px; display: flex; align-items: center; gap: 5px; }
 
-/* Иловаи стилҳо барои қисмати кушоду маҳкамшавандаи Заказ */
+/* Стилҳо барои қисмати Заказ ва тугмаи кушоду маҳкамшаванда */
 .order-section { background: #1e1e1e; padding: 15px; border-radius: 12px; }
 body.light-theme .order-section { background: #ffffff; }
 
 .order-header-toggle { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
 .order-header-toggle h3 { margin: 0; font-size: 16px; }
-.order-header-toggle span#orderArrow { transition: transform 0.3s ease; font-size: 14px; }
+
+/* Танзими тирча ва кушодашавии блок */
+#orderArrow { transition: transform 0.3s ease; font-size: 14px; }
+#orderArrow.rotate { transform: rotate(180deg); }
 
 #orderContent { display: none; margin-top: 12px; }
+#orderContent.show { display: block; }
+
 #orderContent p { font-size: 13px; color: #aaa; margin-bottom: 10px; }
 
 .order-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: white; box-sizing: border-box; }
