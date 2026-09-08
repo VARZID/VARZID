@@ -111,6 +111,18 @@ loveBtn.addEventListener('click', () => {
     loveCountSpan.textContent = loves;
 });
 
+// Идоракунии кушода ва пӯшида шудани қисмати Заказ бо тугмаи тирча
+const orderToggle = document.getElementById('orderToggle');
+const orderContent = document.getElementById('orderContent');
+const orderArrow = document.getElementById('orderArrow');
+
+if (orderToggle) {
+    orderToggle.addEventListener('click', () => {
+        orderContent.classList.toggle('show');
+        orderArrow.classList.toggle('rotate');
+    });
+}
+
 function sendToWhatsApp(event) {
     event.preventDefault();
     const name = document.getElementById('clientName').value;
