@@ -31,21 +31,69 @@ function setTheme(theme) {
     settingsModal.style.display = 'none';
 }
 
+let isAdmin = false;
+function toggleAdminMode() {
+    const password = prompt("Рамзи админро ворид кунед:");
+    if (password === "varzid2026") { // Рамзи пешфарз барои админ
+        isAdmin = true;
+        document.getElementById('addCategoryBtn').style.display = 'inline-flex';
+        alert("Ҳолати админ фаъол шуд!");
+    } else {
+        alert("Рамзи нодуруст!");
+    }
+    settingsModal.style.display = 'none';
+}
+
+function addNewCategory() {
+    if (!isAdmin) return;
+    const catName = prompt("Номи маҳсулоти навро ворид кунед:");
+    if (catName && catName.trim() !== "") {
+        const categoryList = document.getElementById('categoryList');
+        const addBtn = document.getElementById('addCategoryBtn');
+        
+        const newItem = document.createElement('div');
+        newItem.className = 'category-item';
+        newItem.setAttribute('data-cat', catName);
+        newItem.innerHTML = `<span class="cat-name">${catName}</span>`;
+        
+        newItem.addEventListener('click', () => selectCategory(newItem, catName));
+        
+        categoryList.insertBefore(newItem, addBtn);
+    }
+}
+
+function selectCategory(itemElement, catName) {
+    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+    itemElement.classList.add('active');
+    
+    document.getElementById('channelName').textContent = catName;
+    document.getElementById('postChannelName').textContent = catName;
+    document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти ${catName} ва навори он:`;
+    
+    dropdownMenu.classList.remove('show');
+    arrowIcon.classList.remove('rotate');
+}
+
+// Event listeners for default category items
+document.querySelectorAll('.category-item').forEach(item => {
+    const catName = item.getAttribute('data-cat');
+    item.addEventListener('click', () => selectCategory(item, catName));
+});
+
 let currentLang = 'tg';
 function setLanguage(lang) {
     currentLang = lang;
     if (lang === 'ru') {
         document.getElementById('catMenuTitle').textContent = 'Выбор категории';
-        document.getElementById('catVarzidName').textContent = 'Варзидан';
         document.getElementById('settingsTitle').textContent = 'Настройки VARZID';
         document.getElementById('themeLabel').textContent = 'Цветовая схема:';
         document.getElementById('lightText').textContent = 'Дневной режим';
         document.getElementById('darkText').textContent = 'Ночной режим';
         document.getElementById('langLabel').textContent = 'Язык:';
+        document.getElementById('adminToggleBtn').textContent = '🔐 Режим Админа';
         document.getElementById('subTextLabel').textContent = isSubscribed ? 'подписчик' : 'подписчиков';
         document.getElementById('subBtn').textContent = isSubscribed ? 'Вы подписаны' : 'Подписаться';
         document.getElementById('postTime').textContent = 'Только что';
-        document.getElementById('postText').innerHTML = '✅ <b>НОВОЕ ОБЪЯВЛЕНИЕ</b><br>Новый товар и видеообзор:';
         document.getElementById('orderTitle').textContent = '🛒 Заказ';
         document.getElementById('orderDesc').textContent = 'Отправьте имя и номер для заказа:';
         document.getElementById('clientName').placeholder = 'Ваше имя...';
@@ -53,16 +101,15 @@ function setLanguage(lang) {
         document.getElementById('orderBtn').textContent = '📲 Отправить заказ в WhatsApp';
     } else {
         document.getElementById('catMenuTitle').textContent = 'Интихоби категория';
-        document.getElementById('catVarzidName').textContent = 'Варзидан';
         document.getElementById('settingsTitle').textContent = 'Танзимоти VARZID';
         document.getElementById('themeLabel').textContent = 'Мавзӯи рангӣ:';
         document.getElementById('lightText').textContent = 'Режими рӯзона';
         document.getElementById('darkText').textContent = 'Режими шабона';
         document.getElementById('langLabel').textContent = 'Забон:';
+        document.getElementById('adminToggleBtn').textContent = '🔐 Ҳолати Админ';
         document.getElementById('subTextLabel').textContent = 'обуначиён';
         document.getElementById('subBtn').textContent = isSubscribed ? 'Обуна ҳастед' : 'Обуна шудан';
         document.getElementById('postTime').textContent = 'Ҳоло';
-        document.getElementById('postText').innerHTML = '✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти нав ва навори он:';
         document.getElementById('orderTitle').textContent = '🛒 Заказ / Фармоиш';
         document.getElementById('orderDesc').textContent = 'Барои фармоиш ном ва рақами худро фиристед:';
         document.getElementById('clientName').placeholder = 'Номи шумо...';
