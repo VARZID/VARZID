@@ -34,7 +34,7 @@ function setTheme(theme) {
 let isAdmin = false;
 function toggleAdminMode() {
     const password = prompt("Рамзи админро ворид кунед:");
-    if (password === "varzid2026") { // Рамзи пешфарз барои админ
+    if (password === "varzid2026") {
         isAdmin = true;
         document.getElementById('addCategoryBtn').style.display = 'inline-flex';
         alert("Ҳолати админ фаъол шуд!");
@@ -74,7 +74,6 @@ function selectCategory(itemElement, catName) {
     arrowIcon.classList.remove('rotate');
 }
 
-// Event listeners for default category items
 document.querySelectorAll('.category-item').forEach(item => {
     const catName = item.getAttribute('data-cat');
     item.addEventListener('click', () => selectCategory(item, catName));
