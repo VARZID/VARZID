@@ -1,61 +1,102 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html lang="tg" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VARZID</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="app-container">
-        <!-- Сарлавҳаи асосӣ -->
-        <header class="header">
-            <div class="brand-section">
-                <span class="brand-title">VARZID</span>
-                <span class="verified-icon">✔</span>
-            </div>
-            <div class="subscription-box">
-                <span id="subCount">1.2 млн</span>
-                <button id="subscribeBtn" onclick="toggleSubscribe()">Подписаться</button>
-            </div>
-            <button class="settings-btn" onclick="openSettings()">⚙️</button>
-        </header>
-
-        <!-- Қатори санаҳо -->
-        <div class="dates-bar">
-            <div class="date-item">07.09</div>
-            <div class="date-item">08.09</div>
-            <div class="date-item active">09.09 (СЕГОДНЯ)</div>
-            <div class="date-item">10.09</div>
-            <div class="date-item">11.09</div>
+<body class="dark-theme">
+    <header class="header">
+        <div class="brand-selector" id="menuToggle">
+            <span class="brand-title">VARZID</span>
+            <span class="arrow" id="arrowIcon">▼</span>
         </div>
-
-        <!-- Қисми илова кардани панели маҳсулоти нав -->
-        <div class="add-section">
-            <input type="text" id="panelInput" placeholder="Номи маҳсулоти нав...">
-            <button class="add-btn" onclick="addPanel()">+</button>
+        <div class="header-icons">
+            <span class="icon" id="settingsIcon">⚙️</span>
         </div>
+    </header>
 
-        <!-- Рӯйхати маҳсулот ва панелҳо -->
-        <div class="panels-container" id="panelsList">
-            <!-- Панелҳо аз JavaScript ворид мешаванд -->
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div class="menu-header">
+            <span id="catMenuTitle">Интихоби категория</span>
+            <span class="close-btn" id="closeMenu">✕</span>
+        </div>
+        <div class="category-list">
+            <div class="category-item active">
+                <span class="cat-icon">⚽</span>
+                <span class="cat-name" id="catVarzidName">Варзидан</span>
+                <span class="cat-count">1</span>
+            </div>
         </div>
     </div>
 
-    <!-- Окнаи Танзимот (Settings Modal) -->
-    <div id="settingsModal" class="modal hidden">
-        <div class="modal-content">
-            <h3>Настройки VARZID</h3>
-            <ul>
-                <li>Настройки уведомлений</li>
-                <li onclick="toggleTheme()">Дневной режим / Ночной режим</li>
-                <li>Оцените приложение</li>
-                <li>Изменить язык</li>
-                <li>Напишите нам</li>
-            </ul>
-            <button class="close-modal-btn" onclick="closeSettings()">Аз кор баромадан</button>
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3 id="settingsTitle">Танзимоти VARZID</h3>
+                <span class="close-btn" id="closeSettings">✕</span>
+            </div>
+            <div class="settings-section">
+                <label id="themeLabel">Мавзӯи рангӣ:</label>
+                <div class="settings-options">
+                    <button class="option-btn" onclick="setTheme('light')">☀️ <span id="lightText">Режими рӯзона</span></button>
+                    <button class="option-btn" onclick="setTheme('dark')">🌙 <span id="darkText">Режими шабона</span></button>
+                </div>
+            </div>
+            <div class="settings-section">
+                <label id="langLabel">Забон:</label>
+                <div class="settings-options">
+                    <button class="option-btn" onclick="setLanguage('tg')">🇹🇯 Тоҷикӣ</button>
+                    <button class="option-btn" onclick="setLanguage('ru')">🇷🇺 Русский</button>
+                </div>
+            </div>
         </div>
     </div>
+
+    <main class="main-content">
+        <div class="channel-info">
+            <div class="channel-avatar">V</div>
+            <div class="channel-details">
+                <h2 id="channelName">Варзидан</h2>
+                <span class="sub-count" id="subCount">0 <span id="subTextLabel">обуначиён</span></span>
+            </div>
+            <button class="sub-btn" id="subBtn">Обуна шудан</button>
+        </div>
+
+        <div class="post-card">
+            <div class="post-header">
+                <span class="post-channel-name">Варзидан</span>
+                <span class="post-time" id="postTime">Ҳоло</span>
+            </div>
+            <div class="post-text" id="postText">
+                ✅ <b>ЭЪЛОНИ НАВ</b><br>
+                Молу маҳсулоти нав ва навори он:
+            </div>
+            <div class="post-media-box">
+                <video class="post-video" controls>
+                    <source src="video.mp4" type="video/mp4">
+                    Видео дастгирӣ намешавад.
+                </video>
+            </div>
+            <div class="post-footer">
+                <button class="reaction-btn" id="likeBtn">👍 <span id="likeCount">0</span></button>
+                <button class="reaction-btn" id="loveBtn">❤️ <span id="loveCount">0</span></button>
+            </div>
+        </div>
+
+        <div class="order-section">
+            <div class="order-box">
+                <h3 id="orderTitle">🛒 Заказ / Фармоиш</h3>
+                <p id="orderDesc">Барои фармоиш ном ва рақами худро фиристед:</p>
+                <form id="orderForm" onsubmit="sendToWhatsApp(event)">
+                    <input type="text" id="clientName" placeholder="Номи шумо..." required class="order-input">
+                    <input type="tel" id="clientPhone" placeholder="Рақами телефон (масалан: 900000000)..." required class="order-input">
+                    <button type="submit" class="whatsapp-btn" id="orderBtn">📲 Фиристодани фармоиш ба WhatsApp</button>
+                </form>
+            </div>
+        </div>
+    </main>
 
     <script src="app.js"></script>
 </body>
