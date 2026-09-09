@@ -8,19 +8,17 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Сарлавҳаи боло -->
+        <!-- Сарлавҳаи асосӣ -->
         <header class="header">
-            <div class="brand-box">
-                <span class="brand-name">VARZID</span>
-                <span class="verified-badge">✔</span>
-                <div class="sub-info">
-                    <span id="sub-count">1.2 млн</span> подписчиков
-                </div>
+            <div class="brand-section">
+                <span class="brand-title">VARZID</span>
+                <span class="verified-icon">✔</span>
             </div>
-            <div class="header-right">
-                <button id="subscribe-btn" onclick="toggleSubscribe()">Подписаться</button>
-                <button class="icon-btn" onclick="openSettings()">⚙️</button>
+            <div class="subscription-box">
+                <span id="subCount">1.2 млн</span>
+                <button id="subscribeBtn" onclick="toggleSubscribe()">Подписаться</button>
             </div>
+            <button class="settings-btn" onclick="openSettings()">⚙️</button>
         </header>
 
         <!-- Қатори санаҳо -->
@@ -32,30 +30,30 @@
             <div class="date-item">11.09</div>
         </div>
 
-        <!-- Қатори маҳсулот ва филтрҳо -->
-        <div class="products-section">
-            <div class="search-filter-bar">
-                <input type="text" id="searchInput" placeholder="Ҷустуҷӯи маҳсулот..." oninput="filterProducts()">
-                <button class="add-btn" onclick="addNewProduct()">+</button>
-            </div>
-            <div class="products-grid" id="productsGrid">
-                <!-- Маҳсулот тавассути app.js бор карда мешаванд -->
-            </div>
+        <!-- Қисми илова кардани панели маҳсулоти нав -->
+        <div class="add-section">
+            <input type="text" id="panelInput" placeholder="Номи маҳсулоти нав...">
+            <button class="add-btn" onclick="addPanel()">+</button>
+        </div>
+
+        <!-- Рӯйхати маҳсулот ва панелҳо -->
+        <div class="panels-container" id="panelsList">
+            <!-- Панелҳо аз JavaScript ворид мешаванд -->
         </div>
     </div>
 
-    <!-- Менюи танзимот (Пинҳон) -->
+    <!-- Окнаи Танзимот (Settings Modal) -->
     <div id="settingsModal" class="modal hidden">
         <div class="modal-content">
             <h3>Настройки VARZID</h3>
             <ul>
-                <li onclick="alert('Настройки уведомлений')">Настройки уведомлений</li>
+                <li>Настройки уведомлений</li>
                 <li onclick="toggleTheme()">Дневной режим / Ночной режим</li>
-                <li onclick="alert('Оцените приложение')">Оцените приложение</li>
-                <li onclick="alert('Изменить язык')">Изменить язык</li>
-                <li onclick="alert('Напишите нам')">Напишите нам</li>
+                <li>Оцените приложение</li>
+                <li>Изменить язык</li>
+                <li>Напишите нам</li>
             </ul>
-            <button onclick="closeSettings()">Аз кор баромадан</button>
+            <button class="close-modal-btn" onclick="closeSettings()">Аз кор баромадан</button>
         </div>
     </div>
 
