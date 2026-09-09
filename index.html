@@ -13,22 +13,49 @@
             <div class="brand-box">
                 <span class="brand-name">VARZID</span>
                 <span class="verified-badge">✔</span>
+                <div class="sub-info">
+                    <span id="sub-count">1.2 млн</span> подписчиков
+                </div>
             </div>
-            <div class="sub-container">
-                <span id="subCount">1.2 млн</span>
-                <button id="subscribe-btn" onclick="toggleSub()">Подписаться</button>
+            <div class="header-right">
+                <button id="subscribe-btn" onclick="toggleSubscribe()">Подписаться</button>
+                <button class="icon-btn" onclick="openSettings()">⚙️</button>
             </div>
         </header>
 
-        <!-- Қисми илова кардани панели нав -->
-        <div class="panel-box">
-            <input type="text" id="panelInput" placeholder="Номи панели маҳсулоти нав...">
-            <button class="add-btn" onclick="addPanel()">+</button>
+        <!-- Қатори санаҳо -->
+        <div class="dates-bar">
+            <div class="date-item">07.09</div>
+            <div class="date-item">08.09</div>
+            <div class="date-item active">09.09 (СЕГОДНЯ)</div>
+            <div class="date-item">10.09</div>
+            <div class="date-item">11.09</div>
         </div>
 
-        <!-- Рӯйхати панелҳои маҳсулот -->
-        <div class="panel-list" id="panelList">
-            <!-- Панелҳо тавассути JS бор мешаванд -->
+        <!-- Қатори маҳсулот ва филтрҳо -->
+        <div class="products-section">
+            <div class="search-filter-bar">
+                <input type="text" id="searchInput" placeholder="Ҷустуҷӯи маҳсулот..." oninput="filterProducts()">
+                <button class="add-btn" onclick="addNewProduct()">+</button>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Маҳсулот тавассути app.js бор карда мешаванд -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Менюи танзимот (Пинҳон) -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Настройки VARZID</h3>
+            <ul>
+                <li onclick="alert('Настройки уведомлений')">Настройки уведомлений</li>
+                <li onclick="toggleTheme()">Дневной режим / Ночной режим</li>
+                <li onclick="alert('Оцените приложение')">Оцените приложение</li>
+                <li onclick="alert('Изменить язык')">Изменить язык</li>
+                <li onclick="alert('Напишите нам')">Напишите нам</li>
+            </ul>
+            <button onclick="closeSettings()">Аз кор баромадан</button>
         </div>
     </div>
 
