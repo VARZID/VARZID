@@ -1,15 +1,16 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #0e1621;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #0b0e14;
     color: #ffffff;
 }
 
 .app-container {
     max-width: 480px;
     margin: 0 auto;
-    background-color: #17212b;
+    background-color: #121822;
     min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .header {
@@ -17,130 +18,121 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background-color: #212d3b;
-    border-bottom: 1px solid #2b3847;
+    background-color: #1a2230;
+    border-bottom: 1px solid #222b3b;
 }
 
-.brand-box .brand-name {
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.brand-title {
     font-size: 18px;
     font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
-.verified-badge {
+.verified-icon {
     color: #20a0ff;
-    font-size: 14px;
+    font-size: 15px;
 }
 
-.sub-info {
+.subscription-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 12px;
     color: #879097;
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#subscribe-btn {
+#subscribeBtn {
     background-color: #20a0ff;
     color: white;
     border: none;
     padding: 6px 12px;
     border-radius: 16px;
     font-weight: bold;
+    font-size: 12px;
     cursor: pointer;
 }
 
-#subscribe-btn.subscribed {
+#subscribeBtn.subscribed {
     background-color: #26a541;
 }
 
-.icon-btn {
+.settings-btn {
     background: none;
     border: none;
-    font-size: 20px;
-    color: white;
+    font-size: 18px;
     cursor: pointer;
 }
 
 .dates-bar {
     display: flex;
     overflow-x: auto;
-    background-color: #18222d;
-    padding: 8px;
-    gap: 12px;
-    border-bottom: 1px solid #2b3847;
+    background-color: #151c27;
+    padding: 8px 12px;
+    gap: 16px;
+    border-bottom: 1px solid #222b3b;
 }
 
 .date-item {
     font-size: 12px;
     color: #879097;
     white-space: nowrap;
-    padding: 4px 8px;
 }
 
 .date-item.active {
     color: #ff4757;
-    border-bottom: 2px solid #ff4757;
     font-weight: bold;
+    border-bottom: 2px solid #ff4757;
+    padding-bottom: 2px;
 }
 
-.search-filter-bar {
+.add-section {
     display: flex;
-    padding: 10px;
+    padding: 12px;
     gap: 8px;
+    background-color: #121822;
 }
 
-#searchInput {
+#panelInput {
     flex: 1;
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 8px;
-    border: 1px solid #2b3847;
-    background-color: #0e1621;
+    border: 1px solid #222b3b;
+    background-color: #0b0e14;
     color: white;
+    font-size: 14px;
 }
 
 .add-btn {
     background-color: #26a541;
     color: white;
     border: none;
-    font-size: 20px;
-    width: 38px;
-    height: 38px;
+    font-size: 22px;
+    width: 42px;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: bold;
 }
 
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    padding: 2px;
+.panels-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 12px 12px 12px;
 }
 
-.product-card {
-    background-color: #212d3b;
-    aspect-ratio: 1;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.product-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.product-info {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: rgba(0,0,0,0.6);
-    font-size: 11px;
-    text-align: center;
-    padding: 4px 0;
+.panel-row {
+    background-color: #1a2230;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 4px solid #20a0ff;
 }
 
 .modal {
@@ -160,24 +152,44 @@ body {
 }
 
 .modal-content {
-    background: #212d3b;
+    background: #1a2230;
     padding: 20px;
     border-radius: 12px;
     width: 80%;
-    max-width: 300px;
+    max-width: 320px;
+    border: 1px solid #222b3b;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 16px;
 }
 
 .modal-content ul {
     list-style: none;
     padding: 0;
+    margin: 15px 0;
 }
 
 .modal-content li {
     padding: 10px 0;
-    border-bottom: 1px solid #2b3847;
+    border-bottom: 1px solid #222b3b;
+    font-size: 14px;
     cursor: pointer;
 }
 
+.close-modal-btn {
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Реҷаи рӯзона (Light Mode) */
 body.light-mode {
     background-color: #f0f2f5;
     color: #000;
@@ -185,7 +197,16 @@ body.light-mode {
 body.light-mode .app-container {
     background-color: #ffffff;
 }
-body.light-mode .header, body.light-mode .modal-content {
+body.light-mode .header, body.light-mode .modal-content, body.light-mode .panel-row {
     background-color: #f8f9fa;
     color: #000;
+    border-color: #dee2e6;
+}
+body.light-mode #panelInput {
+    background-color: #fff;
+    color: #000;
+    border-color: #ced4da;
+}
+body.light-mode .dates-bar {
+    background-color: #e9ecef;
 }
