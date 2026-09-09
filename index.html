@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VARZID</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Сарлавҳаи боло -->
+        <header class="header">
+            <div class="brand-box">
+                <span class="brand-name">VARZID</span>
+                <span class="verified-badge">✔</span>
+            </div>
+            <div class="sub-container">
+                <span id="subCount">1.2 млн</span>
+                <button id="subscribe-btn" onclick="toggleSub()">Подписаться</button>
+            </div>
+        </header>
+
+        <!-- Қисми илова кардани панели нав -->
+        <div class="panel-box">
+            <input type="text" id="panelInput" placeholder="Номи панели маҳсулоти нав...">
+            <button class="add-btn" onclick="addPanel()">+</button>
+        </div>
+
+        <!-- Рӯйхати панелҳои маҳсулот -->
+        <div class="panel-list" id="panelList">
+            <!-- Панелҳо тавассути JS бор мешаванд -->
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
