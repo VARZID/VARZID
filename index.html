@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+,<!DOCTYPE html>
 <html lang="tg" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
@@ -22,11 +22,30 @@
             <span id="catMenuTitle">Интихоби категория</span>
             <span class="close-btn" id="closeMenu">✕</span>
         </div>
-        <div class="category-list">
-            <div class="category-item active">
-                <span class="cat-icon">⚽</span>
-                <span class="cat-name" id="catVarzidName">Варзидан</span>
-                <span class="cat-count">1</span>
+        <div class="category-scroll-container">
+            <div class="category-list" id="categoryList">
+                <div class="category-item active" data-cat="Варзидан">
+                    <span class="cat-name" id="catVarzidName">Варзидан</span>
+                </div>
+                <div class="category-item" data-cat="Мукорм">
+                    <span class="cat-name">Мукорм</span>
+                </div>
+                <div class="category-item" data-cat="Пшеница">
+                    <span class="cat-name">Пшеница</span>
+                </div>
+                <div class="category-item" data-cat="Ячмень">
+                    <span class="cat-name">Ячмень</span>
+                </div>
+                <div class="category-item" data-cat="Кукуруза">
+                    <span class="cat-name">Кукуруза</span>
+                </div>
+                <div class="category-item" data-cat="Селитра">
+                    <span class="cat-name">Селитра</span>
+                </div>
+                <div class="category-item" data-cat="Карбамид">
+                    <span class="cat-name">Карбамид</span>
+                </div>
+                <button class="add-category-btn" id="addCategoryBtn" style="display: none;" onclick="addNewCategory()">+</button>
             </div>
         </div>
     </div>
@@ -51,6 +70,9 @@
                     <button class="option-btn" onclick="setLanguage('ru')">🇷🇺 Русский</button>
                 </div>
             </div>
+            <div class="settings-section">
+                <button class="option-btn admin-toggle-btn" onclick="toggleAdminMode()" id="adminToggleBtn">🔐 Ҳолати Админ</button>
+            </div>
         </div>
     </div>
 
@@ -66,7 +88,7 @@
 
         <div class="post-card">
             <div class="post-header">
-                <span class="post-channel-name">Варзидан</span>
+                <span class="post-channel-name" id="postChannelName">Варзидан</span>
                 <span class="post-time" id="postTime">Ҳоло</span>
             </div>
             <div class="post-text" id="postText">
