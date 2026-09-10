@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" id="htmlRoot">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,23 +9,29 @@
 <body class="light-theme">
     <header class="header">
         <div class="brand-selector" id="menuToggle">
-            <span class="brand-title" id="channelName" data-cat-key="Варзидан">Варзидан</span>
+            <span class="brand-title" id="channelName">Варзидан</span>
             <span class="arrow" id="arrowIcon">▼</span>
         </div>
         <div class="header-icons">
-            <span class="icon exit-admin-icon" id="exitAdminBtn" style="display: none; color: #ff5252; font-weight: bold; font-size: 16px;" onclick="exitAdminMode()">✖ <span data-i18n="adminExit">Админ</span></span>
-            <span class="icon" id="settingsIcon" style="cursor: pointer; font-size: 20px;">⚙️</span>
+            <span class="icon" id="settingsIcon">⚙️</span>
         </div>
     </header>
 
     <div class="dropdown-menu" id="dropdownMenu">
         <div class="menu-header">
-            <span id="catMenuTitle" data-i18n="selectCategory">Выбор категории</span>
+            <span>Выбор категории</span>
             <span class="close-btn" id="closeMenu">✕</span>
         </div>
         <div class="category-scroll-container">
             <div class="category-list" id="categoryList">
-                <button class="add-category-btn" id="addCategoryBtn" style="display: none;" onclick="openAddCategoryModal()">+</button>
+                <div class="category-item active" onclick="selectCategory(this, 'Варзидан')">Варзидан</div>
+                <div class="category-item" onclick="selectCategory(this, 'Мука')">Мука</div>
+                <div class="category-item" onclick="selectCategory(this, 'Комбикорм')">Комбикорм</div>
+                <div class="category-item" onclick="selectCategory(this, 'Пшеница')">Пшеница</div>
+                <div class="category-item" onclick="selectCategory(this, 'Ячмень')">Ячмень</div>
+                <div class="category-item" onclick="selectCategory(this, 'Кукуруза')">Кукуруза</div>
+                <div class="category-item" onclick="selectCategory(this, 'Селитра')">Селитра</div>
+                <div class="category-item" onclick="selectCategory(this, 'Карбамид')">Карбамид</div>
             </div>
         </div>
     </div>
@@ -33,52 +39,15 @@
     <div class="settings-modal" id="settingsModal">
         <div class="settings-content">
             <div class="settings-header">
-                <h3 id="settingsTitle" data-i18n="settings">Настройки</h3>
+                <h3>Настройки</h3>
                 <span class="close-btn" id="closeSettings">✕</span>
             </div>
             <div class="settings-section">
-                <label id="themeLabel" data-i18n="themeLabel">Цветовая схема:</label>
+                <label>Цветовая схема:</label>
                 <div class="settings-options">
-                    <button class="option-btn" onclick="setTheme('light')">☀️ <span id="lightText" data-i18n="lightMode">Дневной режим</span></button>
-                    <button class="option-btn" onclick="setTheme('dark')">🌙 <span id="darkText" data-i18n="darkMode">Ночной режим</span></button>
+                    <button class="option-btn" onclick="setTheme('light')">☀️ Дневной режим</button>
+                    <button class="option-btn" onclick="setTheme('dark')">🌙 Ночной режим</button>
                 </div>
-            </div>
-            <div class="settings-section">
-                <label id="langLabel" data-i18n="langLabel">Язык:</label>
-                <div class="settings-options">
-                    <button class="option-btn" onclick="setLanguage('tg')">🇹🇯 Тоҷикӣ</button>
-                    <button class="option-btn" onclick="setLanguage('ru')">🇷🇺 Русский</button>
-                </div>
-            </div>
-            <div class="settings-section">
-                <button class="option-btn admin-toggle-btn" onclick="openAdminModal()" id="adminToggleBtn" data-i18n="adminModeBtn">🔐 Режим Админа</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="settings-modal" id="adminModal">
-        <div class="settings-content">
-            <div class="settings-header">
-                <h3 data-i18n="enterPassword">Введите пароль</h3>
-                <span class="close-btn" onclick="closeAdminModal()">✕</span>
-            </div>
-            <div class="settings-section">
-                <input type="password" id="adminPasswordInput" data-i18n-placeholder="passwordPlaceholder" placeholder="Введите пароль админа..." class="order-input">
-                <button class="whatsapp-btn" style="margin-top: 10px; background: #2e7d32;" onclick="submitAdminPassword()" data-i18n="confirmBtn">Подтвердить</button>
-                <p id="adminErrorMsg" style="color: #e53935; font-size: 12px; margin-top: 8px; display: none;" data-i18n="wrongPassword">Неверный пароль!</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="settings-modal" id="addCatModal">
-        <div class="settings-content">
-            <div class="settings-header">
-                <h3 data-i18n="addProduct">Добавить продукт</h3>
-                <span class="close-btn" onclick="closeAddCategoryModal()">✕</span>
-            </div>
-            <div class="settings-section">
-                <input type="text" id="newCatInput" data-i18n-placeholder="newProductPlaceholder" placeholder="Введите название нового продукта..." class="order-input">
-                <button class="whatsapp-btn" style="margin-top: 10px; background: #2e7d32;" onclick="confirmAddCategory()" data-i18n="addBtn">Добавить</button>
             </div>
         </div>
     </div>
@@ -86,8 +55,7 @@
     <main class="main-content">
         <div class="post-card">
             <div class="post-header">
-                <span class="post-channel-name" id="postChannelName" style="display: none;">Варзидан</span>
-                <span class="post-time" id="postTime" data-i18n="justNow">Только что</span>
+                <span class="post-time">Только что</span>
             </div>
             <div class="post-text" id="postText">
                 ✅ <b>НОВЫЕ ОБЪЯВЛЕНИЯ</b><br>
@@ -107,12 +75,12 @@
 
         <div class="order-section">
             <div class="order-box">
-                <h3 id="orderTitle" data-i18n="orderTitle">🛒 Заказ</h3>
-                <p id="orderDesc" data-i18n="orderDesc">Отправьте свое имя и номер телефона для заказа:</p>
+                <h3>🛒 Заказ</h3>
+                <p>Отправьте свое имя и номер телефона для заказа:</p>
                 <form id="orderForm" onsubmit="sendToWhatsApp(event)">
-                    <input type="text" id="clientName" data-i18n-placeholder="namePlaceholder" placeholder="Ваше имя..." required class="order-input">
-                    <input type="tel" id="clientPhone" data-i18n-placeholder="phonePlaceholder" placeholder="Номер телефона (например: 900000000)..." required class="order-input">
-                    <button type="submit" class="whatsapp-btn" id="orderBtn" data-i18n="whatsappBtn">📲 Отправить заказ в WhatsApp</button>
+                    <input type="text" id="clientName" placeholder="Ваше имя..." required class="order-input">
+                    <input type="tel" id="clientPhone" placeholder="Номер телефона (например: 900000000)..." required class="order-input">
+                    <button type="submit" class="whatsapp-btn">📲 Отправить заказ в WhatsApp</button>
                 </form>
             </div>
         </div>
