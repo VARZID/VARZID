@@ -21,9 +21,15 @@ body.light-theme .dropdown-menu { background: #ffffff; border-bottom: 1px solid 
 .category-scroll-container::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
 
 .category-list { display: inline-flex; gap: 10px; align-items: center; }
-.category-item { display: inline-flex; align-items: center; padding: 10px 15px; background: #2a2a2a; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
+.category-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; background: #2a2a2a; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
 body.light-theme .category-item { background: #eee; }
 .category-item.active { border: 1px solid #2e7d32; }
+
+/* Тугмаи несткунӣ дар ҳолати муқаррарӣ пинҳон аст */
+.delete-cat-btn { display: none; background: #e53935; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; align-items: center; justify-content: center; cursor: pointer; margin-left: 5px; }
+
+/* Танҳо вақте ки класси admin-active илова мешавад, тугмаи несткунӣ намоён мешавад */
+.category-list.admin-active .delete-cat-btn { display: inline-flex; }
 
 .add-category-btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; background: #2e7d32; color: white; border: none; border-radius: 8px; font-size: 20px; cursor: pointer; flex-shrink: 0; font-weight: bold; }
 
