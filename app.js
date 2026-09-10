@@ -52,7 +52,7 @@ function submitAdminPassword() {
         isAdmin = true;
         document.getElementById('addCategoryBtn').style.display = 'inline-flex';
         closeAdminModal();
-        renderCategories(); // Барои нишон додани тугмачаҳои несткунӣ (✕)
+        renderCategories();
     } else {
         errorMsg.style.display = 'block';
     }
@@ -68,7 +68,6 @@ function closeAddCategoryModal() {
     document.getElementById('addCatModal').style.display = 'none';
 }
 
-// Рӯйхати пешфарз ва маҳфузгардонии категорияҳо
 let defaultCategories = ['Варзидан', 'Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
 
 function getSavedCategories() {
@@ -84,7 +83,6 @@ function renderCategories() {
     const categoryList = document.getElementById('categoryList');
     const addBtn = document.getElementById('addCategoryBtn');
     
-    // Ҳамаи элементҳои категорияро тоза мекунем (ғайр аз тугмаи +)
     document.querySelectorAll('.category-item').forEach(el => el.remove());
     
     const categories = getSavedCategories();
@@ -99,9 +97,8 @@ function renderCategories() {
         
         let html = `<span class="cat-name">${catName}</span>`;
         
-        // Агар админ бошад ва категория ғайри «Варзидан» бошад, тугмаи несткунӣ илова мешавад
         if (isAdmin && catName !== 'Варзидан') {
-            html += ` <span class="delete-cat-btn" onclick="deleteCategory(event, '${catName}')" style="margin-left: 8px; color: #ff5252; font-weight: bold; cursor: pointer;">✕</span>`;
+            html += ` <span class="delete-cat-btn" onclick="confirmDeleteCategory(event, '${catName}')" style="margin-left: 8px; color: #ff5252; font-weight: bold; cursor: pointer;" title="Нест кардан">✕</span>`;
         }
         
         newItem.innerHTML = html;
@@ -133,20 +130,23 @@ function confirmAddCategory() {
     }
 }
 
-function deleteCategory(event, catName) {
+// Тасдиқ пеш аз нест кардан (бо confirm)
+function confirmDeleteCategory(event, catName) {
     event.stopPropagation();
     if (!isAdmin) return;
     
-    let categories = getSavedCategories();
-    categories = categories.filter(c => c !== catName);
-    saveCategories(categories);
-    
-    // Агар категорияи нестшуда кушода бошад, ба «Варзидан» бармегардем
-    if (document.getElementById('channelName').textContent === catName) {
-        selectCategory(document.querySelector('.category-item'), 'Варзидан');
+    const isConfirmed = window.confirm(`Оё шумо мутмаин ҳастед, ки мехоҳед категорияи "${catName}"-ро нест кунед?`);
+    if (isConfirmed) {
+        let categories = getSavedCategories();
+        categories = categories.filter(c => c !== catName);
+        saveCategories(categories);
+        
+        if (document.getElementById('channelName').textContent === catName) {
+            selectCategory(document.querySelector('.category-item'), 'Варзидан');
+        }
+        
+        renderCategories();
     }
-    
-    renderCategories();
 }
 
 function selectCategory(itemElement, catName) {
@@ -168,7 +168,6 @@ function selectCategory(itemElement, catName) {
     arrowIcon.classList.remove('rotate');
 }
 
-// Ҳангоми боркунии саҳифа категорияҳо аз хотира хонда мешаванд
 window.addEventListener('DOMContentLoaded', () => {
     renderCategories();
 });
