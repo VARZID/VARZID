@@ -1,91 +1,334 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tg" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#16843a">
     <title>VARZID</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="light-theme">
-    <header class="header">
-        <div class="brand-selector" id="menuToggle">
-            <span class="brand-title" id="channelName">Варзидан</span>
-            <span class="arrow" id="arrowIcon">▼</span>
-        </div>
-        <div class="header-icons">
-            <span class="icon" id="settingsIcon">⚙️</span>
-        </div>
-    </header>
 
-    <div class="dropdown-menu" id="dropdownMenu">
-        <div class="menu-header">
-            <span>Выбор категории</span>
-            <span class="close-btn" id="closeMenu">✕</span>
-        </div>
-        <div class="category-scroll-container">
-            <div class="category-list" id="categoryList">
-                <div class="category-item active" onclick="selectCategory(this, 'Варзидан')">Варзидан</div>
-                <div class="category-item" onclick="selectCategory(this, 'Мука')">Мука</div>
-                <div class="category-item" onclick="selectCategory(this, 'Комбикорм')">Комбикорм</div>
-                <div class="category-item" onclick="selectCategory(this, 'Пшеница')">Пшеница</div>
-                <div class="category-item" onclick="selectCategory(this, 'Ячмень')">Ячмень</div>
-                <div class="category-item" onclick="selectCategory(this, 'Кукуруза')">Кукуруза</div>
-                <div class="category-item" onclick="selectCategory(this, 'Селитра')">Селитра</div>
-                <div class="category-item" onclick="selectCategory(this, 'Карбамид')">Карбамид</div>
-            </div>
-        </div>
+<header class="header">
+    <div class="brand-selector" id="menuToggle">
+        <span class="brand-title">VARZID</span>
+        <span class="arrow" id="arrowIcon">▼</span>
     </div>
 
-    <div class="settings-modal" id="settingsModal">
-        <div class="settings-content">
-            <div class="settings-header">
-                <h3>Настройки</h3>
-                <span class="close-btn" id="closeSettings">✕</span>
-            </div>
-            <div class="settings-section">
-                <label>Цветовая схема:</label>
-                <div class="settings-options">
-                    <button class="option-btn" onclick="setTheme('light')">☀️ Дневной режим</button>
-                    <button class="option-btn" onclick="setTheme('dark')">🌙 Ночной режим</button>
-                </div>
-            </div>
-        </div>
+    <div class="header-icons">
+        <button class="exit-admin-icon" id="exitAdminBtn" type="button" style="display:none">
+            ✖ <span id="adminExitText">Админ</span>
+        </button>
+
+        <button class="icon-button" id="settingsIcon" type="button">
+            ⚙️
+        </button>
+    </div>
+</header>
+
+<div class="dropdown-menu" id="dropdownMenu">
+    <div class="menu-header">
+        <span id="catMenuTitle">Интихоби категория</span>
+        <button class="close-btn" id="closeMenu" type="button">✕</button>
     </div>
 
-    <main class="main-content">
-        <div class="post-card">
-            <div class="post-header">
-                <span class="post-time">Только что</span>
-            </div>
-            <div class="post-text" id="postText">
-                ✅ <b>НОВЫЕ ОБЪЯВЛЕНИЯ</b><br>
-                Различные товары и их видеоматериалы:
-            </div>
-            <div class="post-media-box">
-                <video class="post-video" controls>
-                    <source src="video.mp4" type="video/mp4">
-                    Видео не поддерживается.
-                </video>
-            </div>
-            <div class="post-footer">
-                <button class="reaction-btn" id="likeBtn">👍 <span id="likeCount">0</span></button>
-                <button class="reaction-btn" id="loveBtn">❤️ <span id="loveCount">0</span></button>
+    <div class="category-scroll-container">
+        <div class="category-list" id="categoryList"></div>
+    </div>
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+
+        <div class="settings-header">
+            <h3 id="settingsTitle">Танзимот</h3>
+            <button class="close-btn" id="closeSettings" type="button">✕</button>
+        </div>
+
+        <div class="settings-section">
+            <label id="themeLabel">Мавзӯи рангӣ:</label>
+
+            <div class="settings-options">
+                <button class="option-btn" onclick="setTheme('light')">
+                    ☀️ <span id="lightText">Режими рӯзона</span>
+                </button>
+
+                <button class="option-btn" onclick="setTheme('dark')">
+                    🌙 <span id="darkText">Режими шабона</span>
+                </button>
             </div>
         </div>
 
-        <div class="order-section">
-            <div class="order-box">
-                <h3>🛒 Заказ</h3>
-                <p>Отправьте свое имя и номер телефона для заказа:</p>
-                <form id="orderForm" onsubmit="sendToWhatsApp(event)">
-                    <input type="text" id="clientName" placeholder="Ваше имя..." required class="order-input">
-                    <input type="tel" id="clientPhone" placeholder="Номер телефона (например: 900000000)..." required class="order-input">
-                    <button type="submit" class="whatsapp-btn">📲 Отправить заказ в WhatsApp</button>
-                </form>
+        <div class="settings-section">
+            <label id="langLabel">Забон:</label>
+
+            <div class="settings-options">
+                <button class="option-btn" onclick="setLanguage('tg')">
+                    🇹🇯 Тоҷикӣ
+                </button>
+
+                <button class="option-btn" onclick="setLanguage('ru')">
+                    🇷🇺 Русский
+                </button>
             </div>
         </div>
-    </main>
 
-    <script src="app.js"></script>
+        <div class="settings-section">
+            <button class="option-btn admin-toggle-btn"
+                    onclick="openAdminModal()"
+                    id="adminToggleBtn">
+                🔐 Ҳолати Админ
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ADMIN -->
+
+<div class="settings-modal" id="adminModal">
+    <div class="settings-content">
+
+        <div class="settings-header">
+            <h3 id="adminModalTitle">Ворид кардани парол</h3>
+
+            <button class="close-btn"
+                    type="button"
+                    onclick="closeAdminModal()">
+                ✕
+            </button>
+        </div>
+
+        <div class="settings-section">
+
+            <input
+                type="password"
+                id="adminPasswordInput"
+                class="order-input"
+                placeholder="Рамзи админро ворид кунед..."
+            >
+
+            <button
+                class="whatsapp-btn admin-submit"
+                onclick="submitAdminPassword()"
+                id="adminSubmitBtn">
+                Тасдиқ
+            </button>
+
+            <p id="adminErrorMsg"
+               class="error-msg"
+               style="display:none">
+                Рамзи нодуруст!
+            </p>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ADD CATEGORY -->
+
+<div class="settings-modal" id="addCatModal">
+    <div class="settings-content">
+
+        <div class="settings-header">
+            <h3 id="addCatTitle">Иловаи категория</h3>
+
+            <button
+                class="close-btn"
+                onclick="closeAddCategoryModal()">
+                ✕
+            </button>
+        </div>
+
+        <div class="settings-section">
+
+            <input
+                type="text"
+                id="newCatInput"
+                class="order-input"
+                maxlength="40"
+                placeholder="Номи категорияи нав..."
+            >
+
+            <button
+                class="whatsapp-btn admin-submit"
+                onclick="confirmAddCategory()"
+                id="addCatConfirm">
+                Илова кардан
+            </button>
+
+        </div>
+    </div>
+</div>
+
+
+<main class="main-content">
+
+    <section class="channel-info">
+
+        <div class="channel-avatar">
+            V
+        </div>
+
+        <div class="channel-details">
+            <h2 id="channelName">Варзидан</h2>
+            <p>VARZID</p>
+        </div>
+
+        <span class="status-dot"></span>
+
+    </section>
+
+
+    <!-- POST -->
+
+    <article class="post-card">
+
+        <div class="post-header">
+            <span
+                class="post-channel-name"
+                id="postChannelName">
+                Варзидан
+            </span>
+
+            <span
+                class="post-time"
+                id="postTime">
+                Ҳоло
+            </span>
+        </div>
+
+
+        <div class="post-text" id="postText">
+
+            ✅ <b>ЭЪЛОНИ НАВ</b><br>
+            Молу маҳсулоти нав ва навори он:
+
+        </div>
+
+
+        <div class="post-media-box">
+
+            <video
+                class="post-video"
+                controls
+                preload="metadata">
+
+                <source src="video.mp4" type="video/mp4">
+
+                Видео дастгирӣ намешавад.
+
+            </video>
+
+        </div>
+
+
+        <div class="post-footer">
+
+            <button
+                class="reaction-btn"
+                id="likeBtn"
+                type="button">
+
+                👍 <span id="likeCount">0</span>
+
+            </button>
+
+
+            <button
+                class="reaction-btn"
+                id="loveBtn"
+                type="button">
+
+                ❤️ <span id="loveCount">0</span>
+
+            </button>
+
+        </div>
+
+    </article>
+
+
+    <!-- ORDER -->
+
+    <section class="order-section">
+
+        <div class="order-box">
+
+            <h3 id="orderTitle">
+                🛒 Заказ / Фармоиш
+            </h3>
+
+            <p id="orderDesc">
+                Барои фармоиш ном ва рақами худро фиристед:
+            </p>
+
+
+            <form id="orderForm">
+
+                <input
+                    type="text"
+                    id="clientName"
+                    class="order-input"
+                    required
+                    placeholder="Номи шумо..."
+                >
+
+
+                <input
+                    type="tel"
+                    id="clientPhone"
+                    class="order-input"
+                    required
+                    inputmode="tel"
+                    placeholder="Рақами телефон..."
+                >
+
+
+                <textarea
+                    id="clientLocation"
+                    class="order-input order-textarea"
+                    rows="3"
+                    required
+                    placeholder="Ҷойи расонидан..."></textarea>
+
+
+                <button
+                    type="submit"
+                    class="whatsapp-btn"
+                    id="orderBtn">
+
+                    📲 Фиристодани фармоиш ба WhatsApp
+
+                </button>
+
+            </form>
+
+
+            <p
+                class="delivery-note"
+                id="deliveryNote">
+
+                Арзиши расонидан вобаста ба масофа аст.
+
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+
 </body>
 </html>
