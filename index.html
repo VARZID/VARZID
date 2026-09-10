@@ -14,7 +14,6 @@
         </div>
     </header>
 
-    <!-- Тугмаи ивазкунии категорияҳо -->
     <div class="category-toggle-bar">
         <div class="brand-selector" id="menuToggle">
             <span id="activeCatDisplay">Варзидан</span>
@@ -84,7 +83,6 @@
         </div>
     </div>
 
-    <!-- Modal барои пароли Админ -->
     <div class="settings-modal" id="adminModal">
         <div class="settings-content">
             <div class="settings-header">
@@ -99,7 +97,6 @@
         </div>
     </div>
 
-    <!-- Modal барои илова кардани категорияи нав -->
     <div class="settings-modal" id="addCatModal">
         <div class="settings-content">
             <div class="settings-header">
@@ -120,30 +117,26 @@
             </div>
         </div>
 
-        <div class="post-card">
-            <div class="post-header">
-                <span class="post-channel-name" id="postChannelName">Варзидан</span>
-                <span class="post-time" id="postTime">Ҳоло</span>
-            </div>
-            <div class="post-text" id="postText">
-                ✅ <b>ЭЪЛОНИ НАВ</b><br>
-                Молу маҳсулоти нав ва навори он:
-            </div>
-            <div class="post-media-box">
-                <video class="post-video" controls>
-                    <source src="video.mp4" type="video/mp4">
-                    Видео дастгирӣ намешавад.
-                </video>
-            </div>
-            <div class="post-footer">
-                <button class="reaction-btn" id="likeBtn">👍 <span id="likeCount">0</span></button>
-                <button class="reaction-btn" id="loveBtn">❤️ <span id="loveCount">0</span></button>
-            </div>
+        <!-- Галереяи маҳсулот бо услуби Инстаграм (Сетка) -->
+        <div class="instagram-gallery">
+            <div class="gallery-item"><span>📦</span></div>
+            <div class="gallery-item"><span>📦</span></div>
+            <div class="gallery-item"><span>📦</span></div>
+            <div class="gallery-item"><span>📦</span></div>
+            <div class="gallery-item"><span>📦</span></div>
+            <div class="gallery-item"><span>📦</span></div>
         </div>
 
-        <div class="order-section">
-            <div class="order-box">
-                <h3 id="orderTitle">🛒 Заказ / Фармоиш</h3>
+        <!-- Тугмаи شناور (Floating) дар поёни рост барои Заказ -->
+        <button class="floating-order-btn" id="toggleOrderBtn" onclick="toggleOrderForm()">🛒 Заказ</button>
+
+        <!-- Қисми закази пинҳоншуда (Модал ё формаи кушодашаванда) -->
+        <div class="order-modal-overlay" id="orderModalOverlay" style="display: none;">
+            <div class="order-section" id="orderSection">
+                <div class="settings-header" style="margin-bottom: 10px;">
+                    <h3 id="orderTitle">🛒 Заказ / Фармоиш</h3>
+                    <span class="close-btn" onclick="toggleOrderForm()">✕</span>
+                </div>
                 <p id="orderDesc">Барои фармоиш ном ва рақами худро фиристед:</p>
                 <form id="orderForm" onsubmit="sendToWhatsApp(event)">
                     <input type="text" id="clientName" placeholder="Номи шумо..." required class="order-input">
