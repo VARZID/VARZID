@@ -1,251 +1,69 @@
-const menuToggle = document.getElementById('menuToggle');
-const dropdownMenu = document.getElementById('dropdownMenu');
-const closeMenu = document.getElementById('closeMenu');
-const arrowIcon = document.getElementById('arrowIcon');
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+body.dark-theme { background-color: #121212; color: #ffffff; }
+body.light-theme { background-color: #f5f5f5; color: #222222; }
 
-menuToggle.addEventListener('click', () => {
-    dropdownMenu.classList.toggle('show');
-    arrowIcon.classList.toggle('rotate');
-});
+.header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #1e1e1e; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
+body.light-theme .header { background: #ffffff; border-bottom: 1px solid #ddd; }
 
-closeMenu.addEventListener('click', () => {
-    dropdownMenu.classList.remove('show');
-    arrowIcon.classList.remove('rotate');
-});
+.brand-selector { display: flex; align-items: center; gap: 5px; cursor: pointer; font-weight: bold; font-size: 18px; }
+.header-icons { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 
-const settingsIcon = document.getElementById('settingsIcon');
-const settingsModal = document.getElementById('settingsModal');
-const closeSettings = document.getElementById('closeSettings');
+.exit-admin-icon { background: rgba(255, 82, 82, 0.15); padding: 5px 10px; border-radius: 6px; display: flex; align-items: center; gap: 4px; }
 
-settingsIcon.addEventListener('click', () => settingsModal.style.display = 'flex');
-closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
+.dropdown-menu { display: none; position: absolute; top: 60px; left: 0; width: 100%; background: #1e1e1e; border-bottom: 1px solid #333; z-index: 99; padding: 15px; }
+.dropdown-menu.show { display: block; }
+body.light-theme .dropdown-menu { background: #ffffff; border-bottom: 1px solid #ddd; }
 
-// Интихоби мавзӯъ ва захира кардани он танҳо барои ҳамин муштари дар дастгоҳаш
-function setTheme(theme) {
-    if (theme === 'light') {
-        document.body.classList.remove('dark-theme');
-        document.body.classList.add('light-theme');
-        localStorage.setItem('varzid_theme', 'light');
-    } else {
-        document.body.classList.remove('light-theme');
-        document.body.classList.add('dark-theme');
-        localStorage.setItem('varzid_theme', 'dark');
-    }
-    settingsModal.style.display = 'none';
-}
+.menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; }
+.close-btn { cursor: pointer; font-size: 18px; }
 
-let isAdmin = false;
+.category-scroll-container { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; }
+.category-scroll-container::-webkit-scrollbar { height: 4px; }
+.category-scroll-container::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
 
-function openAdminModal() {
-    settingsModal.style.display = 'none';
-    document.getElementById('adminPasswordInput').value = '';
-    document.getElementById('adminErrorMsg').style.display = 'none';
-    document.getElementById('adminModal').style.display = 'flex';
-}
+.category-list { display: inline-flex; gap: 10px; align-items: center; padding-right: 15px; }
+.category-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; background: #2a2a2a; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
+body.light-theme .category-item { background: #eee; }
+.category-item.active { border: 1px solid #2e7d32; }
 
-function closeAdminModal() {
-    document.getElementById('adminModal').style.display = 'none';
-}
+.delete-cat-btn { background: rgba(255, 82, 82, 0.2); color: #ff5252; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.delete-cat-btn:hover { background: #ff5252; color: white; }
 
-function submitAdminPassword() {
-    const password = document.getElementById('adminPasswordInput').value;
-    const errorMsg = document.getElementById('adminErrorMsg');
-    
-    if (password === "varzid2026") {
-        isAdmin = true;
-        document.getElementById('addCategoryBtn').style.display = 'inline-flex';
-        document.getElementById('exitAdminBtn').style.display = 'inline-flex';
-        closeAdminModal();
-        renderCategories();
-    } else {
-        errorMsg.style.display = 'block';
-    }
-}
+.add-category-btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; background: #2e7d32; color: white; border: none; border-radius: 8px; font-size: 20px; cursor: pointer; flex-shrink: 0; font-weight: bold; }
 
-function exitAdminMode() {
-    isAdmin = false;
-    document.getElementById('addCategoryBtn').style.display = 'none';
-    document.getElementById('exitAdminBtn').style.display = 'none';
-    renderCategories();
-}
+.settings-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; }
+.settings-content { background: #1e1e1e; padding: 20px; border-radius: 12px; width: 90%; max-width: 320px; }
+body.light-theme .settings-content { background: #ffffff; }
 
-function openAddCategoryModal() {
-    if (!isAdmin) return;
-    document.getElementById('newCatInput').value = '';
-    document.getElementById('addCatModal').style.display = 'flex';
-}
+.settings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.settings-header h3 { margin: 0; }
+.settings-header .close-btn { cursor: pointer; font-size: 18px; order: 2; }
 
-function closeAddCategoryModal() {
-    document.getElementById('addCatModal').style.display = 'none';
-}
+.settings-section { margin-top: 15px; }
+.settings-options { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+.option-btn { padding: 10px; border: none; border-radius: 8px; background: #333; color: white; cursor: pointer; text-align: left; }
+body.light-theme .option-btn { background: #ddd; color: black; }
+.admin-toggle-btn { background: #b71c1c !important; color: white !important; text-align: center !important; font-weight: bold; }
 
-let defaultCategories = ['Варзидан', 'Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
+.main-content { max-width: 600px; margin: 0 auto; padding: 15px; }
+.channel-info { display: flex; align-items: center; gap: 15px; background: #1e1e1e; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+body.light-theme .channel-info { background: #ffffff; }
+.channel-avatar { width: 50px; height: 50px; background: #2e7d32; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
+.channel-details { flex-grow: 1; }
 
-function getSavedCategories() {
-    const saved = localStorage.getItem('varzid_categories');
-    return saved ? JSON.parse(saved) : defaultCategories;
-}
+.post-card { background: #1e1e1e; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+body.light-theme .post-card { background: #ffffff; }
+.post-header { display: flex; justify-content: space-between; font-size: 13px; color: #aaa; margin-bottom: 10px; }
+.post-text { font-size: 15px; line-height: 1.4; margin-bottom: 10px; }
+.post-media-box { width: 100%; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+.post-video { width: 100%; max-height: 350px; display: block; }
+.post-footer { display: flex; gap: 15px; }
+.reaction-btn { background: none; border: none; color: inherit; cursor: pointer; font-size: 15px; display: flex; align-items: center; gap: 5px; }
 
-function saveCategories(categories) {
-    localStorage.setItem('varzid_categories', JSON.stringify(categories));
-}
-
-function renderCategories() {
-    const categoryList = document.getElementById('categoryList');
-    const addBtn = document.getElementById('addCategoryBtn');
-    
-    document.querySelectorAll('.category-item').forEach(el => el.remove());
-    
-    const categories = getSavedCategories();
-    
-    categories.forEach(catName => {
-        const newItem = document.createElement('div');
-        newItem.className = 'category-item';
-        if (catName === document.getElementById('channelName').textContent) {
-            newItem.classList.add('active');
-        }
-        newItem.setAttribute('data-cat', catName);
-        
-        let html = `<span class="cat-name">${catName}</span>`;
-        
-        if (isAdmin && catName !== 'Варзидан') {
-            html += `<span class="delete-cat-btn" onclick="confirmDeleteCategory(event, '${catName}')" title="Нест кардан">✕</span>`;
-        }
-        
-        newItem.innerHTML = html;
-        newItem.addEventListener('click', (e) => {
-            if(e.target.classList.contains('delete-cat-btn')) return;
-            selectCategory(newItem, catName);
-        });
-        
-        categoryList.insertBefore(newItem, addBtn);
-    });
-    
-    if (isAdmin) {
-        addBtn.style.display = 'inline-flex';
-        document.getElementById('exitAdminBtn').style.display = 'inline-flex';
-    } else {
-        addBtn.style.display = 'none';
-        document.getElementById('exitAdminBtn').style.display = 'none';
-    }
-}
-
-function confirmAddCategory() {
-    const catName = document.getElementById('newCatInput').value.trim();
-    if (catName) {
-        let categories = getSavedCategories();
-        if (!categories.includes(catName)) {
-            categories.push(catName);
-            saveCategories(categories);
-            renderCategories();
-        }
-        closeAddCategoryModal();
-    }
-}
-
-function confirmDeleteCategory(event, catName) {
-    event.stopPropagation();
-    if (!isAdmin) return;
-    
-    const isConfirmed = window.confirm(`Оё шумо мутмаин ҳастед, ки мехоҳед категорияи "${catName}"-ро нест кунед?`);
-    if (isConfirmed) {
-        let categories = getSavedCategories();
-        categories = categories.filter(c => c !== catName);
-        saveCategories(categories);
-        
-        if (document.getElementById('channelName').textContent === catName) {
-            selectCategory(document.querySelector('.category-item'), 'Варзидан');
-        }
-        
-        renderCategories();
-    }
-}
-
-function selectCategory(itemElement, catName) {
-    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
-    if(itemElement) itemElement.classList.add('active');
-    
-    document.getElementById('channelName').textContent = catName;
-    document.getElementById('postChannelName').textContent = catName;
-    
-    const specificCategories = ['Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
-    
-    if (specificCategories.includes(catName)) {
-        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Маҳсулоти ${catName} ва навъҳои он:`;
-    } else {
-        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти гуногун ва навори онҳо:`;
-    }
-    
-    dropdownMenu.classList.remove('show');
-    arrowIcon.classList.remove('rotate');
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    // Санҷидани мавзӯи шахсии муштари аз хотираи телефон (агар набошад пешфарз рӯзона аст)
-    const savedTheme = localStorage.getItem('varzid_theme') || 'light';
-    setTheme(savedTheme);
-    renderCategories();
-});
-
-let currentLang = 'tg';
-function setLanguage(lang) {
-    currentLang = lang;
-    if (lang === 'ru') {
-        document.getElementById('catMenuTitle').textContent = 'Выбор категории';
-        document.getElementById('settingsTitle').textContent = 'Настройки';
-        document.getElementById('themeLabel').textContent = 'Цветовая схема:';
-        document.getElementById('lightText').textContent = 'Дневной режим';
-        document.getElementById('darkText').textContent = 'Ночной режим';
-        document.getElementById('langLabel').textContent = 'Язык:';
-        document.getElementById('adminToggleBtn').textContent = '🔐 Режим Админа';
-        document.getElementById('postTime').textContent = 'Только что';
-        document.getElementById('orderTitle').textContent = '🛒 Заказ';
-        document.getElementById('orderDesc').textContent = 'Отправьте имя и номер для заказа:';
-        document.getElementById('clientName').placeholder = 'Ваше имя...';
-        document.getElementById('clientPhone').placeholder = 'Номер телефона (например: 900000000)...';
-        document.getElementById('orderBtn').textContent = '📲 Отправить заказ в WhatsApp';
-    } else {
-        document.getElementById('catMenuTitle').textContent = 'Интихоби категория';
-        document.getElementById('settingsTitle').textContent = 'Танзимот';
-        document.getElementById('themeLabel').textContent = 'Мавзӯи рангӣ:';
-        document.getElementById('lightText').textContent = 'Режими рӯзона';
-        document.getElementById('darkText').textContent = 'Режими шабона';
-        document.getElementById('langLabel').textContent = 'Забон:';
-        document.getElementById('adminToggleBtn').textContent = '🔐 Ҳолати Админ';
-        document.getElementById('postTime').textContent = 'Ҳоло';
-        document.getElementById('orderTitle').textContent = '🛒 Заказ / Фармоиш';
-        document.getElementById('orderDesc').textContent = 'Барои фармоиш ном ва рақами худро фиристед:';
-        document.getElementById('clientName').placeholder = 'Номи шумо...';
-        document.getElementById('clientPhone').placeholder = 'Рақами телефон (масалан: 900000000)...';
-        document.getElementById('orderBtn').textContent = '📲 Фиристодани фармоиш ба WhatsApp';
-    }
-    settingsModal.style.display = 'none';
-}
-
-const likeBtn = document.getElementById('likeBtn');
-const likeCountSpan = document.getElementById('likeCount');
-let likes = 0, liked = false;
-likeBtn.addEventListener('click', () => {
-    likes += (liked ? -1 : 1);
-    liked = !liked;
-    likeBtn.style.color = liked ? '#e53935' : 'inherit';
-    likeCountSpan.textContent = likes;
-});
-
-const loveBtn = document.getElementById('loveBtn');
-const loveCountSpan = document.getElementById('loveCount');
-let loves = 0, loved = false;
-loveBtn.addEventListener('click', () => {
-    loves += (loved ? -1 : 1);
-    loved = !loved;
-    loveBtn.style.color = loved ? '#e53935' : 'inherit';
-    loveCountSpan.textContent = loves;
-});
-
-function sendToWhatsApp(event) {
-    event.preventDefault();
-    const name = document.getElementById('clientName').value;
-    const phone = document.getElementById('clientPhone').value;
-    const text = `Салом! Ман заказ кардан мехохам.%0A👤 Ном: ${name}%0A📞 Телефон: ${phone}`;
-    window.open(`https://wa.me/992000001606?text=${text}`, '_blank');
-}
+.order-section { background: #1e1e1e; padding: 15px; border-radius: 12px; }
+body.light-theme .order-section { background: #ffffff; }
+.order-box h3 { margin-bottom: 5px; }
+.order-box p { font-size: 13px; color: #aaa; margin-bottom: 10px; }
+.order-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: white; }
+body.light-theme .order-input { background: #f9f9f9; color: black; border: 1px solid #ccc; }
+.whatsapp-btn { width: 100%; padding: 12px; background: #25d366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
