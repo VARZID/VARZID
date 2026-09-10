@@ -20,13 +20,16 @@ const closeSettings = document.getElementById('closeSettings');
 settingsIcon.addEventListener('click', () => settingsModal.style.display = 'flex');
 closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
 
+// Интихоби мавзӯъ ва захира кардани он танҳо барои ҳамин муштари дар дастгоҳаш
 function setTheme(theme) {
     if (theme === 'light') {
         document.body.classList.remove('dark-theme');
         document.body.classList.add('light-theme');
+        localStorage.setItem('varzid_theme', 'light');
     } else {
         document.body.classList.remove('light-theme');
         document.body.classList.add('dark-theme');
+        localStorage.setItem('varzid_theme', 'dark');
     }
     settingsModal.style.display = 'none';
 }
@@ -51,11 +54,19 @@ function submitAdminPassword() {
     if (password === "varzid2026") {
         isAdmin = true;
         document.getElementById('addCategoryBtn').style.display = 'inline-flex';
+        document.getElementById('exitAdminBtn').style.display = 'inline-flex';
         closeAdminModal();
         renderCategories();
     } else {
         errorMsg.style.display = 'block';
     }
+}
+
+function exitAdminMode() {
+    isAdmin = false;
+    document.getElementById('addCategoryBtn').style.display = 'none';
+    document.getElementById('exitAdminBtn').style.display = 'none';
+    renderCategories();
 }
 
 function openAddCategoryModal() {
@@ -98,7 +109,7 @@ function renderCategories() {
         let html = `<span class="cat-name">${catName}</span>`;
         
         if (isAdmin && catName !== 'Варзидан') {
-            html += ` <span class="delete-cat-btn" onclick="confirmDeleteCategory(event, '${catName}')" style="margin-left: 8px; color: #ff5252; font-weight: bold; cursor: pointer;" title="Нест кардан">✕</span>`;
+            html += `<span class="delete-cat-btn" onclick="confirmDeleteCategory(event, '${catName}')" title="Нест кардан">✕</span>`;
         }
         
         newItem.innerHTML = html;
@@ -112,8 +123,10 @@ function renderCategories() {
     
     if (isAdmin) {
         addBtn.style.display = 'inline-flex';
+        document.getElementById('exitAdminBtn').style.display = 'inline-flex';
     } else {
         addBtn.style.display = 'none';
+        document.getElementById('exitAdminBtn').style.display = 'none';
     }
 }
 
@@ -130,7 +143,6 @@ function confirmAddCategory() {
     }
 }
 
-// Тасдиқ пеш аз нест кардан (бо confirm)
 function confirmDeleteCategory(event, catName) {
     event.stopPropagation();
     if (!isAdmin) return;
@@ -169,6 +181,9 @@ function selectCategory(itemElement, catName) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    // Санҷидани мавзӯи шахсии муштари аз хотираи телефон (агар набошад пешфарз рӯзона аст)
+    const savedTheme = localStorage.getItem('varzid_theme') || 'light';
+    setTheme(savedTheme);
     renderCategories();
 });
 
