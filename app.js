@@ -2,6 +2,7 @@ const menuToggle = document.getElementById('menuToggle');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const closeMenu = document.getElementById('closeMenu');
 const arrowIcon = document.getElementById('arrowIcon');
+const activeCatDisplay = document.getElementById('activeCatDisplay');
 
 menuToggle.addEventListener('click', () => {
     dropdownMenu.classList.toggle('show');
@@ -89,6 +90,7 @@ function selectCategory(itemElement, catName) {
     document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
     itemElement.classList.add('active');
     
+    activeCatDisplay.textContent = catName;
     document.getElementById('channelName').textContent = catName;
     document.getElementById('postChannelName').textContent = catName;
     
