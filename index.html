@@ -8,24 +8,14 @@
 </head>
 <body class="dark-theme">
     <header class="header">
-        <div class="brand-container">
-            <div class="brand-title-only">VARZID</div>
-            <div class="subscriber-info">
-                <span id="subCount">1 млн подписчиков</span>
-                <button class="sub-btn" id="subBtn" onclick="toggleSubscribe()">Подписаться</button>
-            </div>
+        <div class="brand-selector" id="menuToggle">
+            <span class="brand-title">VARZID</span>
+            <span class="arrow" id="arrowIcon">▼</span>
         </div>
         <div class="header-icons">
             <span class="icon" id="settingsIcon">⚙️</span>
         </div>
     </header>
-
-    <div class="category-toggle-bar">
-        <div class="brand-selector" id="menuToggle">
-            <span id="activeCatDisplay">Варзидан</span>
-            <span class="arrow" id="arrowIcon">▼</span>
-        </div>
-    </div>
 
     <div class="dropdown-menu" id="dropdownMenu">
         <div class="menu-header">
@@ -89,6 +79,7 @@
         </div>
     </div>
 
+    <!-- Modal барои пароли Админ -->
     <div class="settings-modal" id="adminModal">
         <div class="settings-content">
             <div class="settings-header">
@@ -96,13 +87,14 @@
                 <span class="close-btn" onclick="closeAdminModal()">✕</span>
             </div>
             <div class="settings-section">
-                <input type="password" id="adminPasswordInput" placeholder="Рамзи админро ворид кунед..." class="admin-input">
-                <button class="admin-submit-btn" onclick="submitAdminPassword()">Тасдиқ</button>
+                <input type="password" id="adminPasswordInput" placeholder="Рамзи админро ворид кунед..." class="order-input">
+                <button class="whatsapp-btn" style="margin-top: 10px; background: #2e7d32;" onclick="submitAdminPassword()">Тасдиқ</button>
                 <p id="adminErrorMsg" style="color: #e53935; font-size: 12px; margin-top: 8px; display: none;">Рамзи нодуруст!</p>
             </div>
         </div>
     </div>
 
+    <!-- Modal барои илова кардани категорияи нав -->
     <div class="settings-modal" id="addCatModal">
         <div class="settings-content">
             <div class="settings-header">
@@ -110,8 +102,8 @@
                 <span class="close-btn" onclick="closeAddCategoryModal()">✕</span>
             </div>
             <div class="settings-section">
-                <input type="text" id="newCatInput" placeholder="Номи маҳсулоти навро ворид кунед..." class="admin-input">
-                <button class="admin-submit-btn" onclick="confirmAddCategory()">Илова кардан</button>
+                <input type="text" id="newCatInput" placeholder="Номи маҳсулоти навро ворид кунед..." class="order-input">
+                <button class="whatsapp-btn" style="margin-top: 10px; background: #2e7d32;" onclick="confirmAddCategory()">Илова кардан</button>
             </div>
         </div>
     </div>
@@ -123,16 +115,40 @@
             </div>
         </div>
 
-        <div class="instagram-gallery">
-            <div class="gallery-item"><span>📦</span></div>
-            <div class="gallery-item"><span>📦</span></div>
-            <div class="gallery-item"><span>📦</span></div>
-            <div class="gallery-item"><span>📦</span></div>
-            <div class="gallery-item"><span>📦</span></div>
-            <div class="gallery-item"><span>📦</span></div>
+        <div class="post-card">
+            <div class="post-header">
+                <span class="post-channel-name" id="postChannelName" style="display: none;">Варзидан</span>
+                <span class="post-time" id="postTime">Ҳоло</span>
+            </div>
+            <div class="post-text" id="postText">
+                ✅ <b>ЭЪЛОНИ НАВ</b><br>
+                Молу маҳсулоти нав ва навори он:
+            </div>
+            <div class="post-media-box">
+                <video class="post-video" controls>
+                    <source src="video.mp4" type="video/mp4">
+                    Видео дастгирӣ намешавад.
+                </video>
+            </div>
+            <div class="post-footer">
+                <button class="reaction-btn" id="likeBtn">👍 <span id="likeCount">0</span></button>
+                <button class="reaction-btn" id="loveBtn">❤️ <span id="loveCount">0</span></button>
+            </div>
+        </div>
+
+        <div class="order-section">
+            <div class="order-box">
+                <h3 id="orderTitle">🛒 Заказ / Фармоиш</h3>
+                <p id="orderDesc">Барои фармоиш ном ва рақами худро фиристед:</p>
+                <form id="orderForm" onsubmit="sendToWhatsApp(event)">
+                    <input type="text" id="clientName" placeholder="Номи шумо..." required class="order-input">
+                    <input type="tel" id="clientPhone" placeholder="Рақами телефон (масалан: 900000000)..." required class="order-input">
+                    <button type="submit" class="whatsapp-btn" id="orderBtn">📲 Фиристодани фармоиш ба WhatsApp</button>
+                </form>
+            </div>
         </div>
     </main>
 
     <script src="app.js"></script>
 </body>
-</html>
+                    </html>
