@@ -9,12 +9,12 @@
 <body class="light-theme">
     <header class="header">
         <div class="brand-selector" id="menuToggle">
-            <span class="brand-title">VARZID</span>
+            <span class="brand-title" id="channelName" data-cat-key="Варзидан">Варзидан</span>
             <span class="arrow" id="arrowIcon">▼</span>
         </div>
         <div class="header-icons">
-            <span class="icon exit-admin-icon" id="exitAdminBtn" style="display: none; color: #ff5252; font-weight: bold; font-size: 16px;" onclick="exitAdminMode()" title="Выйти из режима админа">✖ <span data-i18n="adminExit">Админ</span></span>
-            <span class="icon" id="settingsIcon">⚙️</span>
+            <span class="icon exit-admin-icon" id="exitAdminBtn" style="display: none; color: #ff5252; font-weight: bold; font-size: 16px;" onclick="exitAdminMode()">✖ <span data-i18n="adminExit">Админ</span></span>
+            <span class="icon" id="settingsIcon" style="cursor: pointer; font-size: 20px;">⚙️</span>
         </div>
     </header>
 
@@ -84,12 +84,6 @@
     </div>
 
     <main class="main-content">
-        <div class="channel-info" style="display: none;">
-            <div class="channel-details">
-                <h2 id="channelName" data-cat-key="Варзидан">Варзидан</h2>
-            </div>
-        </div>
-
         <div class="post-card">
             <div class="post-header">
                 <span class="post-channel-name" id="postChannelName" style="display: none;">Варзидан</span>
