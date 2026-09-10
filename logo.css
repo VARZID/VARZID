@@ -1,0 +1,22 @@
+/* Ҳамаи услубҳои логотип ва навиштаҷоти қудратманди VARZID дар якҷоягӣ */
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.header-logo-icon {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+.brand-text-power {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 2px 5px rgba(0, 0, 0, 0.8);
+}
