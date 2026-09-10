@@ -113,12 +113,12 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Ночной режим';
         document.getElementById('langLabel').textContent = 'Язык:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Режим Админа';
-        document.getElementById('toggleOrderBtn').textContent = '🛒 Заказ';
+        document.getElementById('orderBtnText').textContent = 'Заказ';
         document.getElementById('orderTitle').textContent = '🛒 Заказ';
-        document.getElementById('orderDesc').textContent = 'Отправьте имя и номер для заказа:';
+        document.getElementById('orderDesc').textContent = 'Введите данные для связи:';
         document.getElementById('clientName').placeholder = 'Ваше имя...';
         document.getElementById('clientPhone').placeholder = 'Номер телефона (например: 900000000)...';
-        document.getElementById('orderBtn').textContent = '📲 Отправить заказ в WhatsApp';
+        document.getElementById('orderSubmitBtn').textContent = '📲 Отправить в WhatsApp';
     } else {
         document.getElementById('catMenuTitle').textContent = 'Интихоби категория';
         document.getElementById('settingsTitle').textContent = 'Танзимот';
@@ -127,12 +127,12 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Режими шабона';
         document.getElementById('langLabel').textContent = 'Забон:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Ҳолати Админ';
-        document.getElementById('toggleOrderBtn').textContent = '🛒 Заказ';
-        document.getElementById('orderTitle').textContent = '🛒 Заказ / Фармоиш';
-        document.getElementById('orderDesc').textContent = 'Барои фармоиш ном ва рақами худро фиристед:';
+        document.getElementById('orderBtnText').textContent = 'Заказ';
+        document.getElementById('orderTitle').textContent = '🛒 Фармоиш';
+        document.getElementById('orderDesc').textContent = 'Маълумоти худро барои тамос ворид кунед:';
         document.getElementById('clientName').placeholder = 'Номи шумо...';
         document.getElementById('clientPhone').placeholder = 'Рақами телефон (масалан: 900000000)...';
-        document.getElementById('orderBtn').textContent = '📲 Фиристодани фармоиш ба WhatsApp';
+        document.getElementById('orderSubmitBtn').textContent = '📲 Фиристодан ба WhatsApp';
     }
     settingsModal.style.display = 'none';
 }
