@@ -114,7 +114,7 @@ function setLanguage(lang) {
     currentLang = lang;
     if (lang === 'ru') {
         document.getElementById('catMenuTitle').textContent = 'Выбор категории';
-        document.getElementById('settingsTitle').textContent = 'Настройки VARZID';
+        document.getElementById('settingsTitle').textContent = 'Настройки';
         document.getElementById('themeLabel').textContent = 'Цветовая схема:';
         document.getElementById('lightText').textContent = 'Дневной режим';
         document.getElementById('darkText').textContent = 'Ночной режим';
@@ -128,7 +128,7 @@ function setLanguage(lang) {
         document.getElementById('orderBtn').textContent = '📲 Отправить заказ в WhatsApp';
     } else {
         document.getElementById('catMenuTitle').textContent = 'Интихоби категория';
-        document.getElementById('settingsTitle').textContent = 'Танзимоти VARZID';
+        document.getElementById('settingsTitle').textContent = 'Танзимот';
         document.getElementById('themeLabel').textContent = 'Мавзӯи рангӣ:';
         document.getElementById('lightText').textContent = 'Режими рӯзона';
         document.getElementById('darkText').textContent = 'Режими шабона';
