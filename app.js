@@ -1,69 +1,102 @@
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-body.dark-theme { background-color: #121212; color: #ffffff; }
-body.light-theme { background-color: #f5f5f5; color: #222222; }
+const menuToggle = document.getElementById('menuToggle');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const closeMenu = document.getElementById('closeMenu');
+const arrowIcon = document.getElementById('arrowIcon');
 
-.header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #1e1e1e; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
-body.light-theme .header { background: #ffffff; border-bottom: 1px solid #ddd; }
+if (menuToggle && dropdownMenu) {
+    menuToggle.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('show');
+        if (arrowIcon) arrowIcon.classList.toggle('rotate');
+    });
+}
 
-.brand-selector { display: flex; align-items: center; gap: 5px; cursor: pointer; font-weight: bold; font-size: 18px; }
-.header-icons { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+if (closeMenu && dropdownMenu) {
+    closeMenu.addEventListener('click', () => {
+        dropdownMenu.classList.remove('show');
+        if (arrowIcon) arrowIcon.classList.remove('rotate');
+    });
+}
 
-.exit-admin-icon { background: rgba(255, 82, 82, 0.15); padding: 5px 10px; border-radius: 6px; display: flex; align-items: center; gap: 4px; }
+const settingsIcon = document.getElementById('settingsIcon');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettings = document.getElementById('closeSettings');
 
-.dropdown-menu { display: none; position: absolute; top: 60px; left: 0; width: 100%; background: #1e1e1e; border-bottom: 1px solid #333; z-index: 99; padding: 15px; }
-.dropdown-menu.show { display: block; }
-body.light-theme .dropdown-menu { background: #ffffff; border-bottom: 1px solid #ddd; }
+if (settingsIcon && settingsModal) {
+    settingsIcon.addEventListener('click', () => settingsModal.style.display = 'flex');
+}
+if (closeSettings && settingsModal) {
+    closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
+}
 
-.menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; }
-.close-btn { cursor: pointer; font-size: 18px; }
+function setTheme(theme) {
+    if (theme === 'light') {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        localStorage.setItem('varzid_theme', 'light');
+    } else {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        localStorage.setItem('varzid_theme', 'dark');
+    }
+    if (settingsModal) settingsModal.style.display = 'none';
+}
 
-.category-scroll-container { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; }
-.category-scroll-container::-webkit-scrollbar { height: 4px; }
-.category-scroll-container::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('varzid_theme') || 'light';
+    setTheme(savedTheme);
+});
 
-.category-list { display: inline-flex; gap: 10px; align-items: center; padding-right: 15px; }
-.category-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; background: #2a2a2a; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
-body.light-theme .category-item { background: #eee; }
-.category-item.active { border: 1px solid #2e7d32; }
+function selectCategory(itemElement, catName) {
+    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+    if (itemElement) itemElement.classList.add('active');
+    
+    const channelName = document.getElementById('channelName');
+    if (channelName) channelName.textContent = catName;
+    
+    const postText = document.getElementById('postText');
+    if (postText) {
+        if (catName === 'Варзидан') {
+            postText.innerHTML = `✅ <b>НОВЫЕ ОБЪЯВЛЕНИЯ</b><br>Различные товары и их видеоматериалы:`;
+        } else {
+            postText.innerHTML = `✅ <b>НОВЫЕ ОБЪЯВЛЕНИЯ</b><br>Продукция ${catName} и ее виды:`;
+        }
+    }
+    
+    if (dropdownMenu) dropdownMenu.classList.remove('show');
+    if (arrowIcon) arrowIcon.classList.remove('rotate');
+}
 
-.delete-cat-btn { background: rgba(255, 82, 82, 0.2); color: #ff5252; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-.delete-cat-btn:hover { background: #ff5252; color: white; }
+const likeBtn = document.getElementById('likeBtn');
+const likeCountSpan = document.getElementById('likeCount');
+let likes = 0, liked = false;
+if (likeBtn && likeCountSpan) {
+    likeBtn.addEventListener('click', () => {
+        likes += (liked ? -1 : 1);
+        liked = !liked;
+        likeBtn.style.color = liked ? '#e53935' : 'inherit';
+        likeCountSpan.textContent = likes;
+    });
+}
 
-.add-category-btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; background: #2e7d32; color: white; border: none; border-radius: 8px; font-size: 20px; cursor: pointer; flex-shrink: 0; font-weight: bold; }
+const loveBtn = document.getElementById('loveBtn');
+const loveCountSpan = document.getElementById('loveCount');
+let loves = 0, loved = false;
+if (loveBtn && loveCountSpan) {
+    loveBtn.addEventListener('click', () => {
+        loves += (loved ? -1 : 1);
+        loved = !loved;
+        loveBtn.style.color = loved ? '#e53935' : 'inherit';
+        loveCountSpan.textContent = loves;
+    });
+}
 
-.settings-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; }
-.settings-content { background: #1e1e1e; padding: 20px; border-radius: 12px; width: 90%; max-width: 320px; }
-body.light-theme .settings-content { background: #ffffff; }
-
-.settings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.settings-header h3 { margin: 0; }
-.settings-header .close-btn { cursor: pointer; font-size: 18px; order: 2; }
-
-.settings-section { margin-top: 15px; }
-.settings-options { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
-.option-btn { padding: 10px; border: none; border-radius: 8px; background: #333; color: white; cursor: pointer; text-align: left; }
-body.light-theme .option-btn { background: #ddd; color: black; }
-.admin-toggle-btn { background: #b71c1c !important; color: white !important; text-align: center !important; font-weight: bold; }
-
-.main-content { max-width: 600px; margin: 0 auto; padding: 15px; }
-.channel-info { display: flex; align-items: center; gap: 15px; background: #1e1e1e; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-body.light-theme .channel-info { background: #ffffff; }
-.channel-avatar { width: 50px; height: 50px; background: #2e7d32; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
-.channel-details { flex-grow: 1; }
-
-.post-card { background: #1e1e1e; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-body.light-theme .post-card { background: #ffffff; }
-.post-header { display: flex; justify-content: space-between; font-size: 13px; color: #aaa; margin-bottom: 10px; }
-.post-text { font-size: 15px; line-height: 1.4; margin-bottom: 10px; }
-.post-media-box { width: 100%; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
-.post-video { width: 100%; max-height: 350px; display: block; }
-.post-footer { display: flex; gap: 15px; }
-.reaction-btn { background: none; border: none; color: inherit; cursor: pointer; font-size: 15px; display: flex; align-items: center; gap: 5px; }
-
-.order-section { background: #1e1e1e; padding: 15px; border-radius: 12px; }
-body.light-theme .order-section { background: #ffffff; }
-.order-box h3 { margin-bottom: 5px; }
-.order-box p { font-size: 13px; color: #aaa; margin-bottom: 10px; }
-.order-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: white; }
-body.light-theme .order-input { background: #f9f9f9; color: black; border: 1px solid #ccc; }
-.whatsapp-btn { width: 100%; padding: 12px; background: #25d366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+function sendToWhatsApp(event) {
+    event.preventDefault();
+    const nameEl = document.getElementById('clientName');
+    const phoneEl = document.getElementById('clientPhone');
+    if (!nameEl || !phoneEl) return;
+    const name = nameEl.value;
+    const phone = phoneEl.value;
+    const text = `Здравствуйте! Хочу сделать заказ.%0A👤 Имя: ${name}%0A📞 Телефон: ${phone}`;
+    window.open(`https://wa.me/992000001606?text=${text}`, '_blank');
+}
