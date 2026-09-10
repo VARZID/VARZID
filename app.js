@@ -2,7 +2,6 @@ const menuToggle = document.getElementById('menuToggle');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const closeMenu = document.getElementById('closeMenu');
 const arrowIcon = document.getElementById('arrowIcon');
-const activeCatDisplay = document.getElementById('activeCatDisplay');
 
 menuToggle.addEventListener('click', () => {
     dropdownMenu.classList.toggle('show');
@@ -90,8 +89,16 @@ function selectCategory(itemElement, catName) {
     document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
     itemElement.classList.add('active');
     
-    activeCatDisplay.textContent = catName;
     document.getElementById('channelName').textContent = catName;
+    document.getElementById('postChannelName').textContent = catName;
+    
+    const specificCategories = ['Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
+    
+    if (specificCategories.includes(catName)) {
+        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Маҳсулоти ${catName} ва навъҳои он:`;
+    } else {
+        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти гуногун ва навори онҳо:`;
+    }
     
     dropdownMenu.classList.remove('show');
     arrowIcon.classList.remove('rotate');
@@ -113,6 +120,12 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Ночной режим';
         document.getElementById('langLabel').textContent = 'Язык:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Режим Админа';
+        document.getElementById('postTime').textContent = 'Только что';
+        document.getElementById('orderTitle').textContent = '🛒 Заказ';
+        document.getElementById('orderDesc').textContent = 'Отправьте имя и номер для заказа:';
+        document.getElementById('clientName').placeholder = 'Ваше имя...';
+        document.getElementById('clientPhone').placeholder = 'Номер телефона (например: 900000000)...';
+        document.getElementById('orderBtn').textContent = '📲 Отправить заказ в WhatsApp';
     } else {
         document.getElementById('catMenuTitle').textContent = 'Интихоби категория';
         document.getElementById('settingsTitle').textContent = 'Танзимот';
@@ -121,6 +134,40 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Режими шабона';
         document.getElementById('langLabel').textContent = 'Забон:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Ҳолати Админ';
+        document.getElementById('postTime').textContent = 'Ҳоло';
+        document.getElementById('orderTitle').textContent = '🛒 Заказ / Фармоиш';
+        document.getElementById('orderDesc').textContent = 'Барои фармоиш ном ва рақами худро фиристед:';
+        document.getElementById('clientName').placeholder = 'Номи шумо...';
+        document.getElementById('clientPhone').placeholder = 'Рақами телефон (масалан: 900000000)...';
+        document.getElementById('orderBtn').textContent = '📲 Фиристодани фармоиш ба WhatsApp';
     }
     settingsModal.style.display = 'none';
+}
+
+const likeBtn = document.getElementById('likeBtn');
+const likeCountSpan = document.getElementById('likeCount');
+let likes = 0, liked = false;
+likeBtn.addEventListener('click', () => {
+    likes += (liked ? -1 : 1);
+    liked = !liked;
+    likeBtn.style.color = liked ? '#e53935' : 'inherit';
+    likeCountSpan.textContent = likes;
+});
+
+const loveBtn = document.getElementById('loveBtn');
+const loveCountSpan = document.getElementById('loveCount');
+let loves = 0, loved = false;
+loveBtn.addEventListener('click', () => {
+    loves += (loved ? -1 : 1);
+    loved = !loved;
+    loveBtn.style.color = loved ? '#e53935' : 'inherit';
+    loveCountSpan.textContent = loves;
+});
+
+function sendToWhatsApp(event) {
+    event.preventDefault();
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const text = `Салом! Ман заказ кардан мехохам.%0A👤 Ном: ${name}%0A📞 Телефон: ${phone}`;
+    window.open(`https://wa.me/992000001606?text=${text}`, '_blank');
 }
