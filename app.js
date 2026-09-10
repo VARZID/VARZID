@@ -92,15 +92,6 @@ function selectCategory(itemElement, catName) {
     
     activeCatDisplay.textContent = catName;
     document.getElementById('channelName').textContent = catName;
-    document.getElementById('postChannelName').textContent = catName;
-    
-    const specificCategories = ['Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
-    
-    if (specificCategories.includes(catName)) {
-        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Маҳсулоти ${catName} ва навъҳои он:`;
-    } else {
-        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти гуногун ва навори онҳо:`;
-    }
     
     dropdownMenu.classList.remove('show');
     arrowIcon.classList.remove('rotate');
@@ -122,7 +113,7 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Ночной режим';
         document.getElementById('langLabel').textContent = 'Язык:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Режим Админа';
-        document.getElementById('postTime').textContent = 'Только что';
+        document.getElementById('toggleOrderBtn').textContent = '🛒 Заказ';
         document.getElementById('orderTitle').textContent = '🛒 Заказ';
         document.getElementById('orderDesc').textContent = 'Отправьте имя и номер для заказа:';
         document.getElementById('clientName').placeholder = 'Ваше имя...';
@@ -136,7 +127,7 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Режими шабона';
         document.getElementById('langLabel').textContent = 'Забон:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Ҳолати Админ';
-        document.getElementById('postTime').textContent = 'Ҳоло';
+        document.getElementById('toggleOrderBtn').textContent = '🛒 Заказ';
         document.getElementById('orderTitle').textContent = '🛒 Заказ / Фармоиш';
         document.getElementById('orderDesc').textContent = 'Барои фармоиш ном ва рақами худро фиристед:';
         document.getElementById('clientName').placeholder = 'Номи шумо...';
@@ -146,30 +137,23 @@ function setLanguage(lang) {
     settingsModal.style.display = 'none';
 }
 
-const likeBtn = document.getElementById('likeBtn');
-const likeCountSpan = document.getElementById('likeCount');
-let likes = 0, liked = false;
-likeBtn.addEventListener('click', () => {
-    likes += (liked ? -1 : 1);
-    liked = !liked;
-    likeBtn.style.color = liked ? '#e53935' : 'inherit';
-    likeCountSpan.textContent = likes;
-});
-
-const loveBtn = document.getElementById('loveBtn');
-const loveCountSpan = document.getElementById('loveCount');
-let loves = 0, loved = false;
-loveBtn.addEventListener('click', () => {
-    loves += (loved ? -1 : 1);
-    loved = !loved;
-    loveBtn.style.color = loved ? '#e53935' : 'inherit';
-    loveCountSpan.textContent = loves;
-});
+function toggleOrderForm() {
+    const orderModalOverlay = document.getElementById('orderModalOverlay');
+    if (orderModalOverlay.style.display === 'none') {
+        orderModalOverlay.style.display = 'flex';
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientPhone').value = '';
+    } else {
+        orderModalOverlay.style.display = 'none';
+    }
+}
 
 function sendToWhatsApp(event) {
     event.preventDefault();
     const name = document.getElementById('clientName').value;
     const phone = document.getElementById('clientPhone').value;
-    const text = `Салом! Ман заказ кардан мехохам.%0A👤 Ном: ${name}%0A📞 Телефон: ${phone}`;
+    const currentCategory = activeCatDisplay.textContent;
+    const text = `Салом! Ман аз категорияи "${currentCategory}" заказ кардан мехохам.%0A👤 Ном: ${name}%0A📞 Телефон: ${phone}`;
     window.open(`https://wa.me/992000001606?text=${text}`, '_blank');
+    toggleOrderForm();
 }
