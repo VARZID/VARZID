@@ -6,13 +6,14 @@
     <title>VARZID</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-theme">
+<body class="light-theme">
     <header class="header">
         <div class="brand-selector" id="menuToggle">
             <span class="brand-title">VARZID</span>
             <span class="arrow" id="arrowIcon">▼</span>
         </div>
         <div class="header-icons">
+            <span class="icon exit-admin-icon" id="exitAdminBtn" style="display: none; color: #ff5252; font-weight: bold; font-size: 16px;" onclick="exitAdminMode()" title="Баромадан аз ҳолати админ">✖ Админ</span>
             <span class="icon" id="settingsIcon">⚙️</span>
         </div>
     </header>
@@ -79,7 +80,6 @@
         </div>
     </div>
 
-    <!-- Modal барои пароли Админ -->
     <div class="settings-modal" id="adminModal">
         <div class="settings-content">
             <div class="settings-header">
@@ -94,7 +94,6 @@
         </div>
     </div>
 
-    <!-- Modal барои илова кардани категорияи нав -->
     <div class="settings-modal" id="addCatModal">
         <div class="settings-content">
             <div class="settings-header">
@@ -151,4 +150,4 @@
 
     <script src="app.js"></script>
 </body>
-                    </html>
+</html>
