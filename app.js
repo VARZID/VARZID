@@ -120,8 +120,6 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Ночной режим';
         document.getElementById('langLabel').textContent = 'Язык:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Режим Админа';
-        document.getElementById('subTextLabel').textContent = isSubscribed ? 'подписчик' : 'подписчиков';
-        document.getElementById('subBtn').textContent = isSubscribed ? 'Вы подписаны' : 'Подписаться';
         document.getElementById('postTime').textContent = 'Только что';
         document.getElementById('orderTitle').textContent = '🛒 Заказ';
         document.getElementById('orderDesc').textContent = 'Отправьте имя и номер для заказа:';
@@ -136,8 +134,6 @@ function setLanguage(lang) {
         document.getElementById('darkText').textContent = 'Режими шабона';
         document.getElementById('langLabel').textContent = 'Забон:';
         document.getElementById('adminToggleBtn').textContent = '🔐 Ҳолати Админ';
-        document.getElementById('subTextLabel').textContent = 'обуначиён';
-        document.getElementById('subBtn').textContent = isSubscribed ? 'Обуна ҳастед' : 'Обуна шудан';
         document.getElementById('postTime').textContent = 'Ҳоло';
         document.getElementById('orderTitle').textContent = '🛒 Заказ / Фармоиш';
         document.getElementById('orderDesc').textContent = 'Барои фармоиш ном ва рақами худро фиристед:';
@@ -147,25 +143,6 @@ function setLanguage(lang) {
     }
     settingsModal.style.display = 'none';
 }
-
-const subBtn = document.getElementById('subBtn');
-const subCount = document.getElementById('subCount');
-let subCountNum = 0;
-let isSubscribed = false;
-
-subBtn.addEventListener('click', () => {
-    isSubscribed = !isSubscribed;
-    if (isSubscribed) {
-        subCountNum += 1;
-        subBtn.style.backgroundColor = '#2e7d32';
-        subBtn.textContent = currentLang === 'ru' ? 'Вы подписаны' : 'Обуна ҳастед';
-    } else {
-        subCountNum -= 1;
-        subBtn.style.backgroundColor = '#e53935';
-        subBtn.textContent = currentLang === 'ru' ? 'Подписаться' : 'Обуна шудан';
-    }
-    subCount.innerHTML = `${subCountNum} <span id="subTextLabel">${currentLang === 'ru' ? 'подписчиков' : 'обуначиён'}</span>`;
-});
 
 const likeBtn = document.getElementById('likeBtn');
 const likeCountSpan = document.getElementById('likeCount');
