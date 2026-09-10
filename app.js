@@ -37,28 +37,74 @@ function toggleAdminMode() {
     if (password === "varzid2026") {
         isAdmin = true;
         document.getElementById('addCategoryBtn').style.display = 'inline-flex';
-        alert("Ҳолати админ фаъол шуд!");
+        // Намоён кардани тугмаҳои несткунӣ тавассути синфи admin-active
+        document.getElementById('categoryList').classList.add('admin-active');
+        prepareExistingCategories();
+        alert("Ҳолати админ фаъол шуд! Акнун тугмаҳои илова (+) ва несткунӣ (✕) дастрас ҳастанд.");
     } else {
         alert("Рамзи нодуруст!");
     }
     settingsModal.style.display = 'none';
 }
 
+function prepareExistingCategories() {
+    document.querySelectorAll('.category-item').forEach(item => {
+        const catName = item.getAttribute('data-cat');
+        // Категорияи асосиро ("Варзидан") тоза карда намешавад, дигаронро метавон нест кард
+        if (catName !== 'Варзидан' && !item.querySelector('.delete-cat-btn')) {
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-cat-btn';
+            delBtn.innerHTML = '✕';
+            delBtn.title = 'Нест кардан';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                deleteCategory(item, catName);
+            };
+            item.appendChild(delBtn);
+        }
+    });
+}
+
 function addNewCategory() {
     if (!isAdmin) return;
     const catName = prompt("Номи маҳсулоти навро ворид кунед:");
     if (catName && catName.trim() !== "") {
+        const cleanName = catName.trim();
         const categoryList = document.getElementById('categoryList');
         const addBtn = document.getElementById('addCategoryBtn');
         
         const newItem = document.createElement('div');
         newItem.className = 'category-item';
-        newItem.setAttribute('data-cat', catName);
-        newItem.innerHTML = `<span class="cat-name">${catName}</span>`;
+        newItem.setAttribute('data-cat', cleanName);
+        newItem.innerHTML = `<span class="cat-name">${cleanName}</span>`;
         
-        newItem.addEventListener('click', () => selectCategory(newItem, catName));
+        newItem.addEventListener('click', () => selectCategory(newItem, cleanName));
+        
+        if (isAdmin) {
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-cat-btn';
+            delBtn.innerHTML = '✕';
+            delBtn.title = 'Нест кардан';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                deleteCategory(newItem, cleanName);
+            };
+            newItem.appendChild(delBtn);
+        }
         
         categoryList.insertBefore(newItem, addBtn);
+    }
+}
+
+function deleteCategory(itemElement, catName) {
+    if (!isAdmin) return;
+    if (confirm(`Диққат! Шумо мехоҳед категорияи "${catName}"-ро нест кунед. Идома диҳем?`)) {
+        const currentChannel = document.getElementById('channelName').textContent;
+        if (currentChannel === catName) {
+            const defaultItem = document.querySelector('[data-cat="Варзидан"]');
+            if (defaultItem) selectCategory(defaultItem, 'Варзидан');
+        }
+        itemElement.remove();
     }
 }
 
@@ -69,14 +115,12 @@ function selectCategory(itemElement, catName) {
     document.getElementById('channelName').textContent = catName;
     document.getElementById('postChannelName').textContent = catName;
     
-    // Рӯйхати категорияҳои мушаххас (ки бояд танҳо худи ҳамон маҳсулотро нишон диҳанд)
     const specificCategories = ['Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
     
-    if (specificCategories.includes(catName)) {
-        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Маҳсулоти ${catName} ва навъҳои он:`;
-    } else {
-        // Барои "Варзидан" ва ҳар номи нави бо тугмаи (+) иловашуда (разное / умумӣ)
+    if (catName === 'Варзидан') {
         document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти гуногун ва навори онҳо:`;
+    } else {
+        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Маҳсулоти ${catName} ва навъҳои он:`;
     }
     
     dropdownMenu.classList.remove('show');
