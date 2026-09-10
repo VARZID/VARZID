@@ -48,7 +48,7 @@
                 <div class="category-item" data-cat="Карбамид">
                     <span class="cat-name">Карбамид</span>
                 </div>
-                <button class="add-category-btn" id="addCategoryBtn" style="display: none;" onclick="addNewCategory()">+</button>
+                <button class="add-category-btn" id="addCategoryBtn" style="display: none;" onclick="openAddCategoryModal()">+</button>
             </div>
         </div>
     </div>
@@ -74,7 +74,36 @@
                 </div>
             </div>
             <div class="settings-section">
-                <button class="option-btn admin-toggle-btn" onclick="toggleAdminMode()" id="adminToggleBtn">🔐 Ҳолати Админ</button>
+                <button class="option-btn admin-toggle-btn" onclick="openAdminModal()" id="adminToggleBtn">🔐 Ҳолати Админ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal барои пароли Админ -->
+    <div class="settings-modal" id="adminModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>Ворид кардани парол</h3>
+                <span class="close-btn" onclick="closeAdminModal()">✕</span>
+            </div>
+            <div class="settings-section">
+                <input type="password" id="adminPasswordInput" placeholder="Рамзи админро ворид кунед..." class="order-input">
+                <button class="whatsapp-btn" style="margin-top: 10px; background: #2e7d32;" onclick="submitAdminPassword()">Тасдиқ</button>
+                <p id="adminErrorMsg" style="color: #e53935; font-size: 12px; margin-top: 8px; display: none;">Рамзи нодуруст!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal барои илова кардани категорияи нав -->
+    <div class="settings-modal" id="addCatModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>Иловаи маҳсулот</h3>
+                <span class="close-btn" onclick="closeAddCategoryModal()">✕</span>
+            </div>
+            <div class="settings-section">
+                <input type="text" id="newCatInput" placeholder="Номи маҳсулоти навро ворид кунед..." class="order-input">
+                <button class="whatsapp-btn" style="margin-top: 10px; background: #2e7d32;" onclick="confirmAddCategory()">Илова кардан</button>
             </div>
         </div>
     </div>
