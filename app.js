@@ -68,7 +68,16 @@ function selectCategory(itemElement, catName) {
     
     document.getElementById('channelName').textContent = catName;
     document.getElementById('postChannelName').textContent = catName;
-    document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти ${catName} ва навори он:`;
+    
+    // Рӯйхати категорияҳои мушаххас (ки бояд танҳо худи ҳамон маҳсулотро нишон диҳанд)
+    const specificCategories = ['Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
+    
+    if (specificCategories.includes(catName)) {
+        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Маҳсулоти ${catName} ва навъҳои он:`;
+    } else {
+        // Барои "Варзидан" ва ҳар номи нави бо тугмаи (+) иловашуда (разное / умумӣ)
+        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти гуногун ва навори онҳо:`;
+    }
     
     dropdownMenu.classList.remove('show');
     arrowIcon.classList.remove('rotate');
