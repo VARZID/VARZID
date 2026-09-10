@@ -1,1326 +1,251 @@
-const $ = id => document.getElementById(id);
+const menuToggle = document.getElementById('menuToggle');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const closeMenu = document.getElementById('closeMenu');
+const arrowIcon = document.getElementById('arrowIcon');
 
+menuToggle.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('show');
+    arrowIcon.classList.toggle('rotate');
+});
 
-/* =========================
-   ТАРҶУМА
-========================= */
+closeMenu.addEventListener('click', () => {
+    dropdownMenu.classList.remove('show');
+    arrowIcon.classList.remove('rotate');
+});
 
-const translations = {
+const settingsIcon = document.getElementById('settingsIcon');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettings = document.getElementById('closeSettings');
 
-    tg: {
-        catMenuTitle: "Интихоби категория",
-        settingsTitle: "Танзимот",
-        themeLabel: "Мавзӯи рангӣ:",
-        lightText: "Режими рӯзона",
-        darkText: "Режими шабона",
-        langLabel: "Забон:",
+settingsIcon.addEventListener('click', () => settingsModal.style.display = 'flex');
+closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
 
-        adminToggleBtn: "🔐 Ҳолати Админ",
-        admin: "Админ",
-
-        adminModalTitle: "Ворид кардани парол",
-        adminPlaceholder: "Рамзи админро ворид кунед...",
-        adminSubmit: "Тасдиқ",
-        adminError: "Рамзи нодуруст!",
-
-        addCatTitle: "Иловаи категория",
-        addCatPlaceholder: "Номи категорияи нав...",
-        addCatConfirm: "Илова кардан",
-
-        now: "Ҳоло",
-
-        newPost: "ЭЪЛОНИ НАВ",
-        generalPost: "Молу маҳсулоти нав ва навори он:",
-        productPost: "Маҳсулоти {cat} ва навъҳои он:",
-
-        orderTitle: "🛒 Заказ / Фармоиш",
-        orderDesc: "Барои фармоиш ном ва рақами худро фиристед:",
-
-        name: "Номи шумо...",
-        phone: "Рақами телефон (масалан: 900000000)...",
-        location: "Ҷойи расонидан...",
-
-        orderBtn: "📲 Фиристодани фармоиш ба WhatsApp",
-
-        delivery: "Арзиши расонидан вобаста ба масофа аст.",
-
-        emptyCat: "Номи категорияро ворид кунед.",
-        duplicateCat: "Ин категория аллакай ҳаст.",
-
-        deleteConfirm:
-            "Оё шумо мутмаин ҳастед, ки мехоҳед категорияи «{cat}»-ро нест кунед?",
-
-        adminOn: "Ҳолати админ фаъол шуд.",
-        adminOff: "Ҳолати админ хомӯш шуд.",
-
-        orderReady: "Фармоиш барои фиристодан ба WhatsApp омода шуд."
-    },
-
-
-    ru: {
-        catMenuTitle: "Выбор категории",
-        settingsTitle: "Настройки",
-        themeLabel: "Цветовая схема:",
-        lightText: "Дневной режим",
-        darkText: "Ночной режим",
-        langLabel: "Язык:",
-
-        adminToggleBtn: "🔐 Режим Админа",
-        admin: "Админ",
-
-        adminModalTitle: "Введите пароль",
-        adminPlaceholder: "Введите пароль администратора...",
-        adminSubmit: "Подтвердить",
-        adminError: "Неверный пароль!",
-
-        addCatTitle: "Добавить категорию",
-        addCatPlaceholder: "Название новой категории...",
-        addCatConfirm: "Добавить",
-
-        now: "Только что",
-
-        newPost: "НОВОЕ ОБЪЯВЛЕНИЕ",
-        generalPost: "Новые товары и видео:",
-        productPost: "Товар «{cat}» и его виды:",
-
-        orderTitle: "🛒 Заказ",
-        orderDesc: "Отправьте имя и номер для заказа:",
-
-        name: "Ваше имя...",
-        phone: "Номер телефона (например: 900000000)...",
-        location: "Место доставки...",
-
-        orderBtn: "📲 Отправить заказ в WhatsApp",
-
-        delivery: "Стоимость доставки зависит от расстояния.",
-
-        emptyCat: "Введите название категории.",
-        duplicateCat: "Эта категория уже существует.",
-
-        deleteConfirm:
-            "Вы уверены, что хотите удалить категорию «{cat}»?",
-
-        adminOn: "Режим администратора включён.",
-        adminOff: "Режим администратора выключен.",
-
-        orderReady: "Заказ подготовлен для отправки в WhatsApp."
+// Интихоби мавзӯъ ва захира кардани он танҳо барои ҳамин муштари дар дастгоҳаш
+function setTheme(theme) {
+    if (theme === 'light') {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        localStorage.setItem('varzid_theme', 'light');
+    } else {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        localStorage.setItem('varzid_theme', 'dark');
     }
-
-};
-
-
-/* =========================
-   КАТЕГОРИЯҲО
-========================= */
-
-const defaultCategories = [
-
-    {
-        tg: "Варзидан",
-        ru: "Варзидан"
-    },
-
-    {
-        tg: "Орд",
-        ru: "Мука"
-    },
-
-    {
-        tg: "Комбикорм",
-        ru: "Комбикорм"
-    },
-
-    {
-        tg: "Гандум",
-        ru: "Пшеница"
-    },
-
-    {
-        tg: "Ҷав",
-        ru: "Ячмень"
-    },
-
-    {
-        tg: "Ҷуворимакка",
-        ru: "Кукуруза"
-    },
-
-    {
-        tg: "Селитра",
-        ru: "Селитра"
-    },
-
-    {
-        tg: "Карбамид",
-        ru: "Карбамид"
-    }
-
-];
-
-
-let currentLang =
-    localStorage.getItem("varzid_lang") || "tg";
-
-let currentCat = "Варзидан";
+    settingsModal.style.display = 'none';
+}
 
 let isAdmin = false;
 
-
-/*
-   Муҳим:
-   Ин парол дар frontend аст.
-   Барои амнияти воқеии админ баъдтар backend лозим мешавад.
-*/
-
-const ADMIN_PASSWORD = "varzid2026";
-
-
-/* =========================
-   ТАРҶУМАИ МАТН
-========================= */
-
-function t(key, vars = {}) {
-
-    let text =
-        translations[currentLang][key] || key;
-
-    Object.keys(vars).forEach(keyName => {
-
-        text = text.replaceAll(
-            `{${keyName}}`,
-            vars[keyName]
-        );
-
-    });
-
-    return text;
-}
-
-
-/* =========================
-   MODAL
-========================= */
-
-function showModal(id) {
-
-    const element = $(id);
-
-    if (!element) return;
-
-    element.style.display = "flex";
-
-}
-
-
-function hideModal(id) {
-
-    const element = $(id);
-
-    if (!element) return;
-
-    element.style.display = "none";
-
-}
-
-
-/* =========================
-   TOAST
-========================= */
-
-function showToast(message) {
-
-    const toast = $("toast");
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-    clearTimeout(window.varzidToast);
-
-    window.varzidToast =
-        setTimeout(() => {
-
-            toast.classList.remove("show");
-
-        }, 2200);
-}
-
-
-/* =========================
-   CATEGORY STORAGE
-========================= */
-
-function getCategories() {
-
-    try {
-
-        const saved =
-            JSON.parse(
-                localStorage.getItem(
-                    "varzid_categories"
-                )
-            );
-
-        if (
-            Array.isArray(saved) &&
-            saved.length
-        ) {
-
-            return saved;
-
-        }
-
-    } catch (error) {
-
-        console.log(
-            "Category error:",
-            error
-        );
-
-    }
-
-    return JSON.parse(
-        JSON.stringify(defaultCategories)
-    );
-}
-
-
-function saveCategories(categories) {
-
-    localStorage.setItem(
-        "varzid_categories",
-        JSON.stringify(categories)
-    );
-
-}
-
-
-/* =========================
-   CATEGORY NAME
-========================= */
-
-function getCategoryName(category) {
-
-    if (typeof category === "string") {
-
-        return category;
-
-    }
-
-    return (
-        category[currentLang] ||
-        category.tg ||
-        category.ru
-    );
-
-}
-
-
-function getCategoryByTg(tg) {
-
-    const categories =
-        getCategories();
-
-    return categories.find(
-        category =>
-            (category.tg || category) === tg
-    );
-
-}
-
-
-function getCategoryLabel(tg) {
-
-    const category =
-        getCategoryByTg(tg);
-
-    if (!category) return tg;
-
-    return getCategoryName(category);
-
-}
-
-
-/* =========================
-   RENDER CATEGORY
-========================= */
-
-function renderCategories() {
-
-    const list =
-        $("categoryList");
-
-    list.innerHTML = "";
-
-
-    const categories =
-        getCategories();
-
-
-    categories.forEach(category => {
-
-        const tgName =
-            category.tg || category;
-
-        const label =
-            getCategoryName(category);
-
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "category-item";
-
-
-        if (tgName === currentCat) {
-
-            item.classList.add("active");
-
-        }
-
-
-        const name =
-            document.createElement("span");
-
-        name.className =
-            "cat-name";
-
-        name.textContent =
-            label;
-
-
-        item.appendChild(name);
-
-
-        /* Нест кардани категория танҳо админ */
-
-        if (
-            isAdmin &&
-            tgName !== "Варзидан"
-        ) {
-
-            const deleteButton =
-                document.createElement("span");
-
-            deleteButton.className =
-                "delete-cat-btn";
-
-            deleteButton.textContent =
-                "✕";
-
-
-            deleteButton.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-                    deleteCategory(tgName);
-
-                }
-            );
-
-
-            item.appendChild(
-                deleteButton
-            );
-
-        }
-
-
-        item.addEventListener(
-            "click",
-            () => {
-
-                selectCategory(
-                    tgName
-                );
-
-            }
-        );
-
-
-        list.appendChild(item);
-
-    });
-
-
-    /* + танҳо барои админ */
-
-    if (isAdmin) {
-
-        const addButton =
-            document.createElement("button");
-
-        addButton.className =
-            "add-category-btn";
-
-        addButton.textContent =
-            "+";
-
-        addButton.type =
-            "button";
-
-        addButton.addEventListener(
-            "click",
-            openAddCategoryModal
-        );
-
-        list.appendChild(addButton);
-
-    }
-
-
-    $("exitAdminBtn").style.display =
-        isAdmin
-            ? "inline-flex"
-            : "none";
-
-}
-
-
-/* =========================
-   SELECT CATEGORY
-========================= */
-
-function selectCategory(tgName) {
-
-    currentCat =
-        tgName;
-
-
-    const label =
-        getCategoryLabel(tgName);
-
-
-    $("channelName").textContent =
-        label;
-
-    $("postChannelName").textContent =
-        label;
-
-
-    const productCategories = [
-
-        "Орд",
-        "Комбикорм",
-        "Гандум",
-        "Ҷав",
-        "Ҷуворимакка",
-        "Селитра",
-        "Карбамид"
-
-    ];
-
-
-    if (
-        productCategories.includes(tgName)
-    ) {
-
-        $("postText").innerHTML =
-            `✅ <b>${t("newPost")}</b><br>` +
-            t("productPost", {
-                cat: label
-            });
-
-    } else {
-
-        $("postText").innerHTML =
-            `✅ <b>${t("newPost")}</b><br>` +
-            t("generalPost");
-
-    }
-
-
-    renderCategories();
-
-    hideModal("dropdownMenu");
-
-    $("arrowIcon")
-        .classList
-        .remove("rotate");
-
-}
-
-
-/* =========================
-   ADD CATEGORY
-========================= */
-
-function openAddCategoryModal() {
-
-    if (!isAdmin) return;
-
-    $("newCatInput").value = "";
-
-    showModal("addCatModal");
-
-    setTimeout(() => {
-
-        $("newCatInput").focus();
-
-    }, 100);
-
-}
-
-
-function closeAddCategoryModal() {
-
-    hideModal("addCatModal");
-
-}
-
-
-function confirmAddCategory() {
-
-    const input =
-        $("newCatInput");
-
-    const value =
-        input.value.trim();
-
-
-    if (!value) {
-
-        showToast(
-            t("emptyCat")
-        );
-
-        return;
-
-    }
-
-
-    const categories =
-        getCategories();
-
-
-    const exists =
-        categories.some(
-            category => {
-
-                const tg =
-                    (category.tg ||
-                     category)
-                    .toLowerCase();
-
-                const ru =
-                    (
-                        category.ru ||
-                        category
-                    )
-                    .toLowerCase();
-
-
-                return (
-                    tg === value.toLowerCase() ||
-                    ru === value.toLowerCase()
-                );
-
-            }
-        );
-
-
-    if (exists) {
-
-        showToast(
-            t("duplicateCat")
-        );
-
-        return;
-
-    }
-
-
-    categories.push({
-
-        tg: value,
-        ru: value
-
-    });
-
-
-    saveCategories(
-        categories
-    );
-
-
-    input.value = "";
-
-    closeAddCategoryModal();
-
-    renderCategories();
-
-}
-
-
-/* =========================
-   DELETE CATEGORY
-========================= */
-
-function deleteCategory(tgName) {
-
-    if (!isAdmin) return;
-
-    if (tgName === "Варзидан") return;
-
-
-    const label =
-        getCategoryLabel(tgName);
-
-
-    const confirmed =
-        confirm(
-            t(
-                "deleteConfirm",
-                {
-                    cat: label
-                }
-            )
-        );
-
-
-    if (!confirmed) return;
-
-
-    const categories =
-        getCategories()
-        .filter(
-            category =>
-                (category.tg || category)
-                !== tgName
-        );
-
-
-    saveCategories(
-        categories
-    );
-
-
-    if (currentCat === tgName) {
-
-        currentCat =
-            "Варзидан";
-
-    }
-
-
-    renderCategories();
-
-    selectCategory(
-        currentCat
-    );
-
-}
-
-
-/* =========================
-   ADMIN
-========================= */
-
 function openAdminModal() {
-
-    hideModal(
-        "settingsModal"
-    );
-
-    $("adminPasswordInput").value = "";
-
-    $("adminErrorMsg").style.display =
-        "none";
-
-    showModal(
-        "adminModal"
-    );
-
+    settingsModal.style.display = 'none';
+    document.getElementById('adminPasswordInput').value = '';
+    document.getElementById('adminErrorMsg').style.display = 'none';
+    document.getElementById('adminModal').style.display = 'flex';
 }
-
 
 function closeAdminModal() {
-
-    hideModal(
-        "adminModal"
-    );
-
+    document.getElementById('adminModal').style.display = 'none';
 }
-
 
 function submitAdminPassword() {
-
-    const password =
-        $("adminPasswordInput")
-        .value;
-
-
-    if (
-        password ===
-        ADMIN_PASSWORD
-    ) {
-
+    const password = document.getElementById('adminPasswordInput').value;
+    const errorMsg = document.getElementById('adminErrorMsg');
+    
+    if (password === "varzid2026") {
         isAdmin = true;
-
+        document.getElementById('addCategoryBtn').style.display = 'inline-flex';
+        document.getElementById('exitAdminBtn').style.display = 'inline-flex';
         closeAdminModal();
-
         renderCategories();
-
-        showToast(
-            t("adminOn")
-        );
-
     } else {
-
-        $("adminErrorMsg")
-            .style.display =
-            "block";
-
+        errorMsg.style.display = 'block';
     }
-
 }
-
 
 function exitAdminMode() {
-
     isAdmin = false;
-
+    document.getElementById('addCategoryBtn').style.display = 'none';
+    document.getElementById('exitAdminBtn').style.display = 'none';
     renderCategories();
-
-    showToast(
-        t("adminOff")
-    );
-
 }
 
-
-/* =========================
-   THEME
-========================= */
-
-function setTheme(theme) {
-
-    document.body.classList.toggle(
-        "dark-theme",
-        theme === "dark"
-    );
-
-
-    document.body.classList.toggle(
-        "light-theme",
-        theme !== "dark"
-    );
-
-
-    localStorage.setItem(
-        "varzid_theme",
-        theme
-    );
-
-
-    hideModal(
-        "settingsModal"
-    );
-
+function openAddCategoryModal() {
+    if (!isAdmin) return;
+    document.getElementById('newCatInput').value = '';
+    document.getElementById('addCatModal').style.display = 'flex';
 }
 
+function closeAddCategoryModal() {
+    document.getElementById('addCatModal').style.display = 'none';
+}
 
-/* =========================
-   LANGUAGE
-========================= */
+let defaultCategories = ['Варзидан', 'Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
 
-function setLanguage(lang) {
+function getSavedCategories() {
+    const saved = localStorage.getItem('varzid_categories');
+    return saved ? JSON.parse(saved) : defaultCategories;
+}
 
-    if (
-        !translations[lang]
-    ) return;
+function saveCategories(categories) {
+    localStorage.setItem('varzid_categories', JSON.stringify(categories));
+}
 
+function renderCategories() {
+    const categoryList = document.getElementById('categoryList');
+    const addBtn = document.getElementById('addCategoryBtn');
+    
+    document.querySelectorAll('.category-item').forEach(el => el.remove());
+    
+    const categories = getSavedCategories();
+    
+    categories.forEach(catName => {
+        const newItem = document.createElement('div');
+        newItem.className = 'category-item';
+        if (catName === document.getElementById('channelName').textContent) {
+            newItem.classList.add('active');
+        }
+        newItem.setAttribute('data-cat', catName);
+        
+        let html = `<span class="cat-name">${catName}</span>`;
+        
+        if (isAdmin && catName !== 'Варзидан') {
+            html += `<span class="delete-cat-btn" onclick="confirmDeleteCategory(event, '${catName}')" title="Нест кардан">✕</span>`;
+        }
+        
+        newItem.innerHTML = html;
+        newItem.addEventListener('click', (e) => {
+            if(e.target.classList.contains('delete-cat-btn')) return;
+            selectCategory(newItem, catName);
+        });
+        
+        categoryList.insertBefore(newItem, addBtn);
+    });
+    
+    if (isAdmin) {
+        addBtn.style.display = 'inline-flex';
+        document.getElementById('exitAdminBtn').style.display = 'inline-flex';
+    } else {
+        addBtn.style.display = 'none';
+        document.getElementById('exitAdminBtn').style.display = 'none';
+    }
+}
 
-    currentLang =
-        lang;
+function confirmAddCategory() {
+    const catName = document.getElementById('newCatInput').value.trim();
+    if (catName) {
+        let categories = getSavedCategories();
+        if (!categories.includes(catName)) {
+            categories.push(catName);
+            saveCategories(categories);
+            renderCategories();
+        }
+        closeAddCategoryModal();
+    }
+}
 
+function confirmDeleteCategory(event, catName) {
+    event.stopPropagation();
+    if (!isAdmin) return;
+    
+    const isConfirmed = window.confirm(`Оё шумо мутмаин ҳастед, ки мехоҳед категорияи "${catName}"-ро нест кунед?`);
+    if (isConfirmed) {
+        let categories = getSavedCategories();
+        categories = categories.filter(c => c !== catName);
+        saveCategories(categories);
+        
+        if (document.getElementById('channelName').textContent === catName) {
+            selectCategory(document.querySelector('.category-item'), 'Варзидан');
+        }
+        
+        renderCategories();
+    }
+}
 
-    localStorage.setItem(
-        "varzid_lang",
-        lang
-    );
+function selectCategory(itemElement, catName) {
+    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+    if(itemElement) itemElement.classList.add('active');
+    
+    document.getElementById('channelName').textContent = catName;
+    document.getElementById('postChannelName').textContent = catName;
+    
+    const specificCategories = ['Мука', 'Комбикорм', 'Пшеница', 'Ячмень', 'Кукуруза', 'Селитра', 'Карбамид'];
+    
+    if (specificCategories.includes(catName)) {
+        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Маҳсулоти ${catName} ва навъҳои он:`;
+    } else {
+        document.getElementById('postText').innerHTML = `✅ <b>ЭЪЛОНИ НАВ</b><br>Молу маҳсулоти гуногун ва навори онҳо:`;
+    }
+    
+    dropdownMenu.classList.remove('show');
+    arrowIcon.classList.remove('rotate');
+}
 
-
-    applyLanguage();
-
+window.addEventListener('DOMContentLoaded', () => {
+    // Санҷидани мавзӯи шахсии муштари аз хотираи телефон (агар набошад пешфарз рӯзона аст)
+    const savedTheme = localStorage.getItem('varzid_theme') || 'light';
+    setTheme(savedTheme);
     renderCategories();
-
-    selectCategory(
-        currentCat
-    );
-
-    hideModal(
-        "settingsModal"
-    );
-
-}
-
-
-function applyLanguage() {
-
-    $("catMenuTitle").textContent =
-        t("catMenuTitle");
-
-
-    $("settingsTitle").textContent =
-        t("settingsTitle");
-
-
-    $("themeLabel").textContent =
-        t("themeLabel");
-
-
-    $("lightText").textContent =
-        t("lightText");
-
-
-    $("darkText").textContent =
-        t("darkText");
-
-
-    $("langLabel").textContent =
-        t("langLabel");
-
-
-    $("adminToggleBtn").textContent =
-        t("adminToggleBtn");
-
-
-    $("adminExitText").textContent =
-        t("admin");
-
-
-    $("adminModalTitle").textContent =
-        t("adminModalTitle");
-
-
-    $("adminPasswordInput").placeholder =
-        t("adminPlaceholder");
-
-
-    $("adminSubmitBtn").textContent =
-        t("adminSubmit");
-
-
-    $("adminErrorMsg").textContent =
-        t("adminError");
-
-
-    $("addCatTitle").textContent =
-        t("addCatTitle");
-
-
-    $("newCatInput").placeholder =
-        t("addCatPlaceholder");
-
-
-    $("addCatConfirm").textContent =
-        t("addCatConfirm");
-
-
-    $("postTime").textContent =
-        t("now");
-
-
-    $("orderTitle").textContent =
-        t("orderTitle");
-
-
-    $("orderDesc").textContent =
-        t("orderDesc");
-
-
-    $("clientName").placeholder =
-        t("name");
-
-
-    $("clientPhone").placeholder =
-        t("phone");
-
-
-    $("clientLocation").placeholder =
-        t("location");
-
-
-    $("orderBtn").textContent =
-        t("orderBtn");
-
-
-    $("deliveryNote").textContent =
-        t("delivery");
-
-}
-
-
-/* =========================
-   MENU
-========================= */
-
-$("menuToggle")
-    .addEventListener(
-        "click",
-        () => {
-
-            const menu =
-                $("dropdownMenu");
-
-            const open =
-                !menu.classList.contains(
-                    "show"
-                );
-
-
-            menu.classList.toggle(
-                "show",
-                open
-            );
-
-
-            $("arrowIcon")
-                .classList.toggle(
-                    "rotate",
-                    open
-                );
-
-        }
-    );
-
-
-$("closeMenu")
-    .addEventListener(
-        "click",
-        () => {
-
-            hideModal(
-                "dropdownMenu"
-            );
-
-            $("arrowIcon")
-                .classList.remove(
-                    "rotate"
-                );
-
-        }
-    );
-
-
-$("settingsIcon")
-    .addEventListener(
-        "click",
-        () => {
-
-            showModal(
-                "settingsModal"
-            );
-
-        }
-    );
-
-
-$("closeSettings")
-    .addEventListener(
-        "click",
-        () => {
-
-            hideModal(
-                "settingsModal"
-            );
-
-        }
-    );
-
-
-$("exitAdminBtn")
-    .addEventListener(
-        "click",
-        exitAdminMode
-    );
-
-
-/* =========================
-   CLOSE MODAL
-========================= */
-
-[
-    "settingsModal",
-    "adminModal",
-    "addCatModal"
-].forEach(id => {
-
-    $(id).addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target.id === id
-            ) {
-
-                hideModal(id);
-
-            }
-
-        }
-    );
-
 });
 
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            hideModal(
-                "settingsModal"
-            );
-
-            hideModal(
-                "adminModal"
-            );
-
-            hideModal(
-                "addCatModal"
-            );
-
-        }
-
+let currentLang = 'tg';
+function setLanguage(lang) {
+    currentLang = lang;
+    if (lang === 'ru') {
+        document.getElementById('catMenuTitle').textContent = 'Выбор категории';
+        document.getElementById('settingsTitle').textContent = 'Настройки';
+        document.getElementById('themeLabel').textContent = 'Цветовая схема:';
+        document.getElementById('lightText').textContent = 'Дневной режим';
+        document.getElementById('darkText').textContent = 'Ночной режим';
+        document.getElementById('langLabel').textContent = 'Язык:';
+        document.getElementById('adminToggleBtn').textContent = '🔐 Режим Админа';
+        document.getElementById('postTime').textContent = 'Только что';
+        document.getElementById('orderTitle').textContent = '🛒 Заказ';
+        document.getElementById('orderDesc').textContent = 'Отправьте имя и номер для заказа:';
+        document.getElementById('clientName').placeholder = 'Ваше имя...';
+        document.getElementById('clientPhone').placeholder = 'Номер телефона (например: 900000000)...';
+        document.getElementById('orderBtn').textContent = '📲 Отправить заказ в WhatsApp';
+    } else {
+        document.getElementById('catMenuTitle').textContent = 'Интихоби категория';
+        document.getElementById('settingsTitle').textContent = 'Танзимот';
+        document.getElementById('themeLabel').textContent = 'Мавзӯи рангӣ:';
+        document.getElementById('lightText').textContent = 'Режими рӯзона';
+        document.getElementById('darkText').textContent = 'Режими шабона';
+        document.getElementById('langLabel').textContent = 'Забон:';
+        document.getElementById('adminToggleBtn').textContent = '🔐 Ҳолати Админ';
+        document.getElementById('postTime').textContent = 'Ҳоло';
+        document.getElementById('orderTitle').textContent = '🛒 Заказ / Фармоиш';
+        document.getElementById('orderDesc').textContent = 'Барои фармоиш ном ва рақами худро фиристед:';
+        document.getElementById('clientName').placeholder = 'Номи шумо...';
+        document.getElementById('clientPhone').placeholder = 'Рақами телефон (масалан: 900000000)...';
+        document.getElementById('orderBtn').textContent = '📲 Фиристодани фармоиш ба WhatsApp';
     }
-);
-
-
-/* =========================
-   REACTIONS
-========================= */
-
-let likes =
-    Number(
-        localStorage.getItem(
-            "varzid_likes"
-        ) || 0
-    );
-
-let liked =
-    localStorage.getItem(
-        "varzid_liked"
-    ) === "1";
-
-
-let loves =
-    Number(
-        localStorage.getItem(
-            "varzid_loves"
-        ) || 0
-    );
-
-let loved =
-    localStorage.getItem(
-        "varzid_loved"
-    ) === "1";
-
-
-function updateReactions() {
-
-    $("likeCount").textContent =
-        likes;
-
-    $("loveCount").textContent =
-        loves;
-
-
-    $("likeBtn")
-        .classList
-        .toggle(
-            "active",
-            liked
-        );
-
-
-    $("loveBtn")
-        .classList
-        .toggle(
-            "active",
-            loved
-        );
-
+    settingsModal.style.display = 'none';
 }
 
+const likeBtn = document.getElementById('likeBtn');
+const likeCountSpan = document.getElementById('likeCount');
+let likes = 0, liked = false;
+likeBtn.addEventListener('click', () => {
+    likes += (liked ? -1 : 1);
+    liked = !liked;
+    likeBtn.style.color = liked ? '#e53935' : 'inherit';
+    likeCountSpan.textContent = likes;
+});
 
-$("likeBtn")
-    .addEventListener(
-        "click",
-        () => {
+const loveBtn = document.getElementById('loveBtn');
+const loveCountSpan = document.getElementById('loveCount');
+let loves = 0, loved = false;
+loveBtn.addEventListener('click', () => {
+    loves += (loved ? -1 : 1);
+    loved = !loved;
+    loveBtn.style.color = loved ? '#e53935' : 'inherit';
+    loveCountSpan.textContent = loves;
+});
 
-            liked =
-                !liked;
-
-            likes =
-                Math.max(
-                    0,
-                    likes +
-                    (liked ? 1 : -1)
-                );
-
-
-            localStorage.setItem(
-                "varzid_likes",
-                likes
-            );
-
-            localStorage.setItem(
-                "varzid_liked",
-                liked ? "1" : "0"
-            );
-
-
-            updateReactions();
-
-        }
-    );
-
-
-$("loveBtn")
-    .addEventListener(
-        "click",
-        () => {
-
-            loved =
-                !loved;
-
-            loves =
-                Math.max(
-                    0,
-                    loves +
-                    (loved ? 1 : -1)
-                );
-
-
-            localStorage.setItem(
-                "varzid_loves",
-                loves
-            );
-
-            localStorage.setItem(
-                "varzid_loved",
-                loved ? "1" : "0"
-            );
-
-
-            updateReactions();
-
-        }
-    );
-
-
-/* =========================
-   WHATSAPP
-========================= */
-
-$("orderForm")
-    .addEventListener(
-        "submit",
-        event => {
-
-            event.preventDefault();
-
-
-            const name =
-                $("clientName")
-                .value
-                .trim();
-
-
-            const phone =
-                $("clientPhone")
-                .value
-                .trim();
-
-
-            const location =
-                $("clientLocation")
-                .value
-                .trim();
-
-
-            if (
-                !name ||
-                !phone ||
-                !location
-            ) {
-
-                return;
-
-            }
-
-
-            const category =
-                getCategoryLabel(
-                    currentCat
-                );
-
-
-            const message =
-                `Салом! Ман фармоиш додан мехоҳам.\n` +
-                `👤 Ном: ${name}\n` +
-                `📞 Телефон: ${phone}\n` +
-                `📍 Ҷойи расонидан: ${location}\n` +
-                `📦 Категория: ${category}`;
-
-
-            const whatsappURL =
-                "https://wa.me/992000001606?text=" +
-                encodeURIComponent(
-                    message
-                );
-
-
-            window.open(
-                whatsappURL,
-                "_blank"
-            );
-
-
-            showToast(
-                t("orderReady")
-            );
-
-        }
-    );
-
-
-/* =========================
-   START
-========================= */
-
-window.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        const savedTheme =
-            localStorage.getItem(
-                "varzid_theme"
-            ) || "light";
-
-
-        setTheme(
-            savedTheme
-        );
-
-
-        applyLanguage();
-
-        renderCategories();
-
-        selectCategory(
-            currentCat
-        );
-
-        updateReactions();
-
-    }
-);
+function sendToWhatsApp(event) {
+    event.preventDefault();
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const text = `Салом! Ман заказ кардан мехохам.%0A👤 Ном: ${name}%0A📞 Телефон: ${phone}`;
+    window.open(`https://wa.me/992000001606?text=${text}`, '_blank');
+}
