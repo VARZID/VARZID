@@ -1,17 +1,44 @@
+:root {
+    --bg-color: #121212;
+    --header-bg: #1f1f1f;
+    --text-color: #ffffff;
+    --sub-text: #aaa;
+    --menu-bg: #1a1a1a;
+    --menu-header-bg: #222;
+    --card-bg: #222;
+    --card-border: #2a2a2a;
+    --card-hover: #2a2a2a;
+    --border-color: #333;
+}
+
+body.light-theme {
+    --bg-color: #f4f4f4;
+    --header-bg: #ffffff;
+    --text-color: #222222;
+    --sub-text: #666;
+    --menu-bg: #ffffff;
+    --menu-header-bg: #eeeeee;
+    --card-bg: #ffffff;
+    --card-border: #dddddd;
+    --card-hover: #f0f0f0;
+    --border-color: #ddd;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #ffffff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
 }
 
 .header {
-    background-color: #1f1f1f;
+    background-color: var(--header-bg);
     padding: 15px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-top {
@@ -41,19 +68,19 @@ body {
 
 .settings-icon {
     cursor: pointer;
-    color: #aaa;
+    color: var(--sub-text);
     display: flex;
     align-items: center;
     transition: color 0.2s;
 }
 
 .settings-icon:hover {
-    color: #fff;
+    color: var(--text-color);
 }
 
 .subscribers-info {
     font-size: 13px;
-    color: #aaa;
+    color: var(--sub-text);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -70,21 +97,21 @@ body {
 }
 
 .sub-btn.subscribed {
-    background-color: #333;
-    color: #aaa;
+    background-color: var(--border-color);
+    color: var(--sub-text);
 }
 
 .dropdown-menu {
     max-height: 0;
     overflow: hidden;
-    background-color: #1a1a1a;
+    background-color: var(--menu-bg);
     transition: max-height 0.3s ease-out;
     border-bottom: 1px solid transparent;
 }
 
 .dropdown-menu.open {
     max-height: 500px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .menu-header {
@@ -92,7 +119,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    background-color: #222;
+    background-color: var(--menu-header-bg);
     font-weight: bold;
 }
 
@@ -111,59 +138,55 @@ body {
     justify-content: center;
 }
 
-/* Қатор бо қатор ҷойгир шудани категорияҳо (Grid) */
 .categories-grid {
     padding: 12px 15px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .category-card {
-    background-color: #222;
-    border: 1px solid #2a2a2a;
-    padding: 12px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 8px 14px;
     border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
+    display: inline-flex;
     align-items: center;
+    gap: 8px;
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s;
 }
 
 .category-card:hover {
-    background-color: #2a2a2a;
+    background-color: var(--card-hover);
     border-color: #ff4757;
 }
 
 .cat-name {
-    font-size: 14px;
+    font-size: 13px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .delete-btn {
     background: transparent;
     border: none;
     color: #ff4757;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
-    padding: 0 4px;
+    padding: 0;
 }
 
-/* Менюи Танзимот (Settings Menu) */
 .settings-menu {
     max-height: 0;
     overflow: hidden;
-    background-color: #1a1a1a;
+    background-color: var(--menu-bg);
     transition: max-height 0.3s ease-out;
     border-bottom: 1px solid transparent;
 }
 
 .settings-menu.open {
-    max-height: 500px;
-    border-bottom: 1px solid #333;
+    max-height: 550px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .settings-header {
@@ -171,17 +194,15 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 15px;
-    background-color: #222;
+    background-color: var(--menu-header-bg);
     font-weight: bold;
     font-size: 15px;
+    cursor: pointer;
 }
 
-.close-btn {
-    background: transparent;
-    border: none;
-    color: #aaa;
+.close-symbol {
+    color: var(--sub-text);
     font-size: 16px;
-    cursor: pointer;
 }
 
 .settings-list {
@@ -191,7 +212,7 @@ body {
 
 .setting-item {
     padding: 14px 15px;
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid var(--card-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -201,23 +222,23 @@ body {
 }
 
 .setting-item:hover {
-    background-color: #222;
+    background-color: var(--card-hover);
 }
 
 .setting-arrow {
-    color: #777;
-    font-size: 18px;
+    color: var(--sub-text);
+    font-size: 14px;
 }
 
 .admin-toggle-item {
-    background-color: #1f1f1f;
+    background-color: var(--header-bg);
     font-weight: bold;
     color: #ff4757;
 }
 
 .badge-off {
-    background-color: #333;
-    color: #aaa;
+    background-color: var(--border-color);
+    color: var(--sub-text);
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
@@ -229,4 +250,60 @@ body {
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
+}
+
+.theme-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.theme-modal.open {
+    display: flex;
+}
+
+.theme-modal-content {
+    background: var(--menu-bg);
+    width: 85%;
+    max-width: 320px;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    border: 1px solid var(--border-color);
+}
+
+.theme-modal-content h3 {
+    margin-top: 0;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.theme-option {
+    padding: 12px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.theme-option:hover {
+    background: var(--card-hover);
+}
+
+.theme-cancel {
+    background: transparent;
+    border: none;
+    color: #ff4757;
+    font-weight: bold;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 13px;
+    float: right;
 }
