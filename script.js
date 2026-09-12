@@ -22,19 +22,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let subscribers = (!isNaN(savedSubCount) && savedSubCount !== 30000) ? savedSubCount : 0;
     
     let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
-    let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм'];
+    let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Чав', 'Селитра', 'Карбамид'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
     let currentTheme = localStorage.getItem('theme') || 'dark';
+
+    const unSubModal = document.createElement('div');
+    unSubModal.className = 'theme-modal';
+    unSubModal.id = 'unSubModal';
+    unSubModal.innerHTML = `
+        <div class="theme-modal-content">
+            <h3>Управление подпиской</h3>
+            <div class="theme-option" id="confirmUnsub" style="display: flex; align-items: center; gap: 12px; color: #ff4757; font-weight: bold;">
+                <span style="font-size: 18px;">👤</span> <span>Отменить подписку</span>
+            </div>
+            <button class="theme-cancel" id="cancelUnsub" style="cursor: pointer;">ОТМЕНИТЬ</button>
+        </div>
+    `;
+    document.body.appendChild(unSubModal);
 
     function applyTheme(theme) {
         if (theme === 'light') {
             document.body.classList.remove('dark-theme');
             document.body.classList.add('light-theme');
-            themeStatus.textContent = 'Дневной режим ›';
+            if(themeStatus) themeStatus.textContent = 'Дневной режим ›';
         } else if (theme === 'dark') {
             document.body.classList.remove('light-theme');
             document.body.classList.add('dark-theme');
-            themeStatus.textContent = 'Ночной режим ›';
+            if(themeStatus) themeStatus.textContent = 'Ночной режим ›';
         } else {
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (prefersDark) {
@@ -44,27 +58,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.remove('dark-theme');
                 document.body.classList.add('light-theme');
             }
-            themeStatus.textContent = 'Системные ›';
+            if(themeStatus) themeStatus.textContent = 'Системные ›';
         }
         localStorage.setItem('theme', theme);
     }
 
     applyTheme(currentTheme);
 
-    setThemeBtn.addEventListener('click', () => {
-        themeModal.classList.add('open');
-    });
+    if(setThemeBtn) {
+        setThemeBtn.addEventListener('click', () => {
+            themeModal.classList.add('open');
+        });
+    }
 
-    cancelTheme.addEventListener('click', () => {
-        themeModal.classList.remove('open');
-    });
-
-    document.querySelectorAll('.theme-option').forEach(option => {
-        option.addEventListener('click', (e) => {
-            const selectedTheme = e.target.getAttribute('data-theme');
-            applyTheme(selectedTheme);
+    if(cancelTheme) {
+        cancelTheme.addEventListener('click', () => {
             themeModal.classList.remove('open');
         });
+    }
+
+    document.querySelectorAll('.theme-option').forEach(option => {
+        if(option.id !== 'confirmUnsub') {
+            option.addEventListener('click', (e) => {
+                const selectedTheme = e.target.closest('.theme-option').getAttribute('data-theme');
+                if(selectedTheme) {
+                    applyTheme(selectedTheme);
+                    themeModal.classList.remove('open');
+                }
+            });
+        }
     });
 
     function updateAdminUI() {
@@ -72,16 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
         adminElements.forEach(el => {
             el.style.display = isAdmin ? 'flex' : 'none';
         });
-        if (isAdmin) {
+        if (isAdmin && adminStatusBadge) {
             adminStatusBadge.textContent = 'Вкл';
             adminStatusBadge.className = 'badge-on';
-        } else {
+        } else if(adminStatusBadge) {
             adminStatusBadge.textContent = 'Выкл';
             adminStatusBadge.className = 'badge-off';
         }
     }
 
     function updateSubDisplay() {
+        if (!subCountSpan) return;
         if (subscribers >= 1000) {
             let thousands = (subscribers / 1000).toFixed(1);
             if (thousands.endsWith('.0')) {
@@ -95,15 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateSubDisplay();
     
-    if (isSubscribed) {
-        subBtn.textContent = 'Отписаться';
-        subBtn.classList.add('subscribed');
-    } else {
-        subBtn.textContent = 'Подписаться';
-        subBtn.classList.remove('subscribed');
+    if (subBtn) {
+        if (isSubscribed) {
+            subBtn.innerHTML = '✓ Вы подписаны';
+            subBtn.classList.add('subscribed');
+        } else {
+            subBtn.textContent = 'Подписаться';
+            subBtn.classList.remove('subscribed');
+        }
     }
 
     function renderCategories() {
+        if (!categoryList) return;
         categoryList.innerHTML = '';
         categories.forEach((cat, index) => {
             const card = document.createElement('div');
@@ -120,102 +146,122 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCategories();
     updateAdminUI();
 
-    brandToggle.addEventListener('click', () => {
-        dropdownMenu.classList.toggle('open');
-        brandToggle.classList.toggle('active');
-        settingsMenu.classList.remove('open');
-    });
+    if(brandToggle && dropdownMenu) {
+        brandToggle.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('open');
+            brandToggle.classList.toggle('active');
+            if(settingsMenu) settingsMenu.classList.remove('open');
+        });
+    }
 
-    settingsToggle.addEventListener('click', () => {
-        settingsMenu.classList.toggle('open');
-        dropdownMenu.classList.remove('open');
-        brandToggle.classList.remove('active');
-    });
+    if(settingsToggle && settingsMenu) {
+        settingsToggle.addEventListener('click', () => {
+            settingsMenu.classList.toggle('open');
+            if(dropdownMenu) dropdownMenu.classList.remove('open');
+            if(brandToggle) brandToggle.classList.remove('active');
+        });
+    }
 
-    closeSettingsHeader.addEventListener('click', () => {
-        settingsMenu.classList.remove('open');
-    });
+    if(closeSettingsHeader && settingsMenu) {
+        closeSettingsHeader.addEventListener('click', () => {
+            settingsMenu.classList.remove('open');
+        });
+    }
 
-    adminModeToggle.addEventListener('click', () => {
-        if (!isAdmin) {
-            let password = prompt('Пароли админро ворид кунед:');
-            if (password === '1604') { 
-                isAdmin = true;
-                localStorage.setItem('isAdmin', 'true');
-                alert('Режими админ фаъол шуд!');
-            } else if (password !== null) {
-                alert('Пароли нодуруст!');
+    if(adminModeToggle) {
+        adminModeToggle.addEventListener('click', () => {
+            if (!isAdmin) {
+                let password = prompt('Пароли админро ворид кунед:');
+                if (password === '1604') { 
+                    isAdmin = true;
+                    localStorage.setItem('isAdmin', 'true');
+                    alert('Режими админ фаъол шуд!');
+                } else if (password !== null) {
+                    alert('Пароли нодуруст!');
+                }
+            } else {
+                isAdmin = false;
+                localStorage.setItem('isAdmin', 'false');
+                alert('Режими админ хомӯш шуд.');
             }
-        } else {
-            isAdmin = false;
-            localStorage.setItem('isAdmin', 'false');
-            alert('Режими админ хомӯш шуд.');
-        }
-        updateAdminUI();
-        renderCategories();
-    });
+            updateAdminUI();
+            renderCategories();
+        });
+    }
 
-    subBtn.addEventListener('click', () => {
-        if (!isSubscribed) {
-            subscribers++;
-            isSubscribed = true;
-            subBtn.textContent = 'Отписаться';
-            subBtn.classList.add('subscribed');
-        } else {
+    if(subBtn) {
+        subBtn.addEventListener('click', () => {
+            if (!isSubscribed) {
+                subscribers++;
+                isSubscribed = true;
+                subBtn.innerHTML = '✓ Вы подписаны';
+                subBtn.classList.add('subscribed');
+                updateSubDisplay();
+                localStorage.setItem('subCount', subscribers);
+                localStorage.setItem('isSubscribed', isSubscribed);
+            } else {
+                unSubModal.classList.add('open');
+            }
+        });
+    }
+
+    const cancelUnsubBtn = document.getElementById('cancelUnsub');
+    if(cancelUnsubBtn) {
+        cancelUnsubBtn.addEventListener('click', () => {
+            unSubModal.classList.remove('open');
+        });
+    }
+
+    const confirmUnsubBtn = document.getElementById('confirmUnsub');
+    if(confirmUnsubBtn) {
+        confirmUnsubBtn.addEventListener('click', () => {
             subscribers = Math.max(0, subscribers - 1);
             isSubscribed = false;
-            subBtn.textContent = 'Подписаться';
-            subBtn.classList.remove('subscribed');
-        }
-        updateSubDisplay();
-        localStorage.setItem('subCount', subscribers);
-        localStorage.setItem('isSubscribed', isSubscribed);
-    });
-
-    addCategoryBtn.addEventListener('click', () => {
-        let newCat = prompt('Номи категорияи навро нависед:');
-        if (newCat && newCat.trim() !== '') {
-            categories.push(newCat.trim());
-            renderCategories();
-        }
-    });
-
-    categoryList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-btn')) {
-            e.stopPropagation();
-            if (!isAdmin) return;
-            let index = parseInt(e.target.getAttribute('data-index'));
-            if (!isNaN(index) && index >= 0 && index < categories.length) {
-                let catName = categories[index];
-                // Огоҳӣ медиҳад то тугмаи × тасодуфан пахш шуда категорияро нест накунад
-                if (confirm(`Шумо мутмаин ҳастед, ки категорияи "${catName}"-ро нест кардан мехоҳед?`)) {
-                    categories.splice(index, 1);
-                    renderCategories();
-                }
+            if(subBtn) {
+                subBtn.textContent = 'Подписаться';
+                subBtn.classList.remove('subscribed');
             }
-        } else {
-            const card = e.target.closest('.category-card');
-            if (card) {
-                const nameSpan = card.querySelector('.cat-name');
-                const index = parseInt(nameSpan.getAttribute('data-index'));
-                if (!isNaN(index) && categories[index]) {
+            updateSubDisplay();
+            localStorage.setItem('subCount', subscribers);
+            localStorage.setItem('isSubscribed', isSubscribed);
+            unSubModal.classList.remove('open');
+        });
+    }
+
+    if(addCategoryBtn) {
+        addCategoryBtn.addEventListener('click', () => {
+            let newCat = prompt('Номи категорияи навро нависед:');
+            if (newCat && newCat.trim() !== '') {
+                categories.push(newCat.trim());
+                renderCategories();
+            }
+        });
+    }
+
+    if(categoryList) {
+        categoryList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                e.stopPropagation();
+                if (!isAdmin) return;
+                let index = parseInt(e.target.getAttribute('data-index'));
+                if (!isNaN(index) && index >= 0 && index < categories.length) {
                     let catName = categories[index];
-                    alert(`Гузариши электронӣ ба категорияи: ${catName}`);
+                    if (confirm(`Шумо мутмаин ҳастед, ки категорияи "${catName}"-ро нест кардан мехоҳед?`)) {
+                        categories.splice(index, 1);
+                        renderCategories();
+                    }
+                }
+            } else {
+                const card = e.target.closest('.category-card');
+                if (card) {
+                    const nameSpan = card.querySelector('.cat-name');
+                    const index = parseInt(nameSpan.getAttribute('data-index'));
+                    if (!isNaN(index) && categories[index]) {
+                        let catName = categories[index];
+                        alert(`Гузариши электронӣ ба категорияи: ${catName}`);
+                    }
                 }
             }
-        }
-    });
-
-    document.getElementById('setNotifications').addEventListener('click', () => {
-        alert('Настройки уведомлений: Ҳамаи огоҳиҳо фаъоланд.');
-    });
-    document.getElementById('setLanguage').addEventListener('click', () => {
-        alert('Изменить язык: Забони русӣ / тоҷикӣ.');
-    });
-    document.getElementById('setRate').addEventListener('click', () => {
-        alert('Ташаккур барои баҳогузорӣ ба барномаи мо!');
-    });
-    document.getElementById('setContact').addEventListener('click', () => {
-        alert('Бо мо тамос гиред: Telegram / WhatsApp саҳифаи VARZID.');
-    });
+        });
+    }
 });
