@@ -8,24 +8,66 @@
 </head>
 <body>
     <header class="header">
-        <div class="brand-container" id="brandToggle">
-            <span class="brand-title">VARZID</span>
-            <span class="arrow">▼</span>
+        <div class="header-top">
+            <div class="brand-container" id="brandToggle">
+                <span class="brand-title">VARZID</span>
+                <span class="arrow">▼</span>
+            </div>
+            <!-- Нишонаи танзимот бо одамча ва чарх (настройки) -->
+            <div class="settings-icon" id="settingsToggle" title="Настройки">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <circle cx="19" cy="11" r="2"></circle>
+                    <path d="M19 8v1M19 13v1M16.5 9.5l.7.7M20.8 11.8l.7.7M16.5 12.5l.7-.7M20.8 10.2l.7-.7"></path>
+                </svg>
+            </div>
         </div>
         <div class="subscribers-info">
-            <span id="subCount">30000</span> подписчиков
+            <span id="subCount">0</span> подписчиков
             <button id="subBtn" class="sub-btn">Подписаться</button>
         </div>
     </header>
 
+    <!-- Менюи асосии категорияҳо -->
     <div class="dropdown-menu" id="dropdownMenu">
         <div class="menu-header">
             <span>Категории</span>
-            <button id="addCategoryBtn" class="add-btn">+</button>
+            <button id="addCategoryBtn" class="add-btn admin-only" style="display: none;">+</button>
         </div>
-        <ul id="categoryList">
-            <li class="category-item">Варзид Орд</li>
-        </ul>
+        <div class="categories-grid" id="categoryList">
+            <!-- Категорияҳо қатор бо қатор -->
+        </div>
+    </div>
+
+    <!-- Менюи танзимот (Настройки) -->
+    <div class="settings-menu" id="settingsMenu">
+        <div class="settings-header">
+            <span>Настройки VARZID</span>
+            <button id="closeSettingsBtn" class="close-btn">✕</button>
+        </div>
+        <div class="settings-list">
+            <div class="setting-item" id="setNotifications">
+                <span>🔔 Настройки уведомлений</span>
+                <span class="setting-arrow">›</span>
+            </div>
+            <div class="setting-item" id="setLanguage">
+                <span>🌐 Изменить язык</span>
+                <span class="setting-arrow">›</span>
+            </div>
+            <div class="setting-item" id="setRate">
+                <span>⭐ Оцените приложение</span>
+                <span class="setting-arrow">›</span>
+            </div>
+            <div class="setting-item" id="setContact">
+                <span>✉️ Напишите нам</span>
+                <span class="setting-arrow">›</span>
+            </div>
+            <div class="setting-item admin-toggle-item" id="adminModeToggle">
+                <span>🔐 Режим Администратора</span>
+                <span id="adminStatusBadge" class="badge-off">Выкл</span>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
