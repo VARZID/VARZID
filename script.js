@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelTheme = document.getElementById('cancelTheme');
     const themeStatus = document.getElementById('themeStatus');
 
-    let subscribers = parseInt(localStorage.getItem('subCount')) || 0;
+    let savedSubCount = parseInt(localStorage.getItem('subCount'));
+    let subscribers = (!isNaN(savedSubCount) && savedSubCount !== 30000) ? savedSubCount : 0;
+    
     let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
     let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -80,13 +82,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateSubDisplay() {
-        subCountSpan.textContent = subscribers;
+        if (subscribers >= 1000) {
+            let thousands = (subscribers / 1000).toFixed(1);
+            if (thousands.endsWith('.0')) {
+                thousands = parseInt(thousands);
+            }
+            subCountSpan.textContent = thousands + ' тыс';
+        } else {
+            subCountSpan.textContent = subscribers;
+        }
     }
 
     updateSubDisplay();
+    
     if (isSubscribed) {
         subBtn.textContent = 'Отписаться';
         subBtn.classList.add('subscribed');
+    } else {
+        subBtn.textContent = 'Подписаться';
+        subBtn.classList.remove('subscribed');
     }
 
     function renderCategories() {
@@ -148,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subBtn.textContent = 'Отписаться';
             subBtn.classList.add('subscribed');
         } else {
-            subscribers--;
+            subscribers = Math.max(0, subscribers - 1);
             isSubscribed = false;
             subBtn.textContent = 'Подписаться';
             subBtn.classList.remove('subscribed');
@@ -170,16 +184,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.classList.contains('delete-btn')) {
             e.stopPropagation();
             if (!isAdmin) return;
-            let index = e.target.getAttribute('data-index');
-            categories.splice(index, 1);
-            renderCategories();
+            let index = parseInt(e.target.getAttribute('data-index'));
+            if (!isNaN(index) && index >= 0 && index < categories.length) {
+                categories.splice(index, 1);
+                renderCategories();
+            }
         } else {
             const card = e.target.closest('.category-card');
             if (card) {
                 const nameSpan = card.querySelector('.cat-name');
-                const index = nameSpan.getAttribute('data-index');
-                let catName = categories[index];
-                alert(`Гузариши электронӣ ба категорияи: ${catName}`);
+                const index = parseInt(nameSpan.getAttribute('data-index'));
+                if (!isNaN(index) && categories[index]) {
+                    let catName = categories[index];
+                    alert(`Гузариши электронӣ ба категорияи: ${catName}`);
+                }
             }
         }
     });
