@@ -37,7 +37,7 @@ body {
     padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -78,6 +78,7 @@ body {
     color: var(--text-color);
 }
 
+/* Тугма ва шумораи подписчикон дар як сатр */
 .subscribers-info {
     font-size: 13px;
     color: var(--sub-text);
