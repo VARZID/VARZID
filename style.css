@@ -14,6 +14,12 @@ body {
     border-bottom: 1px solid #333;
 }
 
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .brand-container {
     display: flex;
     align-items: center;
@@ -31,6 +37,18 @@ body {
 
 .brand-container.active .arrow {
     transform: rotate(180deg);
+}
+
+.settings-icon {
+    cursor: pointer;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.settings-icon:hover {
+    color: #fff;
 }
 
 .subscribers-info {
@@ -65,7 +83,7 @@ body {
 }
 
 .dropdown-menu.open {
-    max-height: 300px;
+    max-height: 500px;
     border-bottom: 1px solid #333;
 }
 
@@ -88,20 +106,41 @@ body {
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#categoryList {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.category-item {
+/* Қатор бо қатор ҷойгир шудани категорияҳо (Grid) */
+.categories-grid {
     padding: 12px 15px;
-    border-bottom: 1px solid #2a2a2a;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+}
+
+.category-card {
+    background-color: #222;
+    border: 1px solid #2a2a2a;
+    padding: 12px;
+    border-radius: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.category-card:hover {
+    background-color: #2a2a2a;
+    border-color: #ff4757;
+}
+
+.cat-name {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .delete-btn {
@@ -110,4 +149,84 @@ body {
     color: #ff4757;
     font-size: 16px;
     cursor: pointer;
+    padding: 0 4px;
+}
+
+/* Менюи Танзимот (Settings Menu) */
+.settings-menu {
+    max-height: 0;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    transition: max-height 0.3s ease-out;
+    border-bottom: 1px solid transparent;
+}
+
+.settings-menu.open {
+    max-height: 500px;
+    border-bottom: 1px solid #333;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #222;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-item {
+    padding: 14px 15px;
+    border-bottom: 1px solid #2a2a2a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.setting-item:hover {
+    background-color: #222;
+}
+
+.setting-arrow {
+    color: #777;
+    font-size: 18px;
+}
+
+.admin-toggle-item {
+    background-color: #1f1f1f;
+    font-weight: bold;
+    color: #ff4757;
+}
+
+.badge-off {
+    background-color: #333;
+    color: #aaa;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.badge-on {
+    background-color: #2ed573;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
 }
