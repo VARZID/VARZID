@@ -6,14 +6,13 @@
     <title>VARZID</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-theme">
     <header class="header">
         <div class="header-top">
             <div class="brand-container" id="brandToggle">
                 <span class="brand-title">VARZID</span>
                 <span class="arrow">▼</span>
             </div>
-            <!-- Нишонаи танзимот бо одамча ва чарх (настройки) -->
             <div class="settings-icon" id="settingsToggle" title="Настройки">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -24,29 +23,29 @@
             </div>
         </div>
         <div class="subscribers-info">
-            <span id="subCount">0</span> подписчиков
+            <span><span id="subCount">0</span> подписчиков</span>
             <button id="subBtn" class="sub-btn">Подписаться</button>
         </div>
     </header>
 
-    <!-- Менюи асосии категорияҳо -->
     <div class="dropdown-menu" id="dropdownMenu">
         <div class="menu-header">
             <span>Категории</span>
             <button id="addCategoryBtn" class="add-btn admin-only" style="display: none;">+</button>
         </div>
-        <div class="categories-grid" id="categoryList">
-            <!-- Категорияҳо қатор бо қатор -->
-        </div>
+        <div class="categories-grid" id="categoryList"></div>
     </div>
 
-    <!-- Менюи танзимот (Настройки) -->
     <div class="settings-menu" id="settingsMenu">
-        <div class="settings-header">
-            <span>Настройки VARZID</span>
-            <button id="closeSettingsBtn" class="close-btn">✕</button>
+        <div class="settings-header" id="closeSettingsHeader">
+            <span>Настройки</span>
+            <span class="close-symbol">✕</span>
         </div>
         <div class="settings-list">
+            <div class="setting-item" id="setTheme">
+                <span>☀️ Цветовая схема</span>
+                <span class="setting-arrow" id="themeStatus">Ночной режим ›</span>
+            </div>
             <div class="setting-item" id="setNotifications">
                 <span>🔔 Настройки уведомлений</span>
                 <span class="setting-arrow">›</span>
@@ -67,6 +66,16 @@
                 <span>🔐 Режим Администратора</span>
                 <span id="adminStatusBadge" class="badge-off">Выкл</span>
             </div>
+        </div>
+    </div>
+
+    <div class="theme-modal" id="themeModal">
+        <div class="theme-modal-content">
+            <h3>Цветовая схема</h3>
+            <div class="theme-option" data-theme="light">☀️ Дневной режим</div>
+            <div class="theme-option" data-theme="dark">🌙 Ночной режим</div>
+            <div class="theme-option" data-theme="system">📱 Использовать системные настройки</div>
+            <button class="theme-cancel" id="cancelTheme">ОТМЕНИТЬ</button>
         </div>
     </div>
 
