@@ -141,8 +141,14 @@ body {
 .categories-grid {
     padding: 12px 15px;
     display: flex;
-    flex-wrap: wrap; /* Категорияҳо дубора дар қатор (в строчку) мешаванд */
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 8px;
+    scrollbar-width: none;
+}
+
+.categories-grid::-webkit-scrollbar {
+    display: none;
 }
 
 .category-card {
@@ -154,6 +160,7 @@ body {
     align-items: center;
     gap: 8px;
     cursor: pointer;
+    flex: 0 0 auto;
     transition: background 0.2s, border-color 0.2s;
 }
 
