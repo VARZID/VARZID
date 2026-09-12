@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdownMenu = document.getElementById('dropdownMenu');
     const settingsToggle = document.getElementById('settingsToggle');
     const settingsMenu = document.getElementById('settingsMenu');
-    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+    const closeSettingsHeader = document.getElementById('closeSettingsHeader');
     
     const subBtn = document.getElementById('subBtn');
     const subCountSpan = document.getElementById('subCount');
@@ -13,10 +13,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminModeToggle = document.getElementById('adminModeToggle');
     const adminStatusBadge = document.getElementById('adminStatusBadge');
 
+    const setThemeBtn = document.getElementById('setTheme');
+    const themeModal = document.getElementById('themeModal');
+    const cancelTheme = document.getElementById('cancelTheme');
+    const themeStatus = document.getElementById('themeStatus');
+
     let subscribers = parseInt(localStorage.getItem('subCount')) || 0;
     let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
     let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
+    let currentTheme = localStorage.getItem('theme') || 'dark';
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.body.classList.remove('dark-theme');
+            document.body.classList.add('light-theme');
+            themeStatus.textContent = 'Дневной режим ›';
+        } else if (theme === 'dark') {
+            document.body.classList.remove('light-theme');
+            document.body.classList.add('dark-theme');
+            themeStatus.textContent = 'Ночной режим ›';
+        } else {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDark) {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+            }
+            themeStatus.textContent = 'Системные ›';
+        }
+        localStorage.setItem('theme', theme);
+    }
+
+    applyTheme(currentTheme);
+
+    setThemeBtn.addEventListener('click', () => {
+        themeModal.classList.add('open');
+    });
+
+    cancelTheme.addEventListener('click', () => {
+        themeModal.classList.remove('open');
+    });
+
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            const selectedTheme = e.target.getAttribute('data-theme');
+            applyTheme(selectedTheme);
+            themeModal.classList.remove('open');
+        });
+    });
 
     function updateAdminUI() {
         const adminElements = document.querySelectorAll('.admin-only');
@@ -32,15 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function formatSubscribers(count) {
-        if (count >= 1000) {
-            return (count / 1000).toFixed(1).replace('.0', '') + ' тыс.';
-        }
-        return count;
-    }
-
     function updateSubDisplay() {
-        subCountSpan.textContent = formatSubscribers(subscribers);
+        subCountSpan.textContent = subscribers;
     }
 
     updateSubDisplay();
@@ -56,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'category-card';
             card.innerHTML = `
                 <span class="cat-name" data-index="${index}">${cat}</span> 
-                <button class="delete-btn admin-only" data-index="${index}" style="display: ${isAdmin ? 'block' : 'none'};">×</button>
+                <button class="delete-btn admin-only" data-index="${index}" style="display: ${isAdmin ? 'flex' : 'none'};">×</button>
             `;
             categoryList.appendChild(card);
         });
@@ -66,29 +106,26 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCategories();
     updateAdminUI();
 
-    // Кушодани менюи категорияҳо
     brandToggle.addEventListener('click', () => {
         dropdownMenu.classList.toggle('open');
         brandToggle.classList.toggle('active');
-        settingsMenu.classList.remove('open'); // Пинҳон кардани танзимот ҳангоми кушодани категория
+        settingsMenu.classList.remove('open');
     });
 
-    // Кушодани менюи танзимот
     settingsToggle.addEventListener('click', () => {
         settingsMenu.classList.toggle('open');
         dropdownMenu.classList.remove('open');
         brandToggle.classList.remove('active');
     });
 
-    closeSettingsBtn.addEventListener('click', () => {
+    closeSettingsHeader.addEventListener('click', () => {
         settingsMenu.classList.remove('open');
     });
 
-    // Гузариш ба режими админ тавассути пахшкунӣ дар танзимот (бо парол)
     adminModeToggle.addEventListener('click', () => {
         if (!isAdmin) {
             let password = prompt('Пароли админро ворид кунед:');
-            if (password === '1234') { // Рамзи пешфарз барои админ
+            if (password === '1604') { 
                 isAdmin = true;
                 localStorage.setItem('isAdmin', 'true');
                 alert('Режими админ фаъол шуд!');
@@ -134,8 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             if (!isAdmin) return;
             let index = e.target.getAttribute('data-index');
-            let catName = categories[index];
-            // Нест кардани тасдиқи браузер ва бевосита тоза кардан
             categories.splice(index, 1);
             renderCategories();
         } else {
@@ -149,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Функсияҳои бахшҳои танзимот
     document.getElementById('setNotifications').addEventListener('click', () => {
         alert('Настройки уведомлений: Ҳамаи огоҳиҳо фаъоланд.');
     });
