@@ -178,9 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelectorAll('.theme-option').forEach(option => {
-        if(option.id !== 'confirmUnsub' && option.id !== 'langTajik' && option.id !== 'langRussian' && option.id !== 'langUzbek') {
+        if(option.getAttribute('data-theme')) {
             option.addEventListener('click', (e) => {
-                const selectedTheme = e.target.closest('.theme-option').getAttribute('data-theme');
+                const selectedTheme = e.target.getAttribute('data-theme');
                 if(selectedTheme) {
                     applyTheme(selectedTheme);
                     themeModal.classList.remove('open');
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateAdminUI() {
         const adminElements = document.querySelectorAll('.admin-only');
         adminElements.forEach(el => {
-            el.style.display = isAdmin ? 'flex' : 'none';
+            el.style.display = isAdmin ? 'inline-block' : 'none';
         });
         if (isAdmin && adminStatusBadge) {
             adminStatusBadge.textContent = 'Вкл';
@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'category-card';
             card.innerHTML = `
                 <span class="cat-name" data-index="${index}">${cat}</span> 
-                <button class="delete-btn admin-only" data-index="${index}" style="display: ${isAdmin ? 'flex' : 'none'};">×</button>
+                <button class="delete-btn admin-only" data-index="${index}" style="display: ${isAdmin ? 'inline-block' : 'none'};">×</button>
             `;
             categoryList.appendChild(card);
         });
