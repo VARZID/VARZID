@@ -19,7 +19,6 @@
             </div>
         </div>
 
-        <!-- Шумораи подписчикон ва тугма дар як қатор -->
         <div class="subscribers-info">
             <div><span id="subCount">0</span> подписчиков</div>
             <button id="subBtn" class="sub-btn">Подписаться</button>
@@ -50,9 +49,14 @@
                 <span>Огоҳиҳо</span>
                 <span class="setting-arrow" id="notifStatusText">›</span>
             </div>
-            <div class="setting-item" id="setLanguage">
-                <span>Забон</span>
-                <span class="setting-arrow">›</span>
+            <!-- Забон бо се варианти Тоҷикӣ, Русский, Oʻzbekcha -->
+            <div class="setting-item" id="setLanguage" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>Забон / Язык / Til</span>
+                <select id="langSelect" style="padding: 3px 6px; border-radius: 4px; font-size: 13px;">
+                    <option value="tg">Тоҷикӣ</option>
+                    <option value="ru" selected>Русский</option>
+                    <option value="uz">Oʻzbekcha</option>
+                </select>
             </div>
             <div class="setting-item admin-toggle-item" id="adminModeToggle">
                 <span>Режими Админ</span>
@@ -80,7 +84,7 @@
         </div>
     </div>
 
-    <!-- Модали Тамос бо мо (Бо ду тугмаи Gmail ва WhatsApp) -->
+    <!-- Модали Тамос бо мо (Бо мавзӯъҳои кӯтоҳ ва сезабона) -->
     <div class="theme-modal" id="contactModal" style="display: none;">
         <div class="theme-modal-content" style="max-width: 420px; text-align: left; max-height: 90vh; overflow-y: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -88,29 +92,29 @@
                 <span id="closeContactModal" style="cursor: pointer; font-size: 22px; font-weight: bold;">✕</span>
             </div>
             <p style="font-size: 13px; opacity: 0.8; margin-bottom: 15px;">
-                Лутфан мавзӯъ ва паёми худро нависед, сипас тариқи кадом барнома фиристодан мехоҳед, интихоб кунед.
+                Лутфан мавзӯъ ва паёми худро интихоб кунед / Пожалуйста, выберите тему и напишите сообщение:
             </p>
 
             <div id="contactForm" style="display: flex; flex-direction: column; gap: 12px;">
-                <label style="font-size: 13px; font-weight: bold;">Интихоби мавзӯъ (Тема):</label>
+                <label style="font-size: 13px; font-weight: bold;">Интихоби мавзӯъ / Тема:</label>
                 <select id="waTopic" style="padding: 9px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
-                    <option value="Фармоиши маҳсулот ва гирифтани нарх">🛒 Фармоиши маҳсулот ва гирифтани нарх</option>
-                    <option value="Савол оид ба расонидан (доставка)">📦 Савол оид ба расонидан (доставка)</option>
-                    <option value="Хатогӣ дар сомона">⚠️ Хатогӣ дар сомона</option>
-                    <option value="Пешниҳод ё ҳамкорӣ">💡 Пешниҳод ё ҳамкорӣ</option>
-                    <option value="Дигар саволҳо">❓ Дигар саволҳо</option>
+                    <option value="Фармоиши маҳсулот">🛒 Фармоиши маҳсулот / Заказ продукта / Mahsulot buyurtma</option>
+                    <option value="Расонидан (Доставка)">📦 Расонидан / Доставка / Yetkazib berish</option>
+                    <option value="Хатогӣ дар сомона">⚠️ Хатогӣ дар сомона / Ошибка / Xatolik</option>
+                    <option value="Ҳамкорӣ">💡 Ҳамкорӣ / Сотрудничество / Hamkorlik</option>
+                    <option value="Дигар саволҳо">❓ Дигар саволҳо / Другое / Boshqa savollar</option>
                 </select>
 
-                <label style="font-size: 13px; font-weight: bold;">Номи шумо:</label>
+                <label style="font-size: 13px; font-weight: bold;">Номи шумо / Ваше имя:</label>
                 <input type="text" id="waName" required placeholder="Номатонро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
                 
-                <label style="font-size: 13px; font-weight: bold;">Рақами телефон:</label>
+                <label style="font-size: 13px; font-weight: bold;">Рақами телефон / Телефон:</label>
                 <input type="tel" id="waPhone" required placeholder="+992..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
                 
-                <label style="font-size: 13px; font-weight: bold;">Паём / Номгӯи маҳсулот:</label>
+                <label style="font-size: 13px; font-weight: bold;">Паём / Сообщение:</label>
                 <textarea id="waMessage" rows="3" required placeholder="Паёми худро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;"></textarea>
                 
-                <!-- Ду тугма дар як қатор бо ранги хос барои Gmail ва WhatsApp -->
+                <!-- Ду тугмаи Gmail ва WhatsApp -->
                 <div style="display: flex; gap: 10px; margin-top: 5px;">
                     <button type="button" id="sendToGmailBtn" style="flex: 1; background: #EA4335; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">📧 Gmail</button>
                     <button type="button" id="sendToWaBtn" style="flex: 1; background: #25D366; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">💬 WhatsApp</button>
