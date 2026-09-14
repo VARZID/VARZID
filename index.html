@@ -80,6 +80,38 @@
         </div>
     </div>
 
+    <!-- Модали Тамос бо мо / Формаи Formspree -->
+    <div class="theme-modal" id="contactModal" style="display: none;">
+        <div class="theme-modal-content" style="max-width: 400px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0;">Тамос бо VARZID</h3>
+                <span id="closeContactModal" style="cursor: pointer; font-size: 20px;">✕</span>
+            </div>
+            <form action="https://formspree.io/f/xzebnkbl" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+                <label style="font-size: 14px;">Номи шумо:</label>
+                <input type="text" name="name" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                
+                <label style="font-size: 14px;">Рақами телефон:</label>
+                <input type="tel" name="phone" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                
+                <label style="font-size: 14px;">Паём / Номгӯи маҳсулот:</label>
+                <textarea name="message" rows="3" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                
+                <button type="submit" style="background: #e50914; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px;">Фиристодан</button>
+            </form>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script>
+        // Коди содда барои идора кардани кушода ва пӯшида шудани формаи тамос
+        document.getElementById('setContact').addEventListener('click', function() {
+            document.getElementById('contactModal').style.display = 'flex';
+            document.getElementById('settingsMenu').classList.remove('active'); // Менюи танзимотро мепӯшонад
+        });
+        document.getElementById('closeContactModal').addEventListener('click', function() {
+            document.getElementById('contactModal').style.display = 'none';
+        });
+    </script>
 </body>
 </html>
