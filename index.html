@@ -60,11 +60,11 @@
             </div>
             <div class="setting-item" id="setRate">
                 <span>Баҳо додан ба сомона</span>
-                <span class="setting-arrow">›</span>
+                <span class="setting-arrow">⭐ ›</span>
             </div>
             <div class="setting-item" id="setContact">
                 <span>Тамос бо мо</span>
-                <span class="setting-arrow">›</span>
+                <span class="setting-arrow">📞 ›</span>
             </div>
         </div>
     </div>
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Модали Тамос бо мо (Интихоби Тема / Напишите нам мисли MyScore) -->
+    <!-- Модали Тамос бо мо (Бо ду тугмаи Gmail ва WhatsApp) -->
     <div class="theme-modal" id="contactModal" style="display: none;">
         <div class="theme-modal-content" style="max-width: 420px; text-align: left; max-height: 90vh; overflow-y: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -88,32 +88,34 @@
                 <span id="closeContactModal" style="cursor: pointer; font-size: 22px; font-weight: bold;">✕</span>
             </div>
             <p style="font-size: 13px; opacity: 0.8; margin-bottom: 15px;">
-                Барои он ки муроҷиати шумо ба шахси лозима расад, лутфан мавзӯи худро интихоб кунед ва паём фиристед.
+                Лутфан мавзӯъ ва паёми худро нависед, сипас тариқи кадом барнома фиристодан мехоҳед, интихоб кунед.
             </p>
 
-            <form action="https://formspree.io/f/xzebnkbl" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
-                <input type="hidden" name="_to" value="daminovnurmuhammad04@gmail.com">
-                
+            <div id="contactForm" style="display: flex; flex-direction: column; gap: 12px;">
                 <label style="font-size: 13px; font-weight: bold;">Интихоби мавзӯъ (Тема):</label>
-                <select name="topic" style="padding: 9px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
-                    <option value="Закори мол ва нарх">🛒 Закори мол ва нарх</option>
+                <select id="waTopic" style="padding: 9px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+                    <option value="Фармоиши маҳсулот ва гирифтани нарх">🛒 Фармоиши маҳсулот ва гирифтани нарх</option>
+                    <option value="Савол оид ба расонидан (доставка)">📦 Савол оид ба расонидан (доставка)</option>
                     <option value="Хатогӣ дар сомона">⚠️ Хатогӣ дар сомона</option>
-                    <option value="Савол оид ба расонидан">📦 Савол оид ба расонидан (доставка)</option>
                     <option value="Пешниҳод ё ҳамкорӣ">💡 Пешниҳод ё ҳамкорӣ</option>
                     <option value="Дигар саволҳо">❓ Дигар саволҳо</option>
                 </select>
 
                 <label style="font-size: 13px; font-weight: bold;">Номи шумо:</label>
-                <input type="text" name="name" required placeholder="Номатонро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
+                <input type="text" id="waName" required placeholder="Номатонро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
                 
                 <label style="font-size: 13px; font-weight: bold;">Рақами телефон:</label>
-                <input type="tel" name="phone" required placeholder="+992..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
+                <input type="tel" id="waPhone" required placeholder="+992..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
                 
                 <label style="font-size: 13px; font-weight: bold;">Паём / Номгӯи маҳсулот:</label>
-                <textarea name="message" rows="3" required placeholder="Паёми худро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;"></textarea>
+                <textarea id="waMessage" rows="3" required placeholder="Паёми худро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;"></textarea>
                 
-                <button type="submit" style="background: #e50914; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 5px;">Фиристодан</button>
-            </form>
+                <!-- Ду тугма дар як қатор бо ранги хос барои Gmail ва WhatsApp -->
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <button type="button" id="sendToGmailBtn" style="flex: 1; background: #EA4335; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">📧 Gmail</button>
+                    <button type="button" id="sendToWaBtn" style="flex: 1; background: #25D366; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">💬 WhatsApp</button>
+                </div>
+            </div>
         </div>
     </div>
 
