@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
     let currentTheme = localStorage.getItem('theme') || 'dark';
 
+    // Модали бекоркунии подписка
     const unSubModal = document.createElement('div');
     unSubModal.className = 'theme-modal';
     unSubModal.id = 'unSubModal';
@@ -39,6 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
     document.body.appendChild(unSubModal);
+
+    // Модали интихоби Забон (Бемодал дар HTML, бо JS илова мешавад то дизайн вайрон нашавад)
+    const langModal = document.createElement('div');
+    langModal.className = 'theme-modal';
+    langModal.id = 'langModal';
+    langModal.innerHTML = `
+        <div class="theme-modal-content">
+            <h3>Интихоби забон / Выбор языка</h3>
+            <div class="theme-option" id="langTajik" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
+                <span>🇹🇯</span> <span>Тоҷикӣ</span>
+            </div>
+            <div class="theme-option" id="langRussian" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
+                <span>🇷🇺</span> <span>Русский</span>
+            </div>
+            <button class="theme-cancel" id="cancelLang" style="cursor: pointer;">ПАТРУХТАН / ОТМЕНА</button>
+        </div>
+    `;
+    document.body.appendChild(langModal);
 
     function applyTheme(theme) {
         if (theme === 'light') {
@@ -78,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelectorAll('.theme-option').forEach(option => {
-        if(option.id !== 'confirmUnsub') {
+        if(option.id !== 'confirmUnsub' && option.id !== 'langTajik' && option.id !== 'langRussian') {
             option.addEventListener('click', (e) => {
                 const selectedTheme = e.target.closest('.theme-option').getAttribute('data-theme');
                 if(selectedTheme) {
@@ -88,6 +107,63 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // 1. Танзими Забон
+    const setLanguageBtn = document.getElementById('setLanguage');
+    if (setLanguageBtn) {
+        setLanguageBtn.addEventListener('click', () => {
+            langModal.classList.add('open');
+            if(settingsMenu) settingsMenu.classList.remove('open');
+        });
+    }
+
+    const cancelLangBtn = document.getElementById('cancelLang');
+    if (cancelLangBtn) {
+        cancelLangBtn.addEventListener('click', () => {
+            langModal.classList.remove('open');
+        });
+    }
+
+    document.getElementById('langTajik').addEventListener('click', () => {
+        alert('Забони тоҷикӣ интихоб шуд.');
+        langModal.classList.remove('open');
+    });
+
+    document.getElementById('langRussian').addEventListener('click', () => {
+        alert('Выбран русский язык.');
+        langModal.classList.remove('open');
+    });
+
+    // 2. Огоҳиҳо (Notifications)
+    const setNotificationsBtn = document.getElementById('setNotifications');
+    let notificationsEnabled = localStorage.getItem('notifications') === 'true';
+    if (setNotificationsBtn) {
+        setNotificationsBtn.addEventListener('click', () => {
+            notificationsEnabled = !notificationsEnabled;
+            localStorage.setItem('notifications', notificationsEnabled);
+            alert(notificationsEnabled ? 'Огоҳиҳо фаъол карда шуданд ✅' : 'Огоҳиҳо хомӯш карда шуданд ❌');
+        });
+    }
+
+    // 3. Баҳо додан ба сомона (Rate)
+    const setRateBtn = document.getElementById('setRate');
+    if (setRateBtn) {
+        setRateBtn.addEventListener('click', () => {
+            let rating = prompt('Ба сомонаи ВАРЗИД аз 1 то 5 баҳо диҳед:', '5');
+            if (rating !== null) {
+                alert('Ташаккур! Баҳои шумо бо муваффақият қабул шуд ⭐');
+            }
+        });
+    }
+
+    // 4. Тамос бо мо (Contact - Гузариш ба WhatsApp)
+    const setContactBtn = document.getElementById('setContact');
+    if (setContactBtn) {
+        setContactBtn.addEventListener('click', () => {
+            const whatsappNumber = '992000000000'; // Рақами худро ин ҷо иваз кунед агар лозим бошад
+            window.open(`https://wa.me/${whatsappNumber}?text=Салом,%20аз%20сомонаи%20ВАРЗИД%20навишта%20истодаам`, '_blank');
+        });
+    }
 
     function updateAdminUI() {
         const adminElements = document.querySelectorAll('.admin-only');
