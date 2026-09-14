@@ -49,7 +49,6 @@
                 <span>Огоҳиҳо</span>
                 <span class="setting-arrow" id="notifStatusText">Вкл ›</span>
             </div>
-            <!-- Забон -->
             <div class="setting-item" id="setLanguage" style="display: flex; justify-content: space-between; align-items: center;">
                 <span>Забон / Язык / Til</span>
                 <select id="langSelect" style="padding: 3px 6px; border-radius: 4px; font-size: 13px;">
@@ -61,14 +60,6 @@
             <div class="setting-item admin-toggle-item" id="adminModeToggle">
                 <span>Режими Админ</span>
                 <span class="badge-off" id="adminStatusBadge">Выкл</span>
-            </div>
-            <div class="setting-item" id="setRate">
-                <span>Баҳо додан ба сомона</span>
-                <span class="setting-arrow">⭐ ›</span>
-            </div>
-            <div class="setting-item" id="setContact">
-                <span>Тамос бо мо</span>
-                <span class="setting-arrow">📞 ›</span>
             </div>
         </div>
     </div>
@@ -84,181 +75,8 @@
         </div>
     </div>
 
-    <!-- Модали Тамос бо мо -->
-    <div class="theme-modal" id="contactModal" style="display: none;">
-        <div class="theme-modal-content" style="max-width: 420px; text-align: left; max-height: 90vh; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h3 id="cTitle" style="margin: 0;">Тамос бо мо</h3>
-                <span id="closeContactModal" style="cursor: pointer; font-size: 22px; font-weight: bold;">✕</span>
-            </div>
-            <p id="cDesc" style="font-size: 13px; opacity: 0.8; margin-bottom: 15px;">
-                Лутфан мавзӯъ ва паёми худро интихоб кунед:
-            </p>
-
-            <div id="contactForm" style="display: flex; flex-direction: column; gap: 12px;">
-                <label id="cLabelTopic" style="font-size: 13px; font-weight: bold;">Интихоби мавзӯъ:</label>
-                <select id="waTopic" style="padding: 9px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;"></select>
-
-                <label id="cLabelName" style="font-size: 13px; font-weight: bold;">Номи шумо:</label>
-                <input type="text" id="waName" placeholder="Номатонро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
-                
-                <label id="cLabelPhone" style="font-size: 13px; font-weight: bold;">Рақами телефон:</label>
-                <input type="tel" id="waPhone" placeholder="+992..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
-                
-                <label id="cLabelMsg" style="font-size: 13px; font-weight: bold;">Паём:</label>
-                <textarea id="waMessage" rows="3" placeholder="Паёми худро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;"></textarea>
-                
-                <div style="display: flex; gap: 10px; margin-top: 5px;">
-                    <button type="button" id="sendToGmailBtn" style="flex: 1; background: #EA4335; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">📧 Gmail</button>
-                    <button type="button" id="sendToWaBtn" style="flex: 1; background: #25D366; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">💬 WhatsApp</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модали Баҳо додан ба сомона -->
-    <div class="theme-modal" id="rateModal" style="display: none;">
-        <div class="theme-modal-content" style="max-width: 380px; text-align: center;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 id="rTitle" style="margin: 0; font-size: 18px;">Баҳо додан ба сомона</h3>
-                <span id="closeRateModal" style="cursor: pointer; font-size: 22px; font-weight: bold;">✕</span>
-            </div>
-            <p id="rDesc" style="font-size: 13px; opacity: 0.8; margin-bottom: 15px;">
-                Фикри шумо барои мо муҳим аст! Лутфан ба сомона баҳо диҳед:
-            </p>
-            <div id="starContainer" style="display: flex; justify-content: center; gap: 8px; font-size: 32px; cursor: pointer; margin-bottom: 15px;">
-                <span class="star" data-value="1">☆</span>
-                <span class="star" data-value="2">☆</span>
-                <span class="star" data-value="3">☆</span>
-                <span class="star" data-value="4">☆</span>
-                <span class="star" data-value="5">☆</span>
-            </div>
-            <textarea id="rateComment" rows="3" placeholder="Шарҳ ё фикри худро нависед (ихтиёрӣ)..." style="width: 100%; padding: 9px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; box-sizing: border-box;"></textarea>
-            <div style="display: flex; gap: 10px;">
-                <button type="button" id="sendRateGmail" style="flex: 1; background: #EA4335; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">📧 Gmail</button>
-                <button type="button" id="sendRateWa" style="flex: 1; background: #25D366; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">💬 WhatsApp</button>
-            </div>
-        </div>
-    </div>
-
     <script src="script.js"></script>
     <script>
-        // Луғати сезабонаи модали Тамос
-        const contactData = {
-            tg: {
-                title: "Тамос бо мо", desc: "Лутфан мавзӯъ ва паёми худро интихоб кунед:",
-                topic: "Интихоби мавзӯъ:", name: "Номи шумо:", phone: "Рақами телефон:", msg: "Паём:",
-                topics: ["Фармоиши маҳсулот", "Расонидан (Доставка)", "Хатогӣ дар сомона", "Ҳамкорӣ", "Дигар саволҳо"]
-            },
-            ru: {
-                title: "Контакты", desc: "Пожалуйста, выберите тему и напишите сообщение:",
-                topic: "Выберите тему:", name: "Ваше имя:", phone: "Телефон:", msg: "Сообщение:",
-                topics: ["Заказ продукта", "Доставка", "Ошибка на сайте", "Сотрудничество", "Другие вопросы"]
-            },
-            uz: {
-                title: "Bog'lanish", desc: "Iltimos, mavzu va xabaringizni tanlang:",
-                topic: "Mavzu:", name: "Ismingiz:", phone: "Telefon raqam:", msg: "Xabar:",
-                topics: ["Mahsulot buyurtma", "Yetkazib berish", "Saytdagi xatolik", "Hamkorlik", "Boshqa savollar"]
-            }
-        };
-
-        function refreshContactModal() {
-            let langSelect = document.getElementById('langSelect');
-            let currentLang = langSelect ? langSelect.value : 'ru';
-            let d = contactData[currentLang] || contactData.ru;
-
-            document.getElementById('cTitle').innerText = d.title;
-            document.getElementById('cDesc').innerText = d.desc;
-            document.getElementById('cLabelTopic').innerText = d.topic;
-            document.getElementById('cLabelName').innerText = d.name;
-            document.getElementById('cLabelPhone').innerText = d.phone;
-            document.getElementById('cLabelMsg').innerText = d.msg;
-
-            let select = document.getElementById('waTopic');
-            select.innerHTML = '';
-            d.topics.forEach(text => {
-                let opt = document.createElement('option');
-                opt.value = text;
-                opt.innerText = text;
-                select.appendChild(opt);
-            });
-        }
-
-        // Амалиётҳои Тамос бо мо
-        document.getElementById('setContact').addEventListener('click', () => {
-            document.getElementById('contactModal').style.display = 'flex';
-            refreshContactModal();
-        });
-        document.getElementById('closeContactModal').addEventListener('click', () => {
-            document.getElementById('contactModal').style.display = 'none';
-        });
-        let langEl = document.getElementById('langSelect');
-        if (langEl) { langEl.addEventListener('change', refreshContactModal); }
-
-        // WhatsApp фиристодан
-        document.getElementById('sendToWaBtn').addEventListener('click', () => {
-            let topic = document.getElementById('waTopic').value;
-            let name = document.getElementById('waName').value.trim();
-            let phone = document.getElementById('waPhone').value.trim();
-            let msg = document.getElementById('waMessage').value.trim();
-            if(!name || !phone || !msg) { alert("Лутфан ҳамаи майдонҳоро пур кунед!"); return; }
-            let text = `Мавзӯъ: ${topic}%0AНом: ${name}%0АТелефон: ${phone}%0АПаём: ${msg}`;
-            window.open(`https://wa.me/992000001606?text=${text}`, '_blank');
-            document.getElementById('contactModal').style.display = 'none';
-        });
-
-        // Gmail фиристодан
-        document.getElementById('sendToGmailBtn').addEventListener('click', () => {
-            let topic = document.getElementById('waTopic').value;
-            let name = document.getElementById('waName').value.trim();
-            let phone = document.getElementById('waPhone').value.trim();
-            let msg = document.getElementById('waMessage').value.trim();
-            if(!name || !phone || !msg) { alert("Лутфан ҳамаи майдонҳоро пур кунед!"); return; }
-            let email = "daminovnurmuhammad04@gmail.com";
-            let subject = encodeURIComponent(topic);
-            let body = encodeURIComponent(`Ном: ${name}\nТелефон: ${phone}\nПаём: ${msg}`);
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-            document.getElementById('contactModal').style.display = 'none';
-        });
-
-        // Амалиётҳои Баҳо додан
-        let selectedRating = 5;
-        document.getElementById('setRate').addEventListener('click', () => {
-            document.getElementById('rateModal').style.display = 'flex';
-            resetStars(5);
-        });
-        document.getElementById('closeRateModal').addEventListener('click', () => {
-            document.getElementById('rateModal').style.display = 'none';
-        });
-        const stars = document.querySelectorAll('.star');
-        stars.forEach(star => {
-            star.addEventListener('click', (e) => {
-                selectedRating = parseInt(e.target.getAttribute('data-value'));
-                resetStars(selectedRating);
-            });
-        });
-        function resetStars(rating) {
-            stars.forEach(s => {
-                let val = parseInt(s.getAttribute('data-value'));
-                if (val <= rating) { s.innerText = '★'; s.style.color = '#fbc02d'; }
-                else { s.innerText = '☆'; s.style.color = '#ccc'; }
-            });
-        }
-        document.getElementById('sendRateWa').addEventListener('click', () => {
-            let comment = document.getElementById('rateComment').value.trim();
-            let text = `⭐ Баҳо ба сомона: ${selectedRating} аз 5%0АШарҳ: ${comment ? comment : 'Бе шарҳ'}`;
-            window.open(`https://wa.me/992000001606?text=${text}`, '_blank');
-            document.getElementById('rateModal').style.display = 'none';
-        });
-        document.getElementById('sendRateGmail').addEventListener('click', () => {
-            let comment = document.getElementById('rateComment').value.trim();
-            let email = "daminovnurmuhammad04@gmail.com";
-            let subject = encodeURIComponent("Баҳодиҳӣ ба сомонаи ВАРЗИД");
-            let body = encodeURIComponent(`Баҳо: ${selectedRating} аз 5 ситора\nШарҳ: ${comment ? comment : 'Бе шарҳ'}`);
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-            document.getElementById('rateModal').style.display = 'none';
-        });
-
         // Идоракунии Огоҳиҳо (Notifications)
         const notifItem = document.getElementById('setNotifications');
         const notifStatusText = document.getElementById('notifStatusText');
@@ -279,8 +97,19 @@
             isNotificationsOn = !isNotificationsOn;
             localStorage.setItem('siteNotifications', isNotificationsOn ? 'on' : 'off');
             updateNotifDisplay();
-            alert(isNotificationsOn ? "Огоҳиҳо фаъол шуданд!" : "Огоҳиҳо хомӯш карда шуданд!");
         });
+
+        // Муҳофизати Режими Админ барои муштариён
+        const adminToggle = document.getElementById('adminModeToggle');
+        if (adminToggle) {
+            adminToggle.addEventListener('click', (e) => {
+                if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    alert("Ин қисм танҳо барои маъмури сомона пешбинӣ шудааст!");
+                }
+            }, true);
+        }
     </script>
 </body>
 </html>
