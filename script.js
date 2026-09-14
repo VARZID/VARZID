@@ -25,8 +25,84 @@ document.addEventListener('DOMContentLoaded', () => {
     let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Чав', 'Селитра', 'Карбамид'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
     let currentTheme = localStorage.getItem('theme') || 'dark';
+    let currentLang = localStorage.getItem('lang') || 'tg';
 
-    // Модали бекоркунии подписка
+    // Луғат барои забонҳо
+    const dict = {
+        tg: {
+            subscribers: "подписчиков",
+            subscribe: "Подписаться",
+            subscribed: "✓ Вы подписаны",
+            categories: "Категорияҳо",
+            settings: "Танзимот",
+            theme: "Мавзӯъ (Тема)",
+            notifications: "Огоҳиҳо",
+            language: "Забон",
+            adminMode: "Режими Админ",
+            rateSite: "Баҳо додан ба сомона",
+            contactUs: "Тамос бо мо"
+        },
+        ru: {
+            subscribers: "подписчиков",
+            subscribe: "Подписаться",
+            subscribed: "✓ Вы подписаны",
+            categories: "Категории",
+            settings: "Настройки",
+            theme: "Тема",
+            notifications: "Уведомления",
+            language: "Язык",
+            adminMode: "Режим Админа",
+            rateSite: "Оценить сайт",
+            contactUs: "Связаться с нами"
+        },
+        uz: {
+            subscribers: "obunachilar",
+            subscribe: "Obuna bo'lish",
+            subscribed: "✓ Obuna bo'lgansiz",
+            categories: "Kategoriyalar",
+            settings: "Sozlamalar",
+            theme: "Mavzu",
+            notifications: "Bildirishnomalar",
+            language: "Til",
+            adminMode: "Admin rejimi",
+            rateSite: "Saytni baholash",
+            contactUs: "Biz bilan bog'lanish"
+        }
+    };
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('lang', lang);
+        
+        const t = dict[lang];
+        
+        const subTextNode = document.querySelector('.subscribers-info div');
+        if(subTextNode) {
+            subTextNode.innerHTML = `<span id="subCount">${subscribers >= 1000 ? (subscribers/1000).toFixed(1) : subscribers}</span> ${t.subscribers}`;
+        }
+        
+        if(subBtn) {
+            subBtn.textContent = isSubscribed ? t.subscribed : t.subscribe;
+        }
+
+        const catTitle = document.querySelector('.menu-header span');
+        if(catTitle) catTitle.textContent = t.categories;
+
+        const setHead = document.querySelector('.settings-header span');
+        if(setHead) setHead.textContent = t.settings;
+
+        const items = document.querySelectorAll('.setting-list .setting-item, .settings-list .setting-item');
+        if(items.length >= 6) {
+            items[0].querySelector('span').textContent = t.theme;
+            items[1].querySelector('span').textContent = t.notifications;
+            items[2].querySelector('span').textContent = t.language;
+            items[3].querySelector('span').textContent = t.adminMode;
+            items[4].querySelector('span').textContent = t.rateSite;
+            items[5].querySelector('span').textContent = t.contactUs;
+        }
+    }
+
+    // Модали подписка
     const unSubModal = document.createElement('div');
     unSubModal.className = 'theme-modal';
     unSubModal.id = 'unSubModal';
@@ -41,20 +117,23 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(unSubModal);
 
-    // Модали интихоби Забон (Бемодал дар HTML, бо JS илова мешавад то дизайн вайрон нашавад)
+    // Модали интихоби се забон
     const langModal = document.createElement('div');
     langModal.className = 'theme-modal';
     langModal.id = 'langModal';
     langModal.innerHTML = `
         <div class="theme-modal-content">
-            <h3>Интихоби забон / Выбор языка</h3>
+            <h3>Интихоби забон / Выбор языка / Tilni tanlash</h3>
             <div class="theme-option" id="langTajik" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
                 <span>🇹🇯</span> <span>Тоҷикӣ</span>
             </div>
             <div class="theme-option" id="langRussian" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
                 <span>🇷🇺</span> <span>Русский</span>
             </div>
-            <button class="theme-cancel" id="cancelLang" style="cursor: pointer;">ПАТРУХТАН / ОТМЕНА</button>
+            <div class="theme-option" id="langUzbek" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
+                <span>🇺🇿</span> <span>O'zbekcha</span>
+            </div>
+            <button class="theme-cancel" id="cancelLang" style="cursor: pointer;">ПАТРУХТАН / ОТМЕНА / BEKOR QILISH</button>
         </div>
     `;
     document.body.appendChild(langModal);
@@ -83,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     applyTheme(currentTheme);
+    setLanguage(currentLang);
 
     if(setThemeBtn) {
         setThemeBtn.addEventListener('click', () => {
@@ -97,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelectorAll('.theme-option').forEach(option => {
-        if(option.id !== 'confirmUnsub' && option.id !== 'langTajik' && option.id !== 'langRussian') {
+        if(option.id !== 'confirmUnsub' && option.id !== 'langTajik' && option.id !== 'langRussian' && option.id !== 'langUzbek') {
             option.addEventListener('click', (e) => {
                 const selectedTheme = e.target.closest('.theme-option').getAttribute('data-theme');
                 if(selectedTheme) {
@@ -108,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 1. Танзими Забон
+    // Забонҳо
     const setLanguageBtn = document.getElementById('setLanguage');
     if (setLanguageBtn) {
         setLanguageBtn.addEventListener('click', () => {
@@ -117,24 +197,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const cancelLangBtn = document.getElementById('cancelLang');
-    if (cancelLangBtn) {
-        cancelLangBtn.addEventListener('click', () => {
-            langModal.classList.remove('open');
-        });
-    }
+    document.getElementById('cancelLang').addEventListener('click', () => {
+        langModal.classList.remove('open');
+    });
 
     document.getElementById('langTajik').addEventListener('click', () => {
-        alert('Забони тоҷикӣ интихоб шуд.');
+        setLanguage('tg');
         langModal.classList.remove('open');
     });
 
     document.getElementById('langRussian').addEventListener('click', () => {
-        alert('Выбран русский язык.');
+        setLanguage('ru');
         langModal.classList.remove('open');
     });
 
-    // 2. Огоҳиҳо (Notifications)
+    document.getElementById('langUzbek').addEventListener('click', () => {
+        setLanguage('uz');
+        langModal.classList.remove('open');
+    });
+
+    // Огоҳиҳо
     const setNotificationsBtn = document.getElementById('setNotifications');
     let notificationsEnabled = localStorage.getItem('notifications') === 'true';
     if (setNotificationsBtn) {
@@ -145,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Баҳо додан ба сомона (Rate)
+    // Баҳо додан
     const setRateBtn = document.getElementById('setRate');
     if (setRateBtn) {
         setRateBtn.addEventListener('click', () => {
@@ -156,11 +238,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Тамос бо мо (Contact - Гузариш ба WhatsApp)
+    // Тамос бо мо (Рақами WhatsApp: 992000001606)
     const setContactBtn = document.getElementById('setContact');
     if (setContactBtn) {
         setContactBtn.addEventListener('click', () => {
-            const whatsappNumber = '992000000000'; // Рақами худро ин ҷо иваз кунед агар лозим бошад
+            const whatsappNumber = '992000001606'; 
             window.open(`https://wa.me/${whatsappNumber}?text=Салом,%20аз%20сомонаи%20ВАРЗИД%20навишта%20истодаам`, '_blank');
         });
     }
@@ -183,9 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!subCountSpan) return;
         if (subscribers >= 1000) {
             let thousands = (subscribers / 1000).toFixed(1);
-            if (thousands.endsWith('.0')) {
-                thousands = parseInt(thousands);
-            }
+            if (thousands.endsWith('.0')) thousands = parseInt(thousands);
             subCountSpan.textContent = thousands + ' тыс';
         } else {
             subCountSpan.textContent = subscribers;
@@ -281,28 +361,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const cancelUnsubBtn = document.getElementById('cancelUnsub');
-    if(cancelUnsubBtn) {
-        cancelUnsubBtn.addEventListener('click', () => {
-            unSubModal.classList.remove('open');
-        });
-    }
+    document.getElementById('cancelUnsub').addEventListener('click', () => {
+        unSubModal.classList.remove('open');
+    });
 
-    const confirmUnsubBtn = document.getElementById('confirmUnsub');
-    if(confirmUnsubBtn) {
-        confirmUnsubBtn.addEventListener('click', () => {
-            subscribers = Math.max(0, subscribers - 1);
-            isSubscribed = false;
-            if(subBtn) {
-                subBtn.textContent = 'Подписаться';
-                subBtn.classList.remove('subscribed');
-            }
-            updateSubDisplay();
-            localStorage.setItem('subCount', subscribers);
-            localStorage.setItem('isSubscribed', isSubscribed);
-            unSubModal.classList.remove('open');
-        });
-    }
+    document.getElementById('confirmUnsub').addEventListener('click', () => {
+        subscribers = Math.max(0, subscribers - 1);
+        isSubscribed = false;
+        if(subBtn) {
+            subBtn.textContent = 'Подписаться';
+            subBtn.classList.remove('subscribed');
+        }
+        updateSubDisplay();
+        localStorage.setItem('subCount', subscribers);
+        localStorage.setItem('isSubscribed', isSubscribed);
+        unSubModal.classList.remove('open');
+    });
 
     if(addCategoryBtn) {
         addCategoryBtn.addEventListener('click', () => {
