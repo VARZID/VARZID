@@ -18,11 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelTheme = document.getElementById('cancelTheme');
     const themeStatus = document.getElementById('themeStatus');
 
+    // Элементҳои тамос бо мо
+    const setContactBtn = document.getElementById('setContact');
+    const contactModal = document.getElementById('contactModal');
+    const closeContactModal = document.getElementById('closeContactModal');
+
     let savedSubCount = parseInt(localStorage.getItem('subCount'));
     let subscribers = (!isNaN(savedSubCount) && savedSubCount !== 30000) ? savedSubCount : 0;
     
     let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
-    let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Чав', 'Селитра', 'Карбамид'];
+    let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Ҷав', 'Селитра', 'Карбамид'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
     let currentTheme = localStorage.getItem('theme') || 'dark';
     let currentLang = localStorage.getItem('lang') || 'tg';
@@ -109,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     unSubModal.innerHTML = `
         <div class="theme-modal-content">
             <h3>Управление подпиской</h3>
-            <div class="theme-option" id="confirmUnsub" style="display: flex; align-items: center; gap: 12px; color: #ff4757; font-weight: bold;">
+            <div class="theme-option" id="confirmUnsub" style="display: flex; align-items: center; gap: 12px; color: #ff4757; font-weight: bold; cursor: pointer;">
                 <span style="font-size: 18px;">👤</span> <span>Отменить подписку</span>
             </div>
             <button class="theme-cancel" id="cancelUnsub" style="cursor: pointer;">ОТМЕНИТЬ</button>
@@ -216,25 +221,50 @@ document.addEventListener('DOMContentLoaded', () => {
         langModal.classList.remove('open');
     });
 
-    // Огоҳиҳо
+    // Огоҳиҳо (Уведомления)
     const setNotificationsBtn = document.getElementById('setNotifications');
+    const notifStatusText = document.getElementById('notifStatusText');
     let notificationsEnabled = localStorage.getItem('notifications') === 'true';
+    
+    function updateNotifUI() {
+        if(notifStatusText) {
+            notifStatusText.textContent = notificationsEnabled ? 'Вкл ›' : 'Выкл ›';
+        }
+    }
+    updateNotifUI();
+
     if (setNotificationsBtn) {
         setNotificationsBtn.addEventListener('click', () => {
             notificationsEnabled = !notificationsEnabled;
             localStorage.setItem('notifications', notificationsEnabled);
-            alert(notificationsEnabled ? 'Огоҳиҳо фаъол карда шуданд ✅' : 'Огоҳиҳо хомӯш карда шуданд ❌');
+            updateNotifUI();
+            alert(notificationsEnabled ? 'Огоҳиҳо дар бораи маҳсулоти нав ва нархҳо фаъол карда шуданд ✅' : 'Огоҳиҳо хомӯш карда шуданд ❌');
         });
     }
 
-    // Баҳо додан
+    // Баҳо додан ба сомона (Оценить сайт)
     const setRateBtn = document.getElementById('setRate');
     if (setRateBtn) {
         setRateBtn.addEventListener('click', () => {
             let rating = prompt('Ба сомонаи ВАРЗИД аз 1 то 5 баҳо диҳед:', '5');
-            if (rating !== null) {
+            if (rating !== null && rating.trim() !== '') {
+                localStorage.setItem('siteRating', rating);
                 alert('Ташаккур! Баҳои шумо бо муваффақият қабул шуд ⭐');
             }
+        });
+    }
+
+    // Тамос бо мо (Связаться с нами / Напишите нам)
+    if (setContactBtn && contactModal) {
+        setContactBtn.addEventListener('click', () => {
+            contactModal.style.display = 'flex';
+            if(settingsMenu) settingsMenu.classList.remove('open');
+        });
+    }
+
+    if (closeContactModal && contactModal) {
+        closeContactModal.addEventListener('click', () => {
+            contactModal.style.display = 'none';
         });
     }
 
@@ -394,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 const card = e.target.closest('.category-card');
+                case card:
                 if (card) {
                     const nameSpan = card.querySelector('.cat-name');
                     const index = parseInt(nameSpan.getAttribute('data-index'));
