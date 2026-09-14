@@ -80,48 +80,41 @@
         </div>
     </div>
 
-    <!-- Модали Тамос бо мо (Formspree -> Gmail) -->
+    <!-- Модали Тамос бо мо / Формаи Formspree (Пайваст ба Gmail) -->
     <div class="theme-modal" id="contactModal" style="display: none;">
         <div class="theme-modal-content" style="max-width: 400px; text-align: left;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0;">Тамос бо ВАРЗИД</h3>
-                <span id="closeContactModal" style="cursor: pointer; font-size: 20px; font-weight: bold;">✕</span>
+                <h3 style="margin: 0;">Тамос бо VARZID</h3>
+                <span id="closeContactModal" style="cursor: pointer; font-size: 20px;">✕</span>
             </div>
-            <form action="https://formspree.io/f/xzebnkbl" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
-                <label style="font-size: 14px; font-weight: bold;">Номи шумо:</label>
-                <input type="text" name="name" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+            <form action="https://formspree.io/f/xzebnkbl" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Майдон барои фиристодани мустақим ба Gmail-и шумо -->
+                <input type="hidden" name="_to" value="daminovnurmuhammad04@gmail.com">
                 
-                <label style="font-size: 14px; font-weight: bold;">Рақами телефон:</label>
-                <input type="tel" name="phone" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+                <label style="font-size: 14px;">Номи шумо:</label>
+                <input type="text" name="name" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
                 
-                <label style="font-size: 14px; font-weight: bold;">Паём ё номгӯи маҳсулот:</label>
-                <textarea name="message" rows="3" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;"></textarea>
+                <label style="font-size: 14px;">Рақами телефон:</label>
+                <input type="tel" name="phone" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
                 
-                <button type="submit" style="background: #e50914; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; margin-top: 5px;">Фиристодан ба Gmail</button>
+                <label style="font-size: 14px;">Паём / Номгӯи маҳсулот:</label>
+                <textarea name="message" rows="3" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                
+                <button type="submit" style="background: #e50914; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px;">Фиристодан</button>
             </form>
         </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // Пайваст кардани тугмаи "Связаться с нами" ба модали форма
-        const setContactBtn = document.getElementById('setContact');
-        const contactModal = document.getElementById('contactModal');
-        const closeContactModal = document.getElementById('closeContactModal');
-        const settingsMenu = document.getElementById('settingsMenu');
-
-        if (setContactBtn) {
-            setContactBtn.addEventListener('click', function() {
-                if (contactModal) contactModal.style.display = 'flex';
-                if (settingsMenu) settingsMenu.classList.remove('active');
-            });
-        }
-
-        if (closeContactModal) {
-            closeContactModal.addEventListener('click', function() {
-                if (contactModal) contactModal.style.display = 'none';
-            });
-        }
+        // Идора кардани кушода ва пӯшида шудани формаи тамос
+        document.getElementById('setContact').addEventListener('click', function() {
+            document.getElementById('contactModal').style.display = 'flex';
+            document.getElementById('settingsMenu').classList.remove('active'); // Менюи танзимотро мепӯшонад
+        });
+        document.getElementById('closeContactModal').addEventListener('click', function() {
+            document.getElementById('contactModal').style.display = 'none';
+        });
     </script>
 </body>
 </html>
