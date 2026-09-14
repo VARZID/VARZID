@@ -238,15 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Тамос бо мо (Рақами WhatsApp: 992000001606)
-    const setContactBtn = document.getElementById('setContact');
-    if (setContactBtn) {
-        setContactBtn.addEventListener('click', () => {
-            const whatsappNumber = '992000001606'; 
-            window.open(`https://wa.me/${whatsappNumber}?text=Салом,%20аз%20сомонаи%20ВАРЗИД%20навишта%20истодаам`, '_blank');
-        });
-    }
-
     function updateAdminUI() {
         const adminElements = document.querySelectorAll('.admin-only');
         adminElements.forEach(el => {
