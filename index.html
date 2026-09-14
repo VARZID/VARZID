@@ -48,7 +48,7 @@
             </div>
             <div class="setting-item" id="setNotifications">
                 <span>Огоҳиҳо</span>
-                <span class="setting-arrow">›</span>
+                <span class="setting-arrow" id="notifStatusText">›</span>
             </div>
             <div class="setting-item" id="setLanguage">
                 <span>Забон</span>
@@ -80,41 +80,43 @@
         </div>
     </div>
 
-    <!-- Модали Тамос бо мо / Формаи Formspree (Пайваст ба Gmail) -->
+    <!-- Модали Тамос бо мо (Интихоби Тема / Напишите нам мисли MyScore) -->
     <div class="theme-modal" id="contactModal" style="display: none;">
-        <div class="theme-modal-content" style="max-width: 400px; text-align: left;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0;">Тамос бо VARZID</h3>
-                <span id="closeContactModal" style="cursor: pointer; font-size: 20px;">✕</span>
+        <div class="theme-modal-content" style="max-width: 420px; text-align: left; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="margin: 0;">Контакты / Тамос бо мо</h3>
+                <span id="closeContactModal" style="cursor: pointer; font-size: 22px; font-weight: bold;">✕</span>
             </div>
-            <form action="https://formspree.io/f/xzebnkbl" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
-                <!-- Майдон барои фиристодани мустақим ба Gmail-и шумо -->
+            <p style="font-size: 13px; opacity: 0.8; margin-bottom: 15px;">
+                Барои он ки муроҷиати шумо ба шахси лозима расад, лутфан мавзӯи худро интихоб кунед ва паём фиристед.
+            </p>
+
+            <form action="https://formspree.io/f/xzebnkbl" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
                 <input type="hidden" name="_to" value="daminovnurmuhammad04@gmail.com">
                 
-                <label style="font-size: 14px;">Номи шумо:</label>
-                <input type="text" name="name" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                <label style="font-size: 13px; font-weight: bold;">Интихоби мавзӯъ (Тема):</label>
+                <select name="topic" style="padding: 9px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+                    <option value="Закори мол ва нарх">🛒 Закори мол ва нарх</option>
+                    <option value="Хатогӣ дар сомона">⚠️ Хатогӣ дар сомона</option>
+                    <option value="Савол оид ба расонидан">📦 Савол оид ба расонидан (доставка)</option>
+                    <option value="Пешниҳод ё ҳамкорӣ">💡 Пешниҳод ё ҳамкорӣ</option>
+                    <option value="Дигар саволҳо">❓ Дигар саволҳо</option>
+                </select>
+
+                <label style="font-size: 13px; font-weight: bold;">Номи шумо:</label>
+                <input type="text" name="name" required placeholder="Номатонро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
                 
-                <label style="font-size: 14px;">Рақами телефон:</label>
-                <input type="tel" name="phone" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                <label style="font-size: 13px; font-weight: bold;">Рақами телефон:</label>
+                <input type="tel" name="phone" required placeholder="+992..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;">
                 
-                <label style="font-size: 14px;">Паём / Номгӯи маҳсулот:</label>
-                <textarea name="message" rows="3" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                <label style="font-size: 13px; font-weight: bold;">Паём / Номгӯи маҳсулот:</label>
+                <textarea name="message" rows="3" required placeholder="Паёми худро нависед..." style="padding: 9px; border-radius: 6px; border: 1px solid #ccc;"></textarea>
                 
-                <button type="submit" style="background: #e50914; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px;">Фиристодан</button>
+                <button type="submit" style="background: #e50914; color: white; border: none; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 5px;">Фиристодан</button>
             </form>
         </div>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        // Идора кардани кушода ва пӯшида шудани формаи тамос
-        document.getElementById('setContact').addEventListener('click', function() {
-            document.getElementById('contactModal').style.display = 'flex';
-            document.getElementById('settingsMenu').classList.remove('active'); // Менюи танзимотро мепӯшонад
-        });
-        document.getElementById('closeContactModal').addEventListener('click', function() {
-            document.getElementById('contactModal').style.display = 'none';
-        });
-    </script>
 </body>
 </html>
