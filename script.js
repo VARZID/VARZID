@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelTheme = document.getElementById('cancelTheme');
     const themeStatus = document.getElementById('themeStatus');
 
-    // Элементҳои тамос бо мо
     const setContactBtn = document.getElementById('setContact');
     const contactModal = document.getElementById('contactModal');
     const closeContactModal = document.getElementById('closeContactModal');
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTheme = localStorage.getItem('theme') || 'dark';
     let currentLang = localStorage.getItem('lang') || 'tg';
 
-    // Луғат барои забонҳо
     const dict = {
         tg: {
             subscribers: "подписчиков",
@@ -96,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const setHead = document.querySelector('.settings-header span');
         if(setHead) setHead.textContent = t.settings;
 
-        const items = document.querySelectorAll('.setting-list .setting-item, .settings-list .setting-item');
+        const items = document.querySelectorAll('.settings-list .setting-item');
         if(items.length >= 6) {
             items[0].querySelector('span').textContent = t.theme;
             items[1].querySelector('span').textContent = t.notifications;
@@ -107,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Модали подписка
     const unSubModal = document.createElement('div');
     unSubModal.className = 'theme-modal';
     unSubModal.id = 'unSubModal';
@@ -122,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(unSubModal);
 
-    // Модали интихоби се забон
     const langModal = document.createElement('div');
     langModal.className = 'theme-modal';
     langModal.id = 'langModal';
@@ -193,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Забонҳо
     const setLanguageBtn = document.getElementById('setLanguage');
     if (setLanguageBtn) {
         setLanguageBtn.addEventListener('click', () => {
@@ -221,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
         langModal.classList.remove('open');
     });
 
-    // Огоҳиҳо (Уведомления)
     const setNotificationsBtn = document.getElementById('setNotifications');
     const notifStatusText = document.getElementById('notifStatusText');
     let notificationsEnabled = localStorage.getItem('notifications') === 'true';
@@ -242,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Баҳо додан ба сомона (Оценить сайт)
     const setRateBtn = document.getElementById('setRate');
     if (setRateBtn) {
         setRateBtn.addEventListener('click', () => {
@@ -254,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Тамос бо мо (Связаться с нами / Напишите нам)
     if (setContactBtn && contactModal) {
         setContactBtn.addEventListener('click', () => {
             contactModal.style.display = 'flex';
@@ -424,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 const card = e.target.closest('.category-card');
-                case card:
                 if (card) {
                     const nameSpan = card.querySelector('.cat-name');
                     const index = parseInt(nameSpan.getAttribute('data-index'));
