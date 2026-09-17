@@ -9,6 +9,8 @@
     --card-border: #2a2a2a;
     --card-hover: #2a2a2a;
     --border-color: #333;
+    /* Ранги асосии кабуди дархостшуда */
+    --main-blue: #3b82f6;
 }
 
 body.light-theme {
@@ -247,20 +249,24 @@ body {
     color: #ff4757;
 }
 
+/* Ҳолати хомӯш (Выкл) бо ранги хокистаранг */
 .badge-off {
-    background-color: var(--border-color);
-    color: var(--sub-text);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-}
-
-.badge-on {
-    background-color: #2ed573;
+    background-color: var(--sub-text);
     color: #fff;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
+    font-weight: bold;
+}
+
+/* Ҳолати фаъол (Вкл) бо ранги кабуди дилхоҳи шумо */
+.badge-on {
+    background-color: var(--main-blue);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .theme-modal {
