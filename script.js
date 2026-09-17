@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelTheme = document.getElementById('cancelTheme');
     const themeStatus = document.getElementById('themeStatus');
 
-    const setLanguageBtn = document.getElementById('setLanguage');
-    const currentLangDisplay = document.getElementById('currentLangDisplay');
+    const setContactBtn = document.getElementById('setContact');
+    const contactModal = document.getElementById('contactModal');
+    const closeContactModal = document.getElementById('closeContactModal');
 
     let savedSubCount = parseInt(localStorage.getItem('subCount'));
     let subscribers = (!isNaN(savedSubCount) && savedSubCount !== 30000) ? savedSubCount : 0;
@@ -28,62 +29,59 @@ document.addEventListener('DOMContentLoaded', () => {
     let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Ҷав', 'Селитра', 'Карбамид'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
     let currentTheme = localStorage.getItem('theme') || 'dark';
-    
-    // Русия ҳамчун забони пешфарз (международная) гирифта шуд
-    let currentLang = localStorage.getItem('lang') || 'ru';
+    let currentLang = localStorage.getItem('lang') || 'tg';
 
-    // Луғати забонҳо (русӣ дар маскани аввал ҳамчун асос)
     const dict = {
-        ru: {
-            subscribers: "подписчиков",
-            subscribe_btn: "Подписаться",
-            subscribed_btn: "✓ Вы подписаны",
-            categories_title: "Категории",
-            settings_title: "Настройки",
-            theme_label: "Тема",
-            notif_label: "Уведомления",
-            lang_label: "Язык",
-            admin_label: "Режим Админа",
-            select_theme_title: "Выбор темы",
-            dark_mode: "🌙 Ночной режим",
-            light_mode: "☀️ Дневной режим",
-            system_mode: "💻 Системные",
-            cancel_btn: "ОТМЕНА",
-            lang_name: "Русский"
-        },
         tg: {
             subscribers: "подписчиков",
-            subscribe_btn: "Подписаться",
-            subscribed_btn: "✓ Шумо обуна ҳастед",
-            categories_title: "Категорияҳо",
-            settings_title: "Танзимот",
-            theme_label: "Мавзӯъ (Тема)",
-            notif_label: "Огоҳиҳо",
-            lang_label: "Забон",
-            admin_label: "Режими Админ",
-            select_theme_title: "Интихоби мавзӯъ",
-            dark_mode: "🌙 Режими шабона",
-            light_mode: "☀️ Режими рӯзона",
-            system_mode: "💻 Системавӣ",
-            cancel_btn: "ПАТРУХТАН",
-            lang_name: "Тоҷикӣ"
+            subscribe: "Подписаться",
+            subscribed: "✓ Вы подписаны",
+            categories: "Категорияҳо",
+            settings: "Танзимот",
+            theme: "Мавзӯъ (Тема)",
+            notifications: "Огоҳиҳо",
+            language: "Забон",
+            adminMode: "Режими Админ",
+            rateSite: "Баҳо додан ба сомона",
+            contactUs: "Тамос бо мо",
+            deleteConfirmTitle: "Нест кардани категория",
+            deleteConfirmText: "Шумо мутмаин ҳастед, ки категорияи интихобшударо нест кардан мехоҳед?",
+            yes: "Нест кардан",
+            cancel: "Бекор кардан"
+        },
+        ru: {
+            subscribers: "подписчиков",
+            subscribe: "Подписаться",
+            subscribed: "✓ Вы подписаны",
+            categories: "Категории",
+            settings: "Настройки",
+            theme: "Тема",
+            notifications: "Уведомления",
+            language: "Язык",
+            adminMode: "Режим Админа",
+            rateSite: "Оценить сайт",
+            contactUs: "Связаться с нами",
+            deleteConfirmTitle: "Удаление категории",
+            deleteConfirmText: "Вы уверены, что хотите удалить выбранную категорию?",
+            yes: "Удалить",
+            cancel: "Отмена"
         },
         uz: {
             subscribers: "obunachilar",
-            subscribe_btn: "Obuna bo'lish",
-            subscribed_btn: "✓ Obuna bo'lgansiz",
-            categories_title: "Kategoriyalar",
-            settings_title: "Sozlamalar",
-            theme_label: "Mavzu",
-            notif_label: "Bildirishnomalar",
-            lang_label: "Til",
-            admin_label: "Admin rejimi",
-            select_theme_title: "Mavzuni tanlash",
-            dark_mode: "🌙 Tungi rejim",
-            light_mode: "☀️ Kunduzgi rejim",
-            system_mode: "💻 Tizimli",
-            cancel_btn: "BEKOR QILISH",
-            lang_name: "O'zbekcha"
+            subscribe: "Obuna bo'lish",
+            subscribed: "✓ Obuna bo'lgansiz",
+            categories: "Kategoriyalar",
+            settings: "Sozlamalar",
+            theme: "Mavzu",
+            notifications: "Bildirishnomalar",
+            language: "Til",
+            adminMode: "Admin rejimi",
+            rateSite: "Saytni baholash",
+            contactUs: "Biz bilan bog'lanish",
+            deleteConfirmTitle: "Kategoriyani o'chirish",
+            deleteConfirmText: "Tanlangan kategoriyani o'chirib tashlamoqchimisiz?",
+            yes: "O'chirish",
+            cancel: "Bekor qilish"
         }
     };
 
@@ -93,47 +91,74 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const t = dict[lang];
         
-        // Ҳамаи элементҳои дорои data-translate-ро бо тарҷумаи интихобшуда иваз мекунем
-        document.querySelectorAll('[data-translate]').forEach(el => {
-            const key = el.getAttribute('data-translate');
-            if (t[key]) {
-                el.textContent = t[key];
-            }
-        });
-
-        // Тугмаи обуна ва ҳолати он
+        const subTextNode = document.querySelector('.subscribers-info div');
+        if(subTextNode) {
+            subTextNode.innerHTML = `<span id="subCount">${subscribers >= 1000 ? (subscribers/1000).toFixed(1) : subscribers}</span> ${t.subscribers}`;
+        }
+        
         if(subBtn) {
-            subBtn.textContent = isSubscribed ? t.subscribed_btn : t.subscribe_btn;
+            subBtn.textContent = isSubscribed ? t.subscribed : t.subscribe;
         }
 
-        // Нишон додани номи забони фаъол дар менюи танзимот
-        if(currentLangDisplay) {
-            currentLangDisplay.textContent = t.lang_name + ' ›';
+        const catTitle = document.querySelector('.menu-header span');
+        if(catTitle) catTitle.textContent = t.categories;
+
+        const setHead = document.querySelector('.settings-header span');
+        if(setHead) setHead.textContent = t.settings;
+
+        const items = document.querySelectorAll('.settings-list .setting-item');
+        if(items.length >= 6) {
+            items[0].querySelector('span').textContent = t.theme;
+            items[1].querySelector('span').textContent = t.notifications;
+            items[2].querySelector('span').textContent = t.language;
+            items[3].querySelector('span').textContent = t.adminMode;
+            items[4].querySelector('span').textContent = t.rateSite;
+            items[5].querySelector('span').textContent = t.contactUs;
         }
     }
 
-    // Модали интихоби забон
-    const langModal = document.createElement('div');
-    langModal.className = 'theme-modal';
-    langModal.id = 'langModal';
-    langModal.innerHTML = `
+    // Модали несткунии категория бо дастгирии забонҳо
+    const deleteCatModal = document.createElement('div');
+    deleteCatModal.className = 'theme-modal';
+    deleteCatModal.id = 'deleteCatModal';
+    deleteCatModal.innerHTML = `
         <div class="theme-modal-content">
-            <h3>Интихоби забон / Выбор языка / Tilni tanlash</h3>
-            <div class="theme-option" id="langRussian" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
-                <span>🇷🇺</span> <span>Русский</span>
+            <h3 id="delModalTitle">Нест кардани категория</h3>
+            <p id="delModalText" style="margin: 15px 0; font-size: 14px; opacity: 0.9;"></p>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="theme-cancel" id="cancelDeleteCat" style="cursor: pointer; flex: 1; background: #555; color: #fff; border: none; padding: 10px; border-radius: 8px;">Бекор кардан</button>
+                <button id="confirmDeleteCat" style="cursor: pointer; flex: 1; background: #ff4757; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">Нест кардан</button>
             </div>
-            <div class="theme-option" id="langTajik" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
-                <span>🇹🇯</span> <span>Тоҷикӣ</span>
-            </div>
-            <div class="theme-option" id="langUzbek" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
-                <span>🇺🇿</span> <span>O'zbekcha</span>
-            </div>
-            <button class="theme-cancel" id="cancelLang" style="cursor: pointer;">ОТМЕНА</button>
         </div>
     `;
-    document.body.appendChild(langModal);
+    document.body.appendChild(deleteCatModal);
 
-    // Модали бекоркунии обуна
+    let categoryToDeleteIndex = null;
+
+    function openDeleteModal(index) {
+        categoryToDeleteIndex = index;
+        const t = dict[currentLang];
+        document.getElementById('delModalTitle').textContent = t.deleteConfirmTitle;
+        document.getElementById('delModalText').textContent = `${t.deleteConfirmText} ("${categories[index]}")`;
+        document.getElementById('cancelDeleteCat').textContent = t.cancel;
+        document.getElementById('confirmDeleteCat').textContent = t.yes;
+        deleteCatModal.classList.add('open');
+    }
+
+    document.getElementById('cancelDeleteCat').addEventListener('click', () => {
+        deleteCatModal.classList.remove('open');
+        categoryToDeleteIndex = null;
+    });
+
+    document.getElementById('confirmDeleteCat').addEventListener('click', () => {
+        if (categoryToDeleteIndex !== null && categoryToDeleteIndex >= 0 && categoryToDeleteIndex < categories.length) {
+            categories.splice(categoryToDeleteIndex, 1);
+            renderCategories();
+        }
+        deleteCatModal.classList.remove('open');
+        categoryToDeleteIndex = null;
+    });
+
     const unSubModal = document.createElement('div');
     unSubModal.className = 'theme-modal';
     unSubModal.id = 'unSubModal';
@@ -147,6 +172,26 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
     document.body.appendChild(unSubModal);
+
+    const langModal = document.createElement('div');
+    langModal.className = 'theme-modal';
+    langModal.id = 'langModal';
+    langModal.innerHTML = `
+        <div class="theme-modal-content">
+            <h3>Интихоби забон / Выбор языка / Tilni tanlash</h3>
+            <div class="theme-option" id="langTajik" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
+                <span>🇹🇯</span> <span>Тоҷикӣ</span>
+            </div>
+            <div class="theme-option" id="langRussian" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
+                <span>🇷🇺</span> <span>Русский</span>
+            </div>
+            <div class="theme-option" id="langUzbek" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
+                <span>🇺🇿</span> <span>O'zbekcha</span>
+            </div>
+            <button class="theme-cancel" id="cancelLang" style="cursor: pointer;">ПАТРУХТАН / ОТМЕНА / BEKOR QILISH</button>
+        </div>
+    `;
+    document.body.appendChild(langModal);
 
     function applyTheme(theme) {
         if (theme === 'light') {
@@ -198,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const setLanguageBtn = document.getElementById('setLanguage');
     if (setLanguageBtn) {
         setLanguageBtn.addEventListener('click', () => {
             langModal.classList.add('open');
@@ -209,13 +255,13 @@ document.addEventListener('DOMContentLoaded', () => {
         langModal.classList.remove('open');
     });
 
-    document.getElementById('langRussian').addEventListener('click', () => {
-        setLanguage('ru');
+    document.getElementById('langTajik').addEventListener('click', () => {
+        setLanguage('tg');
         langModal.classList.remove('open');
     });
 
-    document.getElementById('langTajik').addEventListener('click', () => {
-        setLanguage('tg');
+    document.getElementById('langRussian').addEventListener('click', () => {
+        setLanguage('ru');
         langModal.classList.remove('open');
     });
 
@@ -240,7 +286,31 @@ document.addEventListener('DOMContentLoaded', () => {
             notificationsEnabled = !notificationsEnabled;
             localStorage.setItem('notifications', notificationsEnabled);
             updateNotifUI();
-            alert(notificationsEnabled ? 'Уведомления о новых товарах и ценах включены ✅' : 'Уведомления выключены ❌');
+            alert(notificationsEnabled ? 'Огоҳиҳо дар бораи маҳсулоти нав ва нархҳо фаъол карда шуданд ✅' : 'Огоҳиҳо хомӯш карда шуданд ❌');
+        });
+    }
+
+    const setRateBtn = document.getElementById('setRate');
+    if (setRateBtn) {
+        setRateBtn.addEventListener('click', () => {
+            let rating = prompt('Ба сомонаи ВАРЗИД аз 1 то 5 баҳо диҳед:', '5');
+            if (rating !== null && rating.trim() !== '') {
+                localStorage.setItem('siteRating', rating);
+                alert('Ташаккур! Баҳои шумо бо муваффақият қабул шуд ⭐');
+            }
+        });
+    }
+
+    if (setContactBtn && contactModal) {
+        setContactBtn.addEventListener('click', () => {
+            contactModal.style.display = 'flex';
+            if(settingsMenu) settingsMenu.classList.remove('open');
+        });
+    }
+
+    if (closeContactModal && contactModal) {
+        closeContactModal.addEventListener('click', () => {
+            contactModal.style.display = 'none';
         });
     }
 
@@ -273,10 +343,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (subBtn) {
         if (isSubscribed) {
-            subBtn.innerHTML = dict[currentLang].subscribed_btn;
+            subBtn.innerHTML = '✓ Вы подписаны';
             subBtn.classList.add('subscribed');
         } else {
-            subBtn.textContent = dict[currentLang].subscribe_btn;
+            subBtn.textContent = 'Подписаться';
             subBtn.classList.remove('subscribed');
         }
     }
@@ -324,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(adminModeToggle) {
         adminModeToggle.addEventListener('click', () => {
             if (!isAdmin) {
-                let password = prompt('Пароли админро ворид кунед / Введите пароль админа:');
+                let password = prompt('Пароли админро ворид кунед:');
                 if (password === '1604') { 
                     isAdmin = true;
                     localStorage.setItem('isAdmin', 'true');
@@ -347,42 +417,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isSubscribed) {
                 subscribers++;
                 isSubscribed = true;
-                subBtn.innerHTML = dict[currentLang].subscribed_btn;
+                subBtn.innerHTML = '✓ Вы подписаны';
                 subBtn.classList.add('subscribed');
                 updateSubDisplay();
                 localStorage.setItem('subCount', subscribers);
                 localStorage.setItem('isSubscribed', isSubscribed);
             } else {
-                unSubModal.classList.add('open');
+                unSubModal.classList.0?.add ? unSubModal.classList.add('open') : unSubModal.classList.add('open');
             }
         });
     }
 
-    document.querySelectorAll('#cancelUnsub').forEach(btn => {
-        btn.addEventListener('click', () => {
-            unSubModal.classList.remove('open');
-        });
+    document.getElementById('cancelUnsub').addEventListener('click', () => {
+        unSubModal.classList.remove('open');
     });
 
-    const confirmUnsubBtn = document.getElementById('confirmUnsub');
-    if(confirmUnsubBtn) {
-        confirmUnsubBtn.addEventListener('click', () => {
-            subscribers = Math.max(0, subscribers - 1);
-            isSubscribed = false;
-            if(subBtn) {
-                subBtn.textContent = dict[currentLang].subscribe_btn;
-                subBtn.classList.remove('subscribed');
-            }
-            updateSubDisplay();
-            localStorage.setItem('subCount', subscribers);
-            localStorage.setItem('isSubscribed', isSubscribed);
-            unSubModal.classList.remove('open');
-        });
-    }
+    document.getElementById('confirmUnsub').addEventListener('click', () => {
+        subscribers = Math.max(0, subscribers - 1);
+        isSubscribed = false;
+        if(subBtn) {
+            subBtn.textContent = 'Подписаться';
+            subBtn.classList.remove('subscribed');
+        }
+        updateSubDisplay();
+        localStorage.setItem('subCount', subscribers);
+        localStorage.setItem('isSubscribed', isSubscribed);
+        unSubModal.classList.remove('open');
+    });
 
     if(addCategoryBtn) {
         addCategoryBtn.addEventListener('click', () => {
-            let newCat = prompt('Номи категорияи навро нависед / Введите название новой категории:');
+            let newCat = prompt('Номи категорияи навро нависед:');
             if (newCat && newCat.trim() !== '') {
                 categories.push(newCat.trim());
                 renderCategories();
@@ -397,11 +462,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!isAdmin) return;
                 let index = parseInt(e.target.getAttribute('data-index'));
                 if (!isNaN(index) && index >= 0 && index < categories.length) {
-                    let catName = categories[index];
-                    if (confirm(`Шумо мутмаин ҳастед, ки категорияи "${catName}"-ро нест кардан мехоҳед?`)) {
-                        categories.splice(index, 1);
-                        renderCategories();
-                    }
+                    // Кунун ба ҷои confirm() модали фармоишӣ кушода мешавад
+                    openDeleteModal(index);
                 }
             } else {
                 const card = e.target.closest('.category-card');
