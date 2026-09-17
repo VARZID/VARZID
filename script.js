@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTheme = localStorage.getItem('theme') || 'light';
     let currentLang = localStorage.getItem('lang') || 'tg';
 
-    // Луғати мукаммал барои ҳамаи забонҳо
+    // Луғати мукаммал барои се забон (Тоҷикӣ, Русский, O'zbekcha)
     const dict = {
         tg: {
             subscribers: "подписчиков",
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribed: "✓ Шумо обуна ҳастед",
             wrongPass: "Пароли нодуруст!",
             settingsTitle: "Танзимот",
+            categoriesTitle: "Категорияҳо",
             themeLabel: "Тема",
             nightMode: "Режими шабона ›",
             dayMode: "Режими рӯзона ›",
@@ -44,7 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
             langLabel: "Забон",
             adminLabel: "Режими Админ",
             adminOn: "Фаъол",
-            adminOff: "Хомӯш"
+            adminOff: "Хомӯш",
+            themeModalTitle: "Интихоби тема",
+            nightModeOpt: "🌙 Режими шабона",
+            dayModeOpt: "☀️ Режими рӯзона",
+            cancelBtn: "БЕКОР КАРДАН"
         },
         ru: {
             subscribers: "подписчиков",
@@ -52,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribed: "✓ Вы подписаны",
             wrongPass: "Неверный пароль!",
             settingsTitle: "Настройки",
+            categoriesTitle: "Категории",
             themeLabel: "Тема",
             nightMode: "Ночной режим ›",
             dayMode: "Дневной режим ›",
@@ -61,7 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
             langLabel: "Язык",
             adminLabel: "Режим Админа",
             adminOn: "Вкл",
-            adminOff: "Выкл"
+            adminOff: "Выкл",
+            themeModalTitle: "Выбор темы",
+            nightModeOpt: "🌙 Ночной режим",
+            dayModeOpt: "☀️ Дневной режим",
+            cancelBtn: "ОТМЕНА"
         },
         uz: {
             subscribers: "obunachilar",
@@ -69,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribed: "✓ Obuna bo'lgansiz",
             wrongPass: "Noto'g'ri parol!",
             settingsTitle: "Sozlamalar",
+            categoriesTitle: "Kategoriyalar",
             themeLabel: "Mavzu",
             nightMode: "Tungi rejim ›",
             dayMode: "Kunduzgi rejim ›",
@@ -78,7 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
             langLabel: "Til",
             adminLabel: "Admin rejimi",
             adminOn: "Yoqilgan",
-            adminOff: "O'chirilgan"
+            adminOff: "O'chirilgan",
+            themeModalTitle: "Mavzuni tanlash",
+            nightModeOpt: "🌙 Tungi rejim",
+            dayModeOpt: "☀️ Kunduzgi rejim",
+            cancelBtn: "BEKOR QILISH"
         }
     };
 
@@ -88,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const t = dict[lang];
         
-        // Иваз кардани элементҳое, ки data-translate доранд
+        // Иваз кардани ҳамаи элементҳое, ки data-translate доранд
         document.querySelectorAll("[data-translate]").forEach(element => {
             const key = element.getAttribute("data-translate");
             if (t[key]) {
@@ -96,23 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Иваз кардани матнҳои менюи танзимот бо калидҳои мушаххас
-        const settingsTitleEl = document.querySelector('.settings-header h3');
-        if(settingsTitleEl) settingsTitleEl.textContent = t.settingsTitle;
-
-        const themeLabelEl = document.querySelector('#setTheme .settings-label');
-        if(themeLabelEl) themeLabelEl.textContent = t.themeLabel;
-
-        const notifLabelEl = document.querySelector('#setNotifications .settings-label');
-        if(notifLabelEl) notifLabelEl.textContent = t.notifLabel;
-
-        const langLabelEl = document.querySelector('#setLanguage .settings-label');
-        if(langLabelEl) langLabelEl.textContent = t.langLabel;
-
-        const adminLabelEl = document.querySelector('#adminModeToggle .settings-label');
-        if(adminLabelEl) adminLabelEl.textContent = t.adminLabel;
-
-        // Номи забони ҷорӣ дар тугма
+        // Номи забони ҷорӣ дар менюи танзимот
         const langNames = { tg: "Тоҷикӣ", ru: "Русский", uz: "O'zbekcha" };
         const currentLangDisplay = document.getElementById('currentLangDisplay');
         if(currentLangDisplay) {
@@ -139,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSubDisplay();
     }
 
-    // Сохтани модалҳо
+    // Сохтани модалҳо бо дастгирии забонҳо
     const unSubModal = document.createElement('div');
     unSubModal.className = 'theme-modal';
     unSubModal.id = 'unSubModal';
@@ -275,29 +274,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const langTajik = document.getElementById('langTajik');
-    if(langTajik) {
-        langTajik.addEventListener('click', () => {
-            setLanguage('tg');
-            langModal.classList.remove('open');
-        });
-    }
-
-    const langRussian = document.getElementById('langRussian');
-    if(langRussian) {
-        langRussian.addEventListener('click', () => {
-            setLanguage('ru');
-            langModal.classList.remove('open');
-        });
-    }
-
-    const langUzbek = document.getElementById('langUzbek');
-    if(langUzbek) {
-        langUzbek.addEventListener('click', () => {
-            setLanguage('uz');
-            langModal.classList.remove('open');
-        });
-    }
+    if(langTajik) langTajik.addEventListener('click', () => { setLanguage('tg'); langModal.classList.remove('open'); });
+    if(langRussian) langRussian.addEventListener('click', () => { setLanguage('ru'); langModal.classList.remove('open'); });
+    if(langUzbek) langUzbek.addEventListener('click', () => { setLanguage('uz'); langModal.classList.remove('open'); });
 
     const setNotificationsBtn = document.getElementById('setNotifications');
     let notificationsEnabled = localStorage.getItem('notifications') === 'true';
@@ -340,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderCategories() {
         if (!categoryList) return;
         categoryList.innerHTML = '';
+        categories.categoriesList = categories || [];
         categories.forEach((cat, index) => {
             const card = document.createElement('div');
             card.className = 'category-card';
