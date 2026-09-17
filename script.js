@@ -43,11 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             language: "Забон",
             adminMode: "Режими Админ",
             rateSite: "Баҳо додан ба сомона",
-            contactUs: "Тамос бо мо",
-            deleteConfirmTitle: "Нест кардани категория",
-            deleteConfirmText: "Шумо мутмаин ҳастед, ки категорияи интихобшударо нест кардан мехоҳед?",
-            yes: "Нест кардан",
-            cancel: "Бекор кардан"
+            contactUs: "Тамос бо мо"
         },
         ru: {
             subscribers: "подписчиков",
@@ -60,11 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             language: "Язык",
             adminMode: "Режим Админа",
             rateSite: "Оценить сайт",
-            contactUs: "Связаться с нами",
-            deleteConfirmTitle: "Удаление категории",
-            deleteConfirmText: "Вы уверены, что хотите удалить выбранную категорию?",
-            yes: "Удалить",
-            cancel: "Отмена"
+            contactUs: "Связаться с нами"
         },
         uz: {
             subscribers: "obunachilar",
@@ -77,11 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             language: "Til",
             adminMode: "Admin rejimi",
             rateSite: "Saytni baholash",
-            contactUs: "Biz bilan bog'lanish",
-            deleteConfirmTitle: "Kategoriyani o'chirish",
-            deleteConfirmText: "Tanlangan kategoriyani o'chirib tashlamoqchimisiz?",
-            yes: "O'chirish",
-            cancel: "Bekor qilish"
+            contactUs: "Biz bilan bog'lanish"
         }
     };
 
@@ -117,48 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Модали несткунии категория бо дастгирии забонҳо
-    const deleteCatModal = document.createElement('div');
-    deleteCatModal.className = 'theme-modal';
-    deleteCatModal.id = 'deleteCatModal';
-    deleteCatModal.innerHTML = `
-        <div class="theme-modal-content">
-            <h3 id="delModalTitle">Нест кардани категория</h3>
-            <p id="delModalText" style="margin: 15px 0; font-size: 14px; opacity: 0.9;"></p>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="theme-cancel" id="cancelDeleteCat" style="cursor: pointer; flex: 1; background: #555; color: #fff; border: none; padding: 10px; border-radius: 8px;">Бекор кардан</button>
-                <button id="confirmDeleteCat" style="cursor: pointer; flex: 1; background: #ff4757; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">Нест кардан</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(deleteCatModal);
-
-    let categoryToDeleteIndex = null;
-
-    function openDeleteModal(index) {
-        categoryToDeleteIndex = index;
-        const t = dict[currentLang];
-        document.getElementById('delModalTitle').textContent = t.deleteConfirmTitle;
-        document.getElementById('delModalText').textContent = `${t.deleteConfirmText} ("${categories[index]}")`;
-        document.getElementById('cancelDeleteCat').textContent = t.cancel;
-        document.getElementById('confirmDeleteCat').textContent = t.yes;
-        deleteCatModal.classList.add('open');
-    }
-
-    document.getElementById('cancelDeleteCat').addEventListener('click', () => {
-        deleteCatModal.classList.remove('open');
-        categoryToDeleteIndex = null;
-    });
-
-    document.getElementById('confirmDeleteCat').addEventListener('click', () => {
-        if (categoryToDeleteIndex !== null && categoryToDeleteIndex >= 0 && categoryToDeleteIndex < categories.length) {
-            categories.splice(categoryToDeleteIndex, 1);
-            renderCategories();
-        }
-        deleteCatModal.classList.remove('open');
-        categoryToDeleteIndex = null;
-    });
-
     const unSubModal = document.createElement('div');
     unSubModal.className = 'theme-modal';
     unSubModal.id = 'unSubModal';
@@ -192,6 +138,23 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
     document.body.appendChild(langModal);
+
+    // Равзанаи махсуси тоҷикӣ барои нест кардани категория (бе браузер)
+    const deleteModal = document.createElement('div');
+    deleteModal.className = 'theme-modal';
+    deleteModal.id = 'deleteModal';
+    deleteModal.innerHTML = `
+        <div class="theme-modal-content">
+            <h3 id="deleteModalText" style="margin-bottom: 20px; font-size: 16px; line-height: 1.4;">Шумо мутмаин ҳастед?</h3>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="theme-cancel" id="cancelDelete" style="cursor: pointer; margin-top: 0; background: #333; color: #fff;">Бекор кардан</button>
+                <button class="theme-cancel" id="confirmDelete" style="cursor: pointer; margin-top: 0; background: #ff4757; color: #fff;">Нест кардан</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(deleteModal);
+
+    let deleteTargetIndex = null;
 
     function applyTheme(theme) {
         if (theme === 'light') {
@@ -423,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('subCount', subscribers);
                 localStorage.setItem('isSubscribed', isSubscribed);
             } else {
-                unSubModal.classList.0?.add ? unSubModal.classList.add('open') : unSubModal.classList.add('open');
+                unSubModal.classList.add('open');
             }
         });
     }
@@ -455,6 +418,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Идоракунии несткунӣ тавассути равзанаи сохтаи тоҷикӣ
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+        deleteModal.classList.remove('open');
+        deleteTargetIndex = null;
+    });
+
+    document.getElementById('confirmDelete').addEventListener('click', () => {
+        if (deleteTargetIndex !== null && !isNaN(deleteTargetIndex) && deleteTargetIndex >= 0 && deleteTargetIndex < categories.length) {
+            categories.splice(deleteTargetIndex, 1);
+            renderCategories();
+        }
+        deleteModal.classList.remove('open');
+        deleteTargetIndex = null;
+    });
+
     if(categoryList) {
         categoryList.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete-btn')) {
@@ -462,8 +440,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!isAdmin) return;
                 let index = parseInt(e.target.getAttribute('data-index'));
                 if (!isNaN(index) && index >= 0 && index < categories.length) {
-                    // Кунун ба ҷои confirm() модали фармоишӣ кушода мешавад
-                    openDeleteModal(index);
+                    deleteTargetIndex = index;
+                    let catName = categories[index];
+                    document.getElementById('deleteModalText').textContent = `Шумо мутмаин ҳастед, ки категорияи "${catName}"-ро нест кардан мехоҳед?`;
+                    deleteModal.classList.add('open');
                 }
             } else {
                 const card = e.target.closest('.category-card');
