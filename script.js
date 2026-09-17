@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
     let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Ҷав', 'Селитра', 'Карбамид'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
-    // Пешфарз режим рӯзона (light) шуд барои муштариёни нав
+    // Пешфарз режим рӯзона (light) барои муштариёни нав
     let currentTheme = localStorage.getItem('theme') || 'light';
     let currentLang = localStorage.getItem('lang') || 'tg';
 
@@ -120,12 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(unSubModal);
 
+    // Равзанаи забон бо тарҳи тоза ва дуруст
     const langModal = document.createElement('div');
     langModal.className = 'theme-modal';
     langModal.id = 'langModal';
     langModal.innerHTML = `
         <div class="theme-modal-content">
-            <h3>Интихоби забон / Выбор языка / Tilni tanlash</h3>
+            <h3>Интихоби забон</h3>
             <div class="theme-option" id="langTajik" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
                 <span>🇹🇯</span> <span>Тоҷикӣ</span>
             </div>
@@ -135,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="theme-option" id="langUzbek" style="display: flex; align-items: center; gap: 12px; font-weight: bold; cursor: pointer;">
                 <span>🇺🇿</span> <span>O'zbekcha</span>
             </div>
-            <button class="theme-cancel" id="cancelLang" style="cursor: pointer;">ПАТРУХТАН / ОТМЕНА / BEKOR QILISH</button>
+            <button class="theme-cancel" id="cancelLang" style="cursor: pointer;">Бекор кардан</button>
         </div>
     `;
     document.body.appendChild(langModal);
@@ -163,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('light-theme');
             if(themeStatus) themeStatus.textContent = 'Дневной режим ›';
         } else {
-            // Танҳо рӯзона ва шабона монд, қисми системавӣ гирифта шуд
             document.body.classList.remove('light-theme');
             document.body.classList.add('dark-theme');
             if(themeStatus) themeStatus.textContent = 'Ночной режим ›';
