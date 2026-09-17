@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
     let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Ҷав', 'Селитра', 'Карбамид'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
-    // Пешфарз режим рӯзона (light) барои муштариёни нав
     let currentTheme = localStorage.getItem('theme') || 'light';
     let currentLang = localStorage.getItem('lang') || 'tg';
 
@@ -120,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(unSubModal);
 
-    // Равзанаи забон бо тарҳи тоза ва дуруст
     const langModal = document.createElement('div');
     langModal.className = 'theme-modal';
     langModal.id = 'langModal';
@@ -141,7 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(langModal);
 
-    // Равзанаи махсуси тоҷикӣ барои нест кардани категория
     const deleteModal = document.createElement('div');
     deleteModal.className = 'theme-modal';
     deleteModal.id = 'deleteModal';
@@ -241,7 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
             notificationsEnabled = !notificationsEnabled;
             localStorage.setItem('notifications', notificationsEnabled);
             updateNotifUI();
-            alert(notificationsEnabled ? 'Огоҳиҳо дар бораи маҳсулоти нав ва нархҳо фаъол карда шуданд ✅' : 'Огоҳиҳо хомӯш карда шуданд ❌');
         });
     }
 
@@ -251,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let rating = prompt('Ба сомонаи ВАРЗИД аз 1 то 5 баҳо диҳед:', '5');
             if (rating !== null && rating.trim() !== '') {
                 localStorage.setItem('siteRating', rating);
-                alert('Ташаккур! Баҳои шумо бо муваффақият қабул шуд ⭐');
             }
         });
     }
@@ -353,14 +348,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (password === '1604') { 
                     isAdmin = true;
                     localStorage.setItem('isAdmin', 'true');
-                    alert('Режими админ фаъол шуд!');
-                } else if (password !== null) {
-                    alert('Пароли нодуруст!');
                 }
             } else {
                 isAdmin = false;
                 localStorage.setItem('isAdmin', 'false');
-                alert('Режими админ хомӯш шуд.');
             }
             updateAdminUI();
             renderCategories();
@@ -410,7 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Идоракунии несткунӣ тавассути равзанаи махсус
     document.getElementById('cancelDelete').addEventListener('click', () => {
         deleteModal.classList.remove('open');
         deleteTargetIndex = null;
@@ -436,16 +426,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     let catName = categories[index];
                     document.getElementById('deleteModalText').textContent = `Шумо мутмаин ҳастед, ки категорияи "${catName}"-ро нест кардан мехоҳед?`;
                     deleteModal.classList.add('open');
-                }
-            } else {
-                const card = e.target.closest('.category-card');
-                if (card) {
-                    const nameSpan = card.querySelector('.cat-name');
-                    const index = parseInt(nameSpan.getAttribute('data-index'));
-                    if (!isNaN(index) && categories[index]) {
-                        let catName = categories[index];
-                        alert(`Гузариши электронӣ ба категорияи: ${catName}`);
-                    }
                 }
             }
         });
