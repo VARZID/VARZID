@@ -10,9 +10,10 @@
     --card-hover: #2a2a2a;
     --border-color: #333;
     
-    /* Рангҳои асосии мувофиқ */
-    --main-blue: #3b82f6; /* Барои фаъол, заказ кардан ва корзина */
-    --main-red: #ff4757;  /* Барои удалить, очистить ва отмена */
+    /* Рангҳои асосӣ */
+    --main-blue: #3b82f6; /* Кабуд: Барои фаъол, заказ кардан ва корзина */
+    --main-red: #ff4757;  /* Сурх: Барои удалить, очистить ва отмена */
+    --main-gray: #777;    /* Хокистаранг: Барои ҳолати хомӯш (Выкл) ва ғайрифаъол */
 }
 
 body.light-theme {
@@ -82,7 +83,6 @@ body {
     color: var(--text-color);
 }
 
-/* Тугма ва шумораи подписчикон дар як сатр */
 .subscribers-info {
     font-size: 13px;
     color: var(--sub-text);
@@ -251,20 +251,20 @@ body {
     color: var(--main-red);
 }
 
-/* Ҳолати хомӯш / отмена / ғайрифаъол — хокистаранг */
+/* Холати хомӯш / отмена / ғайрифаъол — хокистаранг */
 .badge-off {
-    background-color: var(--sub-text);
-    color: #fff;
+    background-color: var(--main-gray) !important;
+    color: #fff !important;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
     font-weight: bold;
 }
 
-/* Ҳолати фаъол / заказ / корзина — кабуд */
+/* Холати фаъол / заказ / корзина — кабуд */
 .badge-on, .checkout-btn, .order-btn {
-    background-color: var(--main-blue);
-    color: #fff;
+    background-color: var(--main-blue) !important;
+    color: #fff !important;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
