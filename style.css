@@ -10,10 +10,9 @@
     --card-hover: #2a2a2a;
     --border-color: #333;
     
-    /* Рангҳои асосӣ */
-    --main-blue: #3b82f6; /* Кабуд: Барои фаъол, заказ кардан ва корзина */
-    --main-red: #ff4757;  /* Сурх: Барои удалить, очистить ва отмена */
-    --main-gray: #777;    /* Хокистаранг: Барои ҳолати хомӯш (Выкл) ва ғайрифаъол */
+    --main-blue: #3b82f6;
+    --main-red: #ff4757;
+    --main-gray: #777;
 }
 
 body.light-theme {
@@ -215,16 +214,6 @@ body {
     cursor: pointer;
 }
 
-.close-symbol {
-    color: var(--sub-text);
-    font-size: 16px;
-}
-
-.settings-list {
-    display: flex;
-    flex-direction: column;
-}
-
 .setting-item {
     padding: 14px 15px;
     border-bottom: 1px solid var(--card-border);
@@ -240,18 +229,6 @@ body {
     background-color: var(--card-hover);
 }
 
-.setting-arrow {
-    color: var(--sub-text);
-    font-size: 14px;
-}
-
-.admin-toggle-item {
-    background-color: var(--header-bg);
-    font-weight: bold;
-    color: var(--main-red);
-}
-
-/* Ҳолати хомӯш / отмена / ғайрифаъол — хокистаранг */
 .badge-off {
     background-color: var(--main-gray) !important;
     color: #fff !important;
@@ -261,34 +238,13 @@ body {
     font-weight: bold;
 }
 
-/* Ҳолати фаъол / заказ / корзина — кабуд */
-.badge-on, .checkout-btn, .order-btn {
+.badge-on {
     background-color: var(--main-blue) !important;
     color: #fff !important;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
     font-weight: bold;
-}
-
-/* Илова шуд: Барои дуруст ранг гирифтани Вкл/Выкл дар қисми Огоҳиҳо */
-.setting-arrow.badge-on {
-    background-color: var(--main-blue) !important;
-    color: #fff !important;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
-
-.setting-arrow.badge-off {
-    background-color: var(--main-gray) !important;
-    color: #fff !important;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
-
-/* Амалҳои тозакунӣ, удалить, очистить корзину — сурх */
-.clear-cart-btn, [class*="clear"], [class*="delete"] {
-    color: var(--main-red) !important;
 }
 
 .theme-modal {
