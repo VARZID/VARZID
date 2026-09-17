@@ -86,10 +86,10 @@
         function updateNotifDisplay() {
             if (isNotificationsOn) {
                 notifStatusText.innerText = "Вкл ›";
-                notifStatusText.style.color = "#25D366";
+                notifStatusText.className = "setting-arrow badge-on";
             } else {
                 notifStatusText.innerText = "Выкл ›";
-                notifStatusText.style.color = "#888";
+                notifStatusText.className = "setting-arrow badge-off";
             }
         }
         updateNotifDisplay();
