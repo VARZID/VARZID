@@ -24,12 +24,12 @@
     <!-- Менюи зершакл -->
     <div class="dropdown-menu" id="dropdownMenu">
         <div class="subscribers-info">
-            <div><span id="subCount">0</span> <span>подписчиков</span></div>
+            <div><span id="subCount">0</span> <span data-translate="subscribers">подписчиков</span></div>
             <button id="subBtn" class="sub-btn">Подписаться</button>
         </div>
 
         <div class="menu-header">
-            <span>Категории</span>
+            <span data-translate="categoriesTitle">Категорияҳо</span>
             <button class="add-btn admin-only" id="addCategoryBtn">+</button>
         </div>
         <div class="categories-grid" id="categoryList"></div>
@@ -38,24 +38,24 @@
     <!-- Менюи танзимот -->
     <div class="settings-menu" id="settingsMenu">
         <div class="settings-header">
-            <h3>Танзимот</h3>
+            <h3 data-translate="settingsTitle">Танзимот</h3>
             <button id="closeSettingsHeader" style="background: none; border: none; color: inherit; font-size: 20px; cursor: pointer;">✕</button>
         </div>
         <div class="settings-body" style="padding: 15px;">
             <div class="setting-item" id="setTheme" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <span class="settings-label">Тема</span>
+                <span class="settings-label" data-translate="themeLabel">Тема</span>
                 <span class="settings-value" id="themeStatus">Режими шабона ›</span>
             </div>
             <div class="setting-item" id="setNotifications" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <span class="settings-label">Огоҳиҳо</span>
+                <span class="settings-label" data-translate="notifLabel">Огоҳиҳо</span>
                 <span class="settings-value" id="notifStatusText">Фаъол ›</span>
             </div>
             <div class="setting-item" id="setLanguage" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <span class="settings-label">Забон</span>
+                <span class="settings-label" data-translate="langLabel">Забон</span>
                 <span class="settings-value" id="currentLangDisplay">Тоҷикӣ ›</span>
             </div>
             <div class="setting-item" id="adminModeToggle" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer;">
-                <span class="settings-label">Режими Админ</span>
+                <span class="settings-label" data-translate="adminLabel">Режими Админ</span>
                 <span class="badge-off" id="adminStatusBadge">Хомӯш</span>
             </div>
         </div>
@@ -64,10 +64,10 @@
     <!-- Модали интихоби тема -->
     <div class="theme-modal" id="themeModal">
         <div class="theme-modal-content">
-            <h3>Выбор темы</h3>
-            <div class="theme-option" data-theme="dark" style="padding: 10px 0; cursor: pointer;">🌙 Ночной режим</div>
-            <div class="theme-option" data-theme="light" style="padding: 10px 0; cursor: pointer;">☀️ Дневной режим</div>
-            <button class="theme-cancel" id="cancelTheme" style="cursor: pointer;">ОТМЕНА</button>
+            <h3 data-translate="themeModalTitle">Интихоби тема</h3>
+            <div class="theme-option" data-theme="dark" style="padding: 10px 0; cursor: pointer;" data-translate="nightModeOpt">🌙 Режими шабона</div>
+            <div class="theme-option" data-theme="light" style="padding: 10px 0; cursor: pointer;" data-translate="dayModeOpt">☀️ Режими рӯзона</div>
+            <button class="theme-cancel" id="cancelTheme" style="cursor: pointer;" data-translate="cancelBtn">БЕКОР КАРДАН</button>
         </div>
     </div>
 
