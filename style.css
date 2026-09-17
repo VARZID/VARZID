@@ -251,7 +251,7 @@ body {
     color: var(--main-red);
 }
 
-/* Холати хомӯш / отмена / ғайрифаъол — хокистаранг */
+/* Ҳолати хомӯш / отмена / ғайрифаъол — хокистаранг */
 .badge-off {
     background-color: var(--main-gray) !important;
     color: #fff !important;
@@ -261,7 +261,7 @@ body {
     font-weight: bold;
 }
 
-/* Холати фаъол / заказ / корзина — кабуд */
+/* Ҳолати фаъол / заказ / корзина — кабуд */
 .badge-on, .checkout-btn, .order-btn {
     background-color: var(--main-blue) !important;
     color: #fff !important;
@@ -273,7 +273,7 @@ body {
 
 /* Амалҳои тозакунӣ, удалить, очистить корзину — сурх */
 .clear-cart-btn, [class*="clear"], [class*="delete"] {
-    color: var(--main-red);
+    color: var(--main-red) !important;
 }
 
 .theme-modal {
