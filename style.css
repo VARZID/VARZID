@@ -9,8 +9,10 @@
     --card-border: #2a2a2a;
     --card-hover: #2a2a2a;
     --border-color: #333;
-    /* Ранги асосии кабуди дархостшуда */
-    --main-blue: #3b82f6;
+    
+    /* Рангҳои асосии мувофиқ */
+    --main-blue: #3b82f6; /* Барои фаъол, заказ кардан ва корзина */
+    --main-red: #ff4757;  /* Барои удалить, очистить ва отмена */
 }
 
 body.light-theme {
@@ -56,7 +58,7 @@ body {
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
-    color: #ff4757;
+    color: var(--main-red);
 }
 
 .arrow {
@@ -80,7 +82,7 @@ body {
     color: var(--text-color);
 }
 
-/* Тугма ва шумораи подписчикон дар як сатр (паҳлӯ ба паҳлӯ) */
+/* Тугма ва шумораи подписчикон дар як сатр */
 .subscribers-info {
     font-size: 13px;
     color: var(--sub-text);
@@ -92,7 +94,7 @@ body {
 }
 
 .sub-btn {
-    background-color: #ff4757;
+    background-color: var(--main-red);
     color: white;
     border: none;
     padding: 6px 14px;
@@ -172,7 +174,7 @@ body {
 
 .category-card:hover {
     background-color: var(--card-hover);
-    border-color: #ff4757;
+    border-color: var(--main-red);
 }
 
 .cat-name {
@@ -183,7 +185,7 @@ body {
 .delete-btn {
     background: transparent;
     border: none;
-    color: #ff4757;
+    color: var(--main-red);
     font-size: 14px;
     cursor: pointer;
     padding: 0;
@@ -246,10 +248,10 @@ body {
 .admin-toggle-item {
     background-color: var(--header-bg);
     font-weight: bold;
-    color: #ff4757;
+    color: var(--main-red);
 }
 
-/* Ҳолати хомӯш (Выкл) бо ранги хокистаранг */
+/* Ҳолати хомӯш / отмена / ғайрифаъол — хокистаранг */
 .badge-off {
     background-color: var(--sub-text);
     color: #fff;
@@ -259,14 +261,19 @@ body {
     font-weight: bold;
 }
 
-/* Ҳолати фаъол (Вкл) бо ранги кабуди дилхоҳи шумо */
-.badge-on {
+/* Ҳолати фаъол / заказ / корзина — кабуд */
+.badge-on, .checkout-btn, .order-btn {
     background-color: var(--main-blue);
     color: #fff;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
     font-weight: bold;
+}
+
+/* Амалҳои тозакунӣ, удалить, очистить корзину — сурх */
+.clear-cart-btn, [class*="clear"], [class*="delete"] {
+    color: var(--main-red);
 }
 
 .theme-modal {
@@ -320,7 +327,7 @@ body {
 .theme-cancel {
     background: transparent;
     border: none;
-    color: #ff4757;
+    color: var(--main-red);
     font-weight: bold;
     margin-top: 15px;
     cursor: pointer;
