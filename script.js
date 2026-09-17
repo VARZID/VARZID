@@ -33,36 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribers: "подписчиков",
             subscribe: "Подписаться",
             subscribed: "✓ Шумо обуна ҳастед",
-            categories: "Категорияҳо",
-            settings: "Танзимот",
-            theme: "Тема",
-            notifications: "Огоҳиҳо",
-            language: "Забон",
-            adminMode: "Режими Админ",
             wrongPass: "Пароли нодуруст!"
         },
         ru: {
             subscribers: "подписчиков",
             subscribe: "Подписаться",
             subscribed: "✓ Вы подписаны",
-            categories: "Категории",
-            settings: "Настройки",
-            theme: "Тема",
-            notifications: "Уведомления",
-            language: "Язык",
-            adminMode: "Режим Админа",
             wrongPass: "Неверный пароль!"
         },
         uz: {
             subscribers: "obunachilar",
             subscribe: "Obuna bo'lish",
             subscribed: "✓ Obuna bo'lgansiz",
-            categories: "Kategoriyalar",
-            settings: "Sozlamalar",
-            theme: "Mavzu",
-            notifications: "Bildirishnomalar",
-            language: "Til",
-            adminMode: "Admin rejimi",
             wrongPass: "Noto'g'ri parol!"
         }
     };
@@ -205,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.theme-option').forEach(option => {
         if(option.getAttribute('data-theme')) {
             option.addEventListener('click', (e) => {
-                const selectedTheme = e.target.getAttribute('data-theme');
+                const selectedTheme = e.currentTarget.getAttribute('data-theme');
                 if(selectedTheme) {
                     applyTheme(selectedTheme);
                     themeModal.classList.remove('open');
@@ -222,24 +204,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.getElementById('cancelLang').addEventListener('click', () => {
-        langModal.classList.remove('open');
-    });
+    const cancelLangBtn = document.getElementById('cancelLang');
+    if(cancelLangBtn) {
+        cancelLangBtn.addEventListener('click', () => {
+            langModal.classList.remove('open');
+        });
+    }
 
-    document.getElementById('langTajik').addEventListener('click', () => {
-        setLanguage('tg');
-        langModal.classList.remove('open');
-    });
+    const langTajik = document.getElementById('langTajik');
+    if(langTajik) {
+        langTajik.addEventListener('click', () => {
+            setLanguage('tg');
+            langModal.classList.remove('open');
+        });
+    }
 
-    document.getElementById('langRussian').addEventListener('click', () => {
-        setLanguage('ru');
-        langModal.classList.remove('open');
-    });
+    const langRussian = document.getElementById('langRussian');
+    if(langRussian) {
+        langRussian.addEventListener('click', () => {
+            setLanguage('ru');
+            langModal.classList.remove('open');
+        });
+    }
 
-    document.getElementById('langUzbek').addEventListener('click', () => {
-        setLanguage('uz');
-        langModal.classList.remove('open');
-    });
+    const langUzbek = document.getElementById('langUzbek');
+    if(langUzbek) {
+        langUzbek.addEventListener('click', () => {
+            setLanguage('uz');
+            langModal.classList.remove('open');
+        });
+    }
 
     const setNotificationsBtn = document.getElementById('setNotifications');
     const notifStatusText = document.getElementById('notifStatusText');
@@ -341,22 +335,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.getElementById('cancelAdmin').addEventListener('click', () => {
-        adminModal.classList.remove('open');
-    });
-
-    document.getElementById('confirmAdmin').addEventListener('click', () => {
-        let password = document.getElementById('adminPasswordInput').value;
-        if (password === '1604') {
-            isAdmin = true;
-            localStorage.setItem('isAdmin', 'true');
-            updateAdminUI();
-            renderCategories();
+    const cancelAdminBtn = document.getElementById('cancelAdmin');
+    if(cancelAdminBtn) {
+        cancelAdminBtn.addEventListener('click', () => {
             adminModal.classList.remove('open');
-        } else {
-            alert(dict[currentLang].wrongPass);
-        }
-    });
+        });
+    }
+
+    const confirmAdminBtn = document.getElementById('confirmAdmin');
+    if(confirmAdminBtn) {
+        confirmAdminBtn.addEventListener('click', () => {
+            let password = document.getElementById('adminPasswordInput').value;
+            if (password === '1604') {
+                isAdmin = true;
+                localStorage.setItem('isAdmin', 'true');
+                updateAdminUI();
+                renderCategories();
+                adminModal.classList.remove('open');
+            } else {
+                alert(dict[currentLang].wrongPass);
+            }
+        });
+    }
 
     if(subBtn) {
         subBtn.addEventListener('click', () => {
@@ -374,22 +374,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.getElementById('cancelUnsub').addEventListener('click', () => {
-        unSubModal.classList.remove('open');
-    });
+    const cancelUnsubBtn = document.getElementById('cancelUnsub');
+    if(cancelUnsubBtn) {
+        cancelUnsubBtn.addEventListener('click', () => {
+            unSubModal.classList.remove('open');
+        });
+    }
 
-    document.getElementById('confirmUnsub').addEventListener('click', () => {
-        subscribers = Math.max(0, subscribers - 1);
-        isSubscribed = false;
-        if(subBtn) {
-            subBtn.textContent = dict[currentLang].subscribe;
-            subBtn.classList.remove('subscribed');
-        }
-        updateSubDisplay();
-        localStorage.setItem('subCount', subscribers);
-        localStorage.setItem('isSubscribed', isSubscribed);
-        unSubModal.classList.remove('open');
-    });
+    const confirmUnsubBtn = document.getElementById('confirmUnsub');
+    if(confirmUnsubBtn) {
+        confirmUnsubBtn.addEventListener('click', () => {
+            subscribers = Math.max(0, subscribers - 1);
+            isSubscribed = false;
+            if(subBtn) {
+                subBtn.textContent = dict[currentLang].subscribe;
+                subBtn.classList.remove('subscribed');
+            }
+            updateSubDisplay();
+            localStorage.setItem('subCount', subscribers);
+            localStorage.setItem('isSubscribed', isSubscribed);
+            unSubModal.classList.remove('open');
+        });
+    }
 
     if(addCategoryBtn) {
         addCategoryBtn.addEventListener('click', () => {
@@ -398,32 +404,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.getElementById('cancelAddCat').addEventListener('click', () => {
-        addCatModal.classList.remove('open');
-    });
+    const cancelAddCatBtn = document.getElementById('cancelAddCat');
+    if(cancelAddCatBtn) {
+        cancelAddCatBtn.addEventListener('click', () => {
+            addCatModal.classList.remove('open');
+        });
+    }
 
-    document.getElementById('confirmAddCat').addEventListener('click', () => {
-        let newCat = document.getElementById('newCatInput').value;
-        if (newCat && newCat.trim() !== '') {
-            categories.push(newCat.trim());
-            renderCategories();
-        }
-        addCatModal.classList.remove('open');
-    });
+    const confirmAddCatBtn = document.getElementById('confirmAddCat');
+    if(confirmAddCatBtn) {
+        confirmAddCatBtn.addEventListener('click', () => {
+            let newCat = document.getElementById('newCatInput').value;
+            if (newCat && newCat.trim() !== '') {
+                categories.push(newCat.trim());
+                renderCategories();
+            }
+            addCatModal.classList.remove('open');
+        });
+    }
 
-    document.getElementById('cancelDelete').addEventListener('click', () => {
-        deleteModal.classList.remove('open');
-        deleteTargetIndex = null;
-    });
+    const cancelDeleteBtn = document.getElementById('cancelDelete');
+    if(cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteModal.classList.remove('open');
+            deleteTargetIndex = null;
+        });
+    }
 
-    document.getElementById('confirmDelete').addEventListener('click', () => {
-        if (deleteTargetIndex !== null && !isNaN(deleteTargetIndex) && deleteTargetIndex >= 0 && deleteTargetIndex < categories.length) {
-            categories.splice(deleteTargetIndex, 1);
-            renderCategories();
-        }
-        deleteModal.classList.remove('open');
-        deleteTargetIndex = null;
-    });
+    const confirmDeleteBtn = document.getElementById('confirmDelete');
+    if(confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (deleteTargetIndex !== null && !isNaN(deleteTargetIndex) && deleteTargetIndex >= 0 && deleteTargetIndex < categories.length) {
+                categories.splice(deleteTargetIndex, 1);
+                renderCategories();
+            }
+            deleteModal.classList.remove('open');
+            deleteTargetIndex = null;
+        });
+    }
 
     if(categoryList) {
         categoryList.addEventListener('click', (e) => {
