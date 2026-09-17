@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let isSubscribed = localStorage.getItem('isSubscribed') === 'true';
     let categories = JSON.parse(localStorage.getItem('categories')) || ['Варзид', 'Орд', 'Корм', 'Ҷав', 'Селитра', 'Карбамид'];
     let isAdmin = localStorage.getItem('isAdmin') === 'true';
-    let currentTheme = localStorage.getItem('theme') || 'dark';
+    // Пешфарз режим рӯзона (light) шуд барои муштариёни нав
+    let currentTheme = localStorage.getItem('theme') || 'light';
     let currentLang = localStorage.getItem('lang') || 'tg';
 
     const dict = {
@@ -139,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(langModal);
 
-    // Равзанаи махсуси тоҷикӣ барои нест кардани категория (бе браузер)
+    // Равзанаи махсуси тоҷикӣ барои нест кардани категория
     const deleteModal = document.createElement('div');
     deleteModal.className = 'theme-modal';
     deleteModal.id = 'deleteModal';
@@ -161,20 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('dark-theme');
             document.body.classList.add('light-theme');
             if(themeStatus) themeStatus.textContent = 'Дневной режим ›';
-        } else if (theme === 'dark') {
+        } else {
+            // Танҳо рӯзона ва шабона монд, қисми системавӣ гирифта шуд
             document.body.classList.remove('light-theme');
             document.body.classList.add('dark-theme');
             if(themeStatus) themeStatus.textContent = 'Ночной режим ›';
-        } else {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (prefersDark) {
-                document.body.classList.remove('light-theme');
-                document.body.classList.add('dark-theme');
-            } else {
-                document.body.classList.remove('dark-theme');
-                document.body.classList.add('light-theme');
-            }
-            if(themeStatus) themeStatus.textContent = 'Системные ›';
         }
         localStorage.setItem('theme', theme);
     }
@@ -418,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Идоракунии несткунӣ тавассути равзанаи сохтаи тоҷикӣ
+    // Идоракунии несткунӣ тавассути равзанаи махсус
     document.getElementById('cancelDelete').addEventListener('click', () => {
         deleteModal.classList.remove('open');
         deleteTargetIndex = null;
