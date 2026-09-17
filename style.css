@@ -271,6 +271,21 @@ body {
     font-weight: bold;
 }
 
+/* Илова шуд: Барои дуруст ранг гирифтани Вкл/Выкл дар қисми Огоҳиҳо */
+.setting-arrow.badge-on {
+    background-color: var(--main-blue) !important;
+    color: #fff !important;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.setting-arrow.badge-off {
+    background-color: var(--main-gray) !important;
+    color: #fff !important;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
 /* Амалҳои тозакунӣ, удалить, очистить корзину — сурх */
 .clear-cart-btn, [class*="clear"], [class*="delete"] {
     color: var(--main-red) !important;
