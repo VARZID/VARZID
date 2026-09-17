@@ -78,13 +78,15 @@ body {
     color: var(--text-color);
 }
 
-/* Тугма ва шумораи подписчикон дар як сатр */
+/* Тугма ва шумораи подписчикон дар як сатр (паҳлӯ ба паҳлӯ) */
 .subscribers-info {
     font-size: 13px;
     color: var(--sub-text);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .sub-btn {
