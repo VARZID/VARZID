@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,12 +24,12 @@
     <!-- Менюи зершакл -->
     <div class="dropdown-menu" id="dropdownMenu">
         <div class="subscribers-info">
-            <div><span id="subCount">0</span> подписчиков</div>
-            <button id="subBtn" class="sub-btn">Подписаться</button>
+            <div><span id="subCount">0</span> <span data-translate="subscribers">подписчиков</span></div>
+            <button id="subBtn" class="sub-btn" data-translate="subscribe_btn">Подписаться</button>
         </div>
 
         <div class="menu-header">
-            <span>Категорияҳо</span>
+            <span data-translate="categories_title">Категории</span>
             <button class="add-btn admin-only" id="addCategoryBtn">+</button>
         </div>
         <div class="categories-grid" id="categoryList"></div>
@@ -38,28 +38,24 @@
     <!-- Менюи танзимот -->
     <div class="settings-menu" id="settingsMenu">
         <div class="settings-header" id="closeSettingsHeader">
-            <span>Танзимот</span>
+            <span data-translate="settings_title">Настройки</span>
             <span class="close-symbol">✕</span>
         </div>
         <div class="settings-list">
             <div class="setting-item" id="setTheme">
-                <span>Мавзӯъ (Тема)</span>
+                <span data-translate="theme_label">Тема</span>
                 <span class="setting-arrow" id="themeStatus">Ночной режим ›</span>
             </div>
             <div class="setting-item" id="setNotifications">
-                <span>Огоҳиҳо</span>
+                <span data-translate="notif_label">Уведомления</span>
                 <span class="setting-arrow" id="notifStatusText">Вкл ›</span>
             </div>
             <div class="setting-item" id="setLanguage" style="display: flex; justify-content: space-between; align-items: center;">
-                <span>Забон / Язык / Til</span>
-                <select id="langSelect" style="padding: 3px 6px; border-radius: 4px; font-size: 13px;">
-                    <option value="tg">Тоҷикӣ</option>
-                    <option value="ru" selected>Русский</option>
-                    <option value="uz">Oʻzbekcha</option>
-                </select>
+                <span data-translate="lang_label">Язык</span>
+                <span class="setting-arrow" id="currentLangDisplay">Русский ›</span>
             </div>
             <div class="setting-item admin-toggle-item" id="adminModeToggle">
-                <span>Режими Админ</span>
+                <span data-translate="admin_label">Режим Админа</span>
                 <span class="badge-off" id="adminStatusBadge">Выкл</span>
             </div>
         </div>
@@ -68,11 +64,11 @@
     <!-- Модали интихоби тема -->
     <div class="theme-modal" id="themeModal">
         <div class="theme-modal-content">
-            <h3>Интихоби мавзӯъ</h3>
-            <div class="theme-option" data-theme="dark">🌙 Ночной режим</div>
-            <div class="theme-option" data-theme="light">☀️ Дневной режим</div>
-            <div class="theme-option" data-theme="system">💻 Системные</div>
-            <button class="theme-cancel" id="cancelTheme">ПАТРУХТАН / ОТМЕНА</button>
+            <h3 data-translate="select_theme_title">Выбор темы</h3>
+            <div class="theme-option" data-theme="dark" data-translate="dark_mode">🌙 Ночной режим</div>
+            <div class="theme-option" data-theme="light" data-translate="light_mode">☀️ Дневной режим</div>
+            <div class="theme-option" data-theme="system" data-translate="system_mode">💻 Системные</div>
+            <button class="theme-cancel" id="cancelTheme" data-translate="cancel_btn">ОТМЕНА</button>
         </div>
     </div>
 
