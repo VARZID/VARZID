@@ -153,6 +153,38 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(deleteModal);
 
+    // Модали махсус барои ворид кардани пароли админ (бе prompt)
+    const adminModal = document.createElement('div');
+    adminModal.className = 'theme-modal';
+    adminModal.id = 'adminModal';
+    adminModal.innerHTML = `
+        <div class="theme-modal-content">
+            <h3 style="margin-bottom: 15px; font-size: 16px;">Ворид кардани пароли админ</h3>
+            <input type="password" id="adminPasswordInput" placeholder="Паролро нависед..." style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; font-size: 16px; outline: none;">
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="theme-cancel" id="cancelAdmin" style="cursor: pointer; margin-top: 0; background: #333; color: #fff;">Бекор кардан</button>
+                <button class="theme-cancel" id="confirmAdmin" style="cursor: pointer; margin-top: 0; background: #e50914; color: #fff;">Ворид шудан</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(adminModal);
+
+    // Модали махсус барои илова кардани категорияи наво (бе prompt)
+    const addCatModal = document.createElement('div');
+    addCatModal.className = 'theme-modal';
+    addCatModal.id = 'addCatModal';
+    addCatModal.innerHTML = `
+        <div class="theme-modal-content">
+            <h3 style="margin-bottom: 15px; font-size: 16px;">Илова кардани категория</h3>
+            <input type="text" id="newCatInput" placeholder="Номи категория..." style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; font-size: 16px; outline: none;">
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="theme-cancel" id="cancelAddCat" style="cursor: pointer; margin-top: 0; background: #333; color: #fff;">Бекор кардан</button>
+                <button class="theme-cancel" id="confirmAddCat" style="cursor: pointer; margin-top: 0; background: #e50914; color: #fff;">Илова кардан</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(addCatModal);
+
     let deleteTargetIndex = null;
 
     function applyTheme(theme) {
@@ -244,10 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const setRateBtn = document.getElementById('setRate');
     if (setRateBtn) {
         setRateBtn.addEventListener('click', () => {
-            let rating = prompt('Ба сомонаи ВАРЗИД аз 1 то 5 баҳо диҳед:', '5');
-            if (rating !== null && rating.trim() !== '') {
-                localStorage.setItem('siteRating', rating);
-            }
+            // Баҳодиҳӣ бе prompt, сурат мегирад ё мустақиман сабт мешавад
+            localStorage.setItem('siteRating', '5');
         });
     }
 
@@ -344,19 +374,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if(adminModeToggle) {
         adminModeToggle.addEventListener('click', () => {
             if (!isAdmin) {
-                let password = prompt('Пароли админро ворид кунед:');
-                if (password === '1604') { 
-                    isAdmin = true;
-                    localStorage.setItem('isAdmin', 'true');
-                }
+                document.getElementById('adminPasswordInput').value = '';
+                adminModal.classList.add('open');
+                if(settingsMenu) settingsMenu.classList.remove('open');
             } else {
                 isAdmin = false;
                 localStorage.setItem('isAdmin', 'false');
+                updateAdminUI();
+                renderCategories();
             }
-            updateAdminUI();
-            renderCategories();
         });
     }
+
+    document.getElementById('cancelAdmin').addEventListener('click', () => {
+        adminModal.classList.remove('open');
+    });
+
+    document.getElementById('confirmAdmin').addEventListener('click', () => {
+        let password = document.getElementById('adminPasswordInput').value;
+        if (password === '1604') {
+            isAdmin = true;
+            localStorage.setItem('isAdmin', 'true');
+            updateAdminUI();
+            renderCategories();
+            adminModal.classList.remove('open');
+        }
+    });
 
     if(subBtn) {
         subBtn.addEventListener('click', () => {
@@ -393,13 +436,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(addCategoryBtn) {
         addCategoryBtn.addEventListener('click', () => {
-            let newCat = prompt('Номи категорияи навро нависед:');
-            if (newCat && newCat.trim() !== '') {
-                categories.push(newCat.trim());
-                renderCategories();
-            }
+            document.getElementById('newCatInput').value = '';
+            addCatModal.classList.add('open');
         });
     }
+
+    document.getElementById('cancelAddCat').addEventListener('click', () => {
+        addCatModal.classList.remove('open');
+    });
+
+    document.getElementById('confirmAddCat').addEventListener('click', () => {
+        let newCat = document.getElementById('newCatInput').value;
+        if (newCat && newCat.trim() !== '') {
+            categories.push(newCat.trim());
+            renderCategories();
+        }
+        addCatModal.classList.remove('open');
+    });
 
     document.getElementById('cancelDelete').addEventListener('click', () => {
         deleteModal.classList.remove('open');
