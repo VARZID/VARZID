@@ -27,25 +27,58 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTheme = localStorage.getItem('theme') || 'light';
     let currentLang = localStorage.getItem('lang') || 'tg';
 
-    // Луғат барои забонҳо
+    // Луғати мукаммал барои ҳамаи забонҳо
     const dict = {
         tg: {
             subscribers: "подписчиков",
             subscribe: "Подписаться",
             subscribed: "✓ Шумо обуна ҳастед",
-            wrongPass: "Пароли нодуруст!"
+            wrongPass: "Пароли нодуруст!",
+            settingsTitle: "Танзимот",
+            themeLabel: "Тема",
+            nightMode: "Режими шабона ›",
+            dayMode: "Режими рӯзона ›",
+            notifLabel: "Огоҳиҳо",
+            notifOn: "Фаъол ›",
+            notifOff: "Хомӯш ›",
+            langLabel: "Забон",
+            adminLabel: "Режими Админ",
+            adminOn: "Фаъол",
+            adminOff: "Хомӯш"
         },
         ru: {
             subscribers: "подписчиков",
             subscribe: "Подписаться",
             subscribed: "✓ Вы подписаны",
-            wrongPass: "Неверный пароль!"
+            wrongPass: "Неверный пароль!",
+            settingsTitle: "Настройки",
+            themeLabel: "Тема",
+            nightMode: "Ночной режим ›",
+            dayMode: "Дневной режим ›",
+            notifLabel: "Уведомления",
+            notifOn: "Вкл ›",
+            notifOff: "Выкл ›",
+            langLabel: "Язык",
+            adminLabel: "Режим Админа",
+            adminOn: "Вкл",
+            adminOff: "Выкл"
         },
         uz: {
             subscribers: "obunachilar",
             subscribe: "Obuna bo'lish",
             subscribed: "✓ Obuna bo'lgansiz",
-            wrongPass: "Noto'g'ri parol!"
+            wrongPass: "Noto'g'ri parol!",
+            settingsTitle: "Sozlamalar",
+            themeLabel: "Mavzu",
+            nightMode: "Tungi rejim ›",
+            dayMode: "Kunduzgi rejim ›",
+            notifLabel: "Bildirishnomalar",
+            notifOn: "Yoqilgan ›",
+            notifOff: "O'chirilgan ›",
+            langLabel: "Til",
+            adminLabel: "Admin rejimi",
+            adminOn: "Yoqilgan",
+            adminOff: "O'chirilgan"
         }
     };
 
@@ -55,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const t = dict[lang];
         
+        // Иваз кардани элементҳое, ки data-translate доранд
         document.querySelectorAll("[data-translate]").forEach(element => {
             const key = element.getAttribute("data-translate");
             if (t[key]) {
@@ -62,11 +96,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Иваз кардани матнҳои менюи танзимот бо калидҳои мушаххас
+        const settingsTitleEl = document.querySelector('.settings-header h3');
+        if(settingsTitleEl) settingsTitleEl.textContent = t.settingsTitle;
+
+        const themeLabelEl = document.querySelector('#setTheme .settings-label');
+        if(themeLabelEl) themeLabelEl.textContent = t.themeLabel;
+
+        const notifLabelEl = document.querySelector('#setNotifications .settings-label');
+        if(notifLabelEl) notifLabelEl.textContent = t.notifLabel;
+
+        const langLabelEl = document.querySelector('#setLanguage .settings-label');
+        if(langLabelEl) langLabelEl.textContent = t.langLabel;
+
+        const adminLabelEl = document.querySelector('#adminModeToggle .settings-label');
+        if(adminLabelEl) adminLabelEl.textContent = t.adminLabel;
+
+        // Номи забони ҷорӣ дар тугма
         const langNames = { tg: "Тоҷикӣ", ru: "Русский", uz: "O'zbekcha" };
         const currentLangDisplay = document.getElementById('currentLangDisplay');
         if(currentLangDisplay) {
             currentLangDisplay.textContent = langNames[lang] + " ›";
         }
+
+        // Ҳолати Тема ва Огоҳиҳо
+        if(themeStatus) {
+            themeStatus.textContent = currentTheme === 'light' ? t.dayMode : t.nightMode;
+        }
+
+        const notifStatusText = document.getElementById('notifStatusText');
+        let notificationsEnabled = localStorage.getItem('notifications') === 'true';
+        if(notifStatusText) {
+            notifStatusText.textContent = notificationsEnabled ? t.notifOn : t.notifOff;
+        }
+
+        updateAdminUI();
         
         if(subBtn) {
             subBtn.textContent = isSubscribed ? t.subscribed : t.subscribe;
@@ -157,16 +221,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let deleteTargetIndex = null;
 
     function applyTheme(theme) {
+        currentTheme = theme;
         if (theme === 'light') {
             document.body.classList.remove('dark-theme');
             document.body.classList.add('light-theme');
-            if(themeStatus) themeStatus.textContent = 'Дневной режим ›';
         } else {
             document.body.classList.remove('light-theme');
             document.body.classList.add('dark-theme');
-            if(themeStatus) themeStatus.textContent = 'Ночной режим ›';
         }
         localStorage.setItem('theme', theme);
+        setLanguage(currentLang);
     }
 
     applyTheme(currentTheme);
@@ -236,21 +300,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const setNotificationsBtn = document.getElementById('setNotifications');
-    const notifStatusText = document.getElementById('notifStatusText');
     let notificationsEnabled = localStorage.getItem('notifications') === 'true';
-    
-    function updateNotifUI() {
-        if(notifStatusText) {
-            notifStatusText.textContent = notificationsEnabled ? 'Вкл ›' : 'Выкл ›';
-        }
-    }
-    updateNotifUI();
 
     if (setNotificationsBtn) {
         setNotificationsBtn.addEventListener('click', () => {
             notificationsEnabled = !notificationsEnabled;
             localStorage.setItem('notifications', notificationsEnabled);
-            updateNotifUI();
+            setLanguage(currentLang);
         });
     }
 
@@ -259,11 +315,12 @@ document.addEventListener('DOMContentLoaded', () => {
         adminElements.forEach(el => {
             el.style.display = isAdmin ? 'inline-block' : 'none';
         });
+        const t = dict[currentLang];
         if (isAdmin && adminStatusBadge) {
-            adminStatusBadge.textContent = 'Вкл';
+            adminStatusBadge.textContent = t.adminOn;
             adminStatusBadge.className = 'badge-on';
         } else if(adminStatusBadge) {
-            adminStatusBadge.textContent = 'Выкл';
+            adminStatusBadge.textContent = t.adminOff;
             adminStatusBadge.className = 'badge-off';
         }
     }
