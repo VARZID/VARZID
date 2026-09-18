@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ВАРЗИД</title>
+    <title>VARZID</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -20,7 +20,7 @@
             </svg>
         </div>
 
-        <button class="settings-icon" id="settingsToggle">
+        <button class="settings-icon" id="settingsToggle" aria-label="Танзимот">
             <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3"></circle>
                 <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-.1-.1A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.9 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.7 1z"></path>
@@ -30,7 +30,6 @@
     </div>
 </header>
 
-<!-- КАТЕГОРИЯҲО -->
 <div class="dropdown-menu" id="dropdownMenu">
 
     <div class="subscribers-info">
@@ -51,13 +50,8 @@
 
     <div class="categories-grid" id="categoryList"></div>
 
-    <div class="admin-access admin-only" id="adminPanelBtn">
-        ⚙ Панели админ
-    </div>
-
 </div>
 
-<!-- МАҲСУЛОТ -->
 <main class="products-section">
 
     <div class="products-header">
@@ -72,7 +66,6 @@
 
 </main>
 
-<!-- ТАНЗИМОТ -->
 <div class="settings-menu" id="settingsMenu">
 
     <div class="settings-header">
@@ -106,20 +99,26 @@
             </span>
         </div>
 
-        <div class="setting-item admin-only" id="adminModeToggle">
-            <span>Режими Админ</span>
-            <span class="badge-off" id="adminStatusBadge">Хомӯш</span>
+        <!-- АДМИН: НАМOЁН, ВАЛЕ БАРОИ МУШТАРӢ ПАХШШАВАНДА НЕСТ -->
+        <div class="setting-item admin-info-row" aria-disabled="true">
+            <span class="admin-name-wrap">
+                <span class="person-icon">♙</span>
+                <span id="adminInfoText">Админ</span>
+            </span>
+
+            <span class="badge-off" id="adminStatusBadge">
+                Хомӯш
+            </span>
         </div>
 
     </div>
 </div>
 
-<!-- ТЕМА -->
 <div class="theme-modal" id="themeModal">
 
     <div class="theme-modal-content">
 
-        <h3>Интихоби тема</h3>
+        <h3 id="themeModalTitle">Интихоби тема</h3>
 
         <div class="theme-option" data-theme="dark">
             🌙 Режими шабона
@@ -136,12 +135,11 @@
     </div>
 </div>
 
-<!-- КОРЗИНА -->
 <div class="cart-panel" id="cartPanel">
 
     <div class="cart-header">
 
-        <h3>Корзина</h3>
+        <h3 id="cartTitle">Корзина</h3>
 
         <button id="closeCart" class="cart-close">
             ×
@@ -158,7 +156,7 @@
     <div class="cart-footer">
 
         <div class="cart-total-row">
-            <span>Ҳамагӣ</span>
+            <span id="cartTotalLabel">Ҳамагӣ</span>
 
             <strong id="cartTotal">
                 0 сомонӣ
@@ -173,7 +171,6 @@
 
 </div>
 
-<!-- ПОЁН -->
 <nav class="bottom-nav">
 
     <button class="bottom-nav-btn active" id="homeBtn">
