@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
             nightMode: "Режими шабона ›",
             dayMode: "Режими рӯзона ›",
             notifLabel: "Огоҳиҳо",
-            notifOn: "Фаъол ›",
-            notifOff: "Хомӯш ›",
+            notifOn: "Фаъол",
+            notifOff: "Хомӯш",
             langLabel: "Забон",
             adminLabel: "Режими Админ",
             adminOn: "Фаъол",
@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
             nightMode: "Ночной режим ›",
             dayMode: "Дневной режим ›",
             notifLabel: "Уведомления",
-            notifOn: "Вкл ›",
-            notifOff: "Выкл ›",
+            notifOn: "Вкл",
+            notifOff: "Выкл",
             langLabel: "Язык",
             adminLabel: "Режим Админа",
             adminOn: "Вкл",
@@ -84,8 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
             nightMode: "Tungi rejim ›",
             dayMode: "Kunduzgi rejim ›",
             notifLabel: "Bildirishnomalar",
-            notifOn: "Yoqilgan ›",
-            notifOff: "O'chirilgan ›",
+            notifOn: "Yoqilgan",
+            notifOff: "O'chirilgan",
             langLabel: "Til",
             adminLabel: "Admin rejimi",
             adminOn: "Yoqilgan",
@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let notificationsEnabled = localStorage.getItem('notifications') === 'true';
         if(notifStatusText) {
             notifStatusText.textContent = notificationsEnabled ? t.notifOn : t.notifOff;
+            notifStatusText.className = notificationsEnabled ? 'badge-on' : 'badge-off';
         }
 
         updateAdminUI();
@@ -456,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 categories.push(newCat.trim());
                 renderCategories();
             }
-            addCatModal.classList.remove('open');
+            addCatModal.classList.add('open');
         });
     }
 
