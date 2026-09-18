@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('closeSettingsHeader');
 
     const subBtn = document.getElementById('subBtn');
-    const subCountSpan = document.getElementById('subCount');
 
     const addCategoryBtn =
         document.getElementById('addCategoryBtn');
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* =========================
-       BOTTOM
+       BOTTOM NAV
     ========================= */
 
     const homeBtn =
@@ -97,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isSubscribed =
         localStorage.getItem('isSubscribed') === 'true';
 
+
     let categories =
         JSON.parse(
             localStorage.getItem('categories')
@@ -111,8 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'Карбамид'
         ];
 
+
     let isAdmin =
         localStorage.getItem('isAdmin') === 'true';
+
 
     let currentTheme =
         localStorage.getItem('theme') || 'light';
@@ -122,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let notificationsEnabled =
         localStorage.getItem('notifications') === 'true';
+
 
     let cart =
         JSON.parse(
@@ -142,10 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const dict = {
 
         tg: {
+
             subscribers: 'подписчиков',
             subscribe: 'Подписаться',
             subscribed: '✓ Шумо обуна ҳастед',
-            wrongPass: 'Пароли нодуруст!',
+
+            wrongPass: 'Дастрасӣ рад шуд',
 
             settingsTitle: 'Танзимот',
             categoriesTitle: 'Категорияҳо',
@@ -165,22 +170,24 @@ document.addEventListener('DOMContentLoaded', () => {
             adminOff: 'Хомӯш',
 
             themeModalTitle: 'Интихоби тема',
-            nightModeOpt: '🌙 Режими шабона',
-            dayModeOpt: '☀️ Режими рӯзона',
 
             cancelBtn: 'БЕКОР КАРДАН',
 
             cartTitle: 'Корзина',
             cartEmpty: 'Корзина ҳоло холӣ аст',
+
             buy: 'Харидан',
             total: 'Ҳамагӣ'
         },
 
+
         ru: {
+
             subscribers: 'подписчиков',
             subscribe: 'Подписаться',
             subscribed: '✓ Вы подписаны',
-            wrongPass: 'Неверный пароль!',
+
+            wrongPass: 'Доступ запрещён',
 
             settingsTitle: 'Настройки',
             categoriesTitle: 'Категории',
@@ -200,22 +207,24 @@ document.addEventListener('DOMContentLoaded', () => {
             adminOff: 'Выкл',
 
             themeModalTitle: 'Выбор темы',
-            nightModeOpt: '🌙 Ночной режим',
-            dayModeOpt: '☀️ Дневной режим',
 
             cancelBtn: 'ОТМЕНА',
 
             cartTitle: 'Корзина',
             cartEmpty: 'Корзина пока пуста',
+
             buy: 'Купить',
             total: 'Итого'
         },
 
+
         uz: {
+
             subscribers: 'obunachilar',
             subscribe: 'Obuna bo‘lish',
             subscribed: '✓ Obuna bo‘lgansiz',
-            wrongPass: 'Noto‘g‘ri parol!',
+
+            wrongPass: 'Kirish rad etildi',
 
             settingsTitle: 'Sozlamalar',
             categoriesTitle: 'Kategoriyalar',
@@ -235,16 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
             adminOff: 'O‘chirilgan',
 
             themeModalTitle: 'Mavzuni tanlash',
-            nightModeOpt: '🌙 Tungi rejim',
-            dayModeOpt: '☀️ Kunduzgi rejim',
 
             cancelBtn: 'BEKOR QILISH',
 
             cartTitle: 'Savat',
             cartEmpty: 'Savat hozircha bo‘sh',
+
             buy: 'Sotib olish',
             total: 'Jami'
         }
+
     };
 
 
@@ -260,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const t = dict[lang];
 
+
         document
             .querySelectorAll('[data-translate]')
             .forEach(element => {
@@ -272,31 +282,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (t[key]) {
                     element.textContent = t[key];
                 }
+
             });
 
 
         const langNames = {
+
             tg: 'Тоҷикӣ',
             ru: 'Русский',
             uz: 'O‘zbekcha'
+
         };
+
 
         const langDisplay =
             document.getElementById(
                 'currentLangDisplay'
             );
 
+
         if (langDisplay) {
+
             langDisplay.textContent =
                 langNames[lang] + ' ›';
+
         }
 
 
         if (themeStatus) {
+
             themeStatus.textContent =
                 currentTheme === 'light'
                     ? t.dayMode
                     : t.nightMode;
+
         }
 
 
@@ -305,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'notifStatusText'
             );
 
+
         if (notifStatus) {
 
             notifStatus.textContent =
@@ -312,10 +332,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? t.notifOn
                     : t.notifOff;
 
+
             notifStatus.className =
                 notificationsEnabled
                     ? 'badge-on'
                     : 'badge-off';
+
         }
 
 
@@ -326,26 +348,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? t.subscribed
                     : t.subscribe;
 
+
             subBtn.classList.toggle(
                 'subscribed',
                 isSubscribed
             );
+
         }
 
 
         if (buyCartBtn) {
+
             buyCartBtn.textContent = t.buy;
+
         }
 
 
         updateAdminUI();
+
         updateSubDisplay();
+
         updateCart();
+
     }
 
 
     /* =========================
-       ADMIN
+       ADMIN UI
     ========================= */
 
     function updateAdminUI() {
@@ -355,11 +384,15 @@ document.addEventListener('DOMContentLoaded', () => {
             .forEach(el => {
 
                 el.style.display =
-                    isAdmin ? 'flex' : 'none';
+                    isAdmin
+                        ? ''
+                        : 'none';
+
             });
 
 
         const t = dict[currentLang];
+
 
         if (adminStatusBadge) {
 
@@ -368,11 +401,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? t.adminOn
                     : t.adminOff;
 
+
             adminStatusBadge.className =
                 isAdmin
                     ? 'badge-on'
                     : 'badge-off';
+
         }
+
+    }
+
+
+    /*
+       Барои муштариён
+       Режими Админ пинҳон аст.
+    */
+
+    if (adminModeToggle) {
+
+        adminModeToggle.style.display = 'none';
+
     }
 
 
@@ -387,9 +435,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 '.subscriber-text'
             );
 
+
         if (!text) return;
 
+
         const t = dict[currentLang];
+
 
         const count =
             subscribers >= 1000
@@ -398,10 +449,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     .replace('.0', '') + 'K'
                 : subscribers;
 
+
         text.innerHTML = `
-            <span id="subCount">${count}</span>
-            <span>${t.subscribers}</span>
+
+            <span id="subCount">
+                ${count}
+            </span>
+
+            <span>
+                ${t.subscribers}
+            </span>
+
         `;
+
     }
 
 
@@ -413,43 +473,197 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!categoryList) return;
 
+
         categoryList.innerHTML = '';
+
 
         categories.forEach((cat, index) => {
 
             const card =
                 document.createElement('div');
 
+
             card.className =
                 'category-card';
 
-            card.innerHTML = `
-                <span class="cat-name">
-                    ${cat}
-                </span>
 
-                <button
-                    class="delete-btn admin-only"
-                    data-index="${index}"
-                    style="
-                        display:${isAdmin
-                            ? 'block'
-                            : 'none'};
-                    ">
-                    ×
-                </button>
-            `;
+            const name =
+                document.createElement('span');
+
+
+            name.className =
+                'cat-name';
+
+
+            name.textContent = cat;
+
+
+            card.appendChild(name);
+
+
+            if (isAdmin) {
+
+                const deleteBtn =
+                    document.createElement('button');
+
+
+                deleteBtn.className =
+                    'delete-btn admin-only';
+
+
+                deleteBtn.dataset.index =
+                    index;
+
+
+                deleteBtn.textContent = '×';
+
+
+                card.appendChild(deleteBtn);
+
+            }
+
 
             categoryList.appendChild(card);
+
         });
+
 
         localStorage.setItem(
             'categories',
             JSON.stringify(categories)
         );
 
+
         updateAdminUI();
+
     }
+
+
+    /* =========================
+       ADD CATEGORY
+    ========================= */
+
+    addCategoryBtn?.addEventListener(
+        'click',
+        () => {
+
+            if (!isAdmin) return;
+
+
+            const name =
+                prompt(
+                    currentLang === 'ru'
+                        ? 'Введите название категории:'
+                        : 'Номи категорияро ворид кунед:'
+                );
+
+
+            if (name === null) return;
+
+
+            const newName =
+                name.trim();
+
+
+            if (!newName) return;
+
+
+            const exists =
+                categories.some(
+                    cat =>
+                        cat.toLowerCase() ===
+                        newName.toLowerCase()
+                );
+
+
+            if (exists) {
+
+                alert(
+                    currentLang === 'ru'
+                        ? 'Такая категория уже существует'
+                        : 'Ин категория аллакай ҳаст'
+                );
+
+                return;
+            }
+
+
+            categories.push(newName);
+
+
+            localStorage.setItem(
+                'categories',
+                JSON.stringify(categories)
+            );
+
+
+            renderCategories();
+
+        }
+    );
+
+
+    /* =========================
+       DELETE CATEGORY
+    ========================= */
+
+    categoryList?.addEventListener(
+        'click',
+        event => {
+
+            const button =
+                event.target.closest(
+                    '.delete-btn'
+                );
+
+
+            if (!button) return;
+
+
+            if (!isAdmin) return;
+
+
+            const index =
+                Number(button.dataset.index);
+
+
+            if (
+                Number.isNaN(index) ||
+                !categories[index]
+            ) return;
+
+
+            const categoryName =
+                categories[index];
+
+
+            const confirmed =
+                confirm(
+                    currentLang === 'ru'
+                        ? `Удалить категорию «${categoryName}»?`
+                        : `Категорияи «${categoryName}»-ро нест кунем?`
+                );
+
+
+            if (!confirmed) return;
+
+
+            categories.splice(
+                index,
+                1
+            );
+
+
+            localStorage.setItem(
+                'categories',
+                JSON.stringify(categories)
+            );
+
+
+            renderCategories();
+
+        }
+    );
 
 
     /* =========================
@@ -465,6 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
             brandToggle.classList.toggle('active');
 
             settingsMenu?.classList.remove('open');
+
         }
     );
 
@@ -478,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownMenu?.classList.remove('open');
 
             brandToggle?.classList.remove('active');
+
         }
     );
 
@@ -485,7 +701,9 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSettingsHeader?.addEventListener(
         'click',
         () => {
+
             settingsMenu?.classList.remove('open');
+
         }
     );
 
@@ -498,29 +716,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentTheme = theme;
 
+
         document.body.classList.toggle(
             'light-theme',
             theme === 'light'
         );
+
 
         document.body.classList.toggle(
             'dark-theme',
             theme === 'dark'
         );
 
+
         localStorage.setItem(
             'theme',
             theme
         );
 
+
         setLanguage(currentLang);
+
     }
 
 
     setThemeBtn?.addEventListener(
         'click',
         () => {
-            themeModal.classList.add('open');
+
+            themeModal?.classList.add('open');
+
         }
     );
 
@@ -528,7 +753,9 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelTheme?.addEventListener(
         'click',
         () => {
-            themeModal.classList.remove('open');
+
+            themeModal?.classList.remove('open');
+
         }
     );
 
@@ -537,63 +764,81 @@ document.addEventListener('DOMContentLoaded', () => {
         .querySelectorAll('.theme-option')
         .forEach(option => {
 
-            if (
-                option.getAttribute('data-theme')
-            ) {
+            option.addEventListener(
+                'click',
+                event => {
 
-                option.addEventListener(
-                    'click',
-                    event => {
+                    const theme =
+                        event.currentTarget
+                            .getAttribute(
+                                'data-theme'
+                            );
 
-                        applyTheme(
-                            event.currentTarget
-                                .getAttribute(
-                                    'data-theme'
-                                )
-                        );
 
-                        themeModal.classList.remove(
-                            'open'
-                        );
-                    }
-                );
-            }
+                    if (!theme) return;
+
+
+                    applyTheme(theme);
+
+
+                    themeModal?.classList.remove(
+                        'open'
+                    );
+
+                }
+            );
+
         });
 
 
     /* =========================
-       LANGUAGE MODAL
+       LANGUAGE
     ========================= */
 
     const langModal =
         document.createElement('div');
 
+
     langModal.className =
         'theme-modal';
 
+
     langModal.innerHTML = `
+
         <div class="theme-modal-content">
 
-            <h3>Интихоби забон / Выбор языка</h3>
+            <h3>
+                Интихоби забон / Выбор языка
+            </h3>
 
-            <div class="theme-option" id="langTajik">
+            <div
+                class="theme-option"
+                id="langTajik">
                 🇹🇯 Тоҷикӣ
             </div>
 
-            <div class="theme-option" id="langRussian">
+            <div
+                class="theme-option"
+                id="langRussian">
                 🇷🇺 Русский
             </div>
 
-            <div class="theme-option" id="langUzbek">
+            <div
+                class="theme-option"
+                id="langUzbek">
                 🇺🇿 O‘zbekcha
             </div>
 
-            <button class="theme-cancel" id="cancelLang">
+            <button
+                class="theme-cancel"
+                id="cancelLang">
                 Бекор кардан
             </button>
 
         </div>
+
     `;
+
 
     document.body.appendChild(langModal);
 
@@ -604,7 +849,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             langModal.classList.add('open');
 
-            settingsMenu?.classList.remove('open');
+            settingsMenu?.classList.remove(
+                'open'
+            );
+
         }
     );
 
@@ -614,7 +862,11 @@ document.addEventListener('DOMContentLoaded', () => {
     )?.addEventListener(
         'click',
         () => {
-            langModal.classList.remove('open');
+
+            langModal.classList.remove(
+                'open'
+            );
+
         }
     );
 
@@ -627,7 +879,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setLanguage('tg');
 
-            langModal.classList.remove('open');
+            langModal.classList.remove(
+                'open'
+            );
+
         }
     );
 
@@ -640,7 +895,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setLanguage('ru');
 
-            langModal.classList.remove('open');
+            langModal.classList.remove(
+                'open'
+            );
+
         }
     );
 
@@ -653,7 +911,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setLanguage('uz');
 
-            langModal.classList.remove('open');
+            langModal.classList.remove(
+                'open'
+            );
+
         }
     );
 
@@ -669,113 +930,170 @@ document.addEventListener('DOMContentLoaded', () => {
             notificationsEnabled =
                 !notificationsEnabled;
 
+
             localStorage.setItem(
                 'notifications',
                 notificationsEnabled
             );
 
+
             setLanguage(currentLang);
+
         }
     );
 
 
     /* =========================
-       ADMIN
+       ADMIN LOGIN
     ========================= */
 
-    adminModeToggle?.addEventListener(
-        'click',
-        () => {
+    function openAdminLogin() {
 
-            if (!isAdmin) {
+        if (isAdmin) {
 
-                const modal =
-                    document.createElement('div');
+            isAdmin = false;
 
-                modal.className =
-                    'theme-modal open';
+            localStorage.setItem(
+                'isAdmin',
+                'false'
+            );
 
-                modal.innerHTML = `
-                    <div class="theme-modal-content">
 
-                        <h3>
-                            Ворид кардани пароли админ
-                        </h3>
+            renderCategories();
 
-                        <input
-                            id="adminPasswordInput"
-                            type="password"
-                            placeholder="Паролро нависед..."
-                            style="
-                                width:100%;
-                                padding:12px;
-                                margin-bottom:15px;
-                                border-radius:8px;
-                                border:1px solid #555;
-                                background:#222;
-                                color:#fff;
-                                font-size:16px;
-                            "
-                        >
+            return;
 
-                        <button
-                            id="confirmAdmin"
-                            class="buy-cart-btn">
-                            Ворид шудан
-                        </button>
+        }
 
-                    </div>
-                `;
 
-                document.body.appendChild(modal);
+        const modal =
+            document.createElement('div');
 
-                modal.querySelector(
-                    '#confirmAdmin'
-                ).addEventListener(
-                    'click',
-                    () => {
 
-                        const password =
-                            modal.querySelector(
-                                '#adminPasswordInput'
-                            ).value;
+        modal.className =
+            'theme-modal open';
 
-                        if (password === '1604') {
 
-                            isAdmin = true;
+        modal.innerHTML = `
 
-                            localStorage.setItem(
-                                'isAdmin',
-                                'true'
-                            );
+            <div class="theme-modal-content">
 
-                            renderCategories();
+                <h3>
+                    Ворид кардани пароли админ
+                </h3>
 
-                            modal.remove();
+                <input
+                    id="adminPasswordInput"
+                    type="password"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="Паролро нависед..."
+                    style="
+                        width:100%;
+                        padding:12px;
+                        margin-bottom:15px;
+                        border-radius:8px;
+                        border:1px solid #555;
+                        background:#222;
+                        color:#fff;
+                        font-size:16px;
+                    "
+                >
 
-                        } else {
+                <button
+                    id="confirmAdmin"
+                    class="buy-cart-btn">
+                    Ворид шудан
+                </button>
 
-                            alert(
-                                dict[currentLang]
-                                    .wrongPass
-                            );
-                        }
-                    }
-                );
+            </div>
 
-            } else {
+        `;
 
-                isAdmin = false;
+
+        document.body.appendChild(modal);
+
+
+        const input =
+            modal.querySelector(
+                '#adminPasswordInput'
+            );
+
+
+        const confirmBtn =
+            modal.querySelector(
+                '#confirmAdmin'
+            );
+
+
+        input?.focus();
+
+
+        function checkPassword() {
+
+            const password =
+                input.value;
+
+
+            if (password === '1604') {
+
+                isAdmin = true;
+
 
                 localStorage.setItem(
                     'isAdmin',
-                    'false'
+                    'true'
                 );
 
+
+                modal.remove();
+
+
                 renderCategories();
+
+
+                updateAdminUI();
+
+
+            } else {
+
+                alert(
+                    dict[currentLang]
+                        .wrongPass
+                );
+
+
+                input.value = '';
+
+                input.focus();
+
             }
+
         }
-    );
+
+
+        confirmBtn?.addEventListener(
+            'click',
+            checkPassword
+        );
+
+
+        input?.addEventListener(
+            'keydown',
+            event => {
+
+                if (
+                    event.key === 'Enter'
+                ) {
+
+                    checkPassword();
+
+                }
+
+            }
+        );
+
+    }
 
 
     /* =========================
@@ -792,15 +1110,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 isSubscribed = true;
 
+
                 localStorage.setItem(
                     'subCount',
                     subscribers
                 );
 
+
                 localStorage.setItem(
                     'isSubscribed',
                     'true'
                 );
+
 
                 setLanguage(currentLang);
 
@@ -812,20 +1133,26 @@ document.addEventListener('DOMContentLoaded', () => {
                         subscribers - 1
                     );
 
+
                 isSubscribed = false;
+
 
                 localStorage.setItem(
                     'subCount',
                     subscribers
                 );
 
+
                 localStorage.setItem(
                     'isSubscribed',
                     'false'
                 );
 
+
                 setLanguage(currentLang);
+
             }
+
         }
     );
 
@@ -841,6 +1168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             price === null
         ) return 0;
 
+
         const number =
             parseFloat(
                 String(price)
@@ -848,9 +1176,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     .replace(/[^\d.]/g, '')
             );
 
+
         return isNaN(number)
             ? 0
             : number;
+
     }
 
 
@@ -859,6 +1189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Intl.NumberFormat(
             'ru-RU'
         ).format(number) + ' сомонӣ';
+
     }
 
 
@@ -868,6 +1199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'varzid_cart',
             JSON.stringify(cart)
         );
+
     }
 
 
@@ -875,104 +1207,132 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!cartItems) return;
 
+
         cartItems.innerHTML = '';
 
+
         let total = 0;
+
         let count = 0;
 
 
-        cart.forEach((item, index) => {
+        cart.forEach(
+            (item, index) => {
 
-            const quantity =
-                Number(item.quantity) || 1;
-
-            const price =
-                getPriceNumber(item.price);
-
-            total +=
-                price * quantity;
-
-            count += quantity;
+                const quantity =
+                    Number(item.quantity) || 1;
 
 
-            const row =
-                document.createElement('div');
+                const price =
+                    getPriceNumber(
+                        item.price
+                    );
 
-            row.className =
-                'cart-item';
 
-            row.innerHTML = `
+                total +=
+                    price * quantity;
 
-                <div class="cart-item-info">
 
-                    <div class="cart-item-name">
-                        ${item.name}
+                count += quantity;
+
+
+                const row =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                row.className =
+                    'cart-item';
+
+
+                row.innerHTML = `
+
+                    <div class="cart-item-info">
+
+                        <div class="cart-item-name">
+                            ${item.name}
+                        </div>
+
+                        <div class="cart-item-price">
+                            ${item.price || ''}
+                            ${item.unit
+                                ? ' / ' + item.unit
+                                : ''}
+                        </div>
+
                     </div>
 
-                    <div class="cart-item-price">
-                        ${item.price || ''}
-                        ${item.unit
-                            ? ' / ' + item.unit
-                            : ''}
+                    <div class="cart-controls">
+
+                        <button
+                            class="quantity-btn"
+                            data-action="minus"
+                            data-index="${index}">
+                            −
+                        </button>
+
+                        <span class="quantity-number">
+                            ${quantity}
+                        </span>
+
+                        <button
+                            class="quantity-btn"
+                            data-action="plus"
+                            data-index="${index}">
+                            +
+                        </button>
+
                     </div>
 
-                </div>
-
-                <div class="cart-controls">
-
                     <button
-                        class="quantity-btn"
-                        data-action="minus"
+                        class="remove-cart-item"
+                        data-action="remove"
                         data-index="${index}">
-                        −
+                        ×
                     </button>
 
-                    <span class="quantity-number">
-                        ${quantity}
-                    </span>
+                `;
 
-                    <button
-                        class="quantity-btn"
-                        data-action="plus"
-                        data-index="${index}">
-                        +
-                    </button>
 
-                </div>
+                cartItems.appendChild(row);
 
-                <button
-                    class="remove-cart-item"
-                    data-action="remove"
-                    data-index="${index}">
-                    ×
-                </button>
-            `;
-
-            cartItems.appendChild(row);
-        });
+            }
+        );
 
 
         if (cart.length === 0) {
 
-            cartEmpty.style.display = 'block';
+            cartEmpty.style.display =
+                'block';
 
-            buyCartBtn.style.display = 'none';
+
+            buyCartBtn.style.display =
+                'none';
+
 
             cartTotal.textContent =
                 '0 сомонӣ';
 
         } else {
 
-            cartEmpty.style.display = 'none';
+            cartEmpty.style.display =
+                'none';
 
-            buyCartBtn.style.display = 'block';
+
+            buyCartBtn.style.display =
+                'block';
+
 
             cartTotal.textContent =
                 formatPrice(total);
+
         }
 
 
-        cartCount.textContent = count;
+        cartCount.textContent =
+            count;
+
 
         cartCount.style.display =
             count > 0
@@ -981,6 +1341,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         saveCart();
+
     }
 
 
@@ -1000,7 +1361,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const existing =
                 cart.find(
                     item =>
-                        item.id === product.id
+                        item.id ===
+                        product.id
                 );
 
 
@@ -1015,12 +1377,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     ...product,
                     quantity: 1
                 });
+
             }
 
 
             updateCart();
 
-            cartPanel?.classList.add('open');
+
+            cartPanel?.classList.add(
+                'open'
+            );
+
         };
 
 
@@ -1033,15 +1400,23 @@ document.addEventListener('DOMContentLoaded', () => {
         event => {
 
             const button =
-                event.target.closest('button');
+                event.target.closest(
+                    'button'
+                );
+
 
             if (!button) return;
+
 
             const action =
                 button.dataset.action;
 
+
             const index =
-                parseInt(button.dataset.index);
+                parseInt(
+                    button.dataset.index
+                );
+
 
             if (
                 isNaN(index) ||
@@ -1053,6 +1428,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 cart[index].quantity =
                     (cart[index].quantity || 1) + 1;
+
             }
 
 
@@ -1061,21 +1437,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 cart[index].quantity =
                     (cart[index].quantity || 1) - 1;
 
+
                 if (
                     cart[index].quantity <= 0
                 ) {
-                    cart.splice(index, 1);
+
+                    cart.splice(
+                        index,
+                        1
+                    );
+
                 }
+
             }
 
 
             if (action === 'remove') {
 
-                cart.splice(index, 1);
+                cart.splice(
+                    index,
+                    1
+                );
+
             }
 
 
             updateCart();
+
         }
     );
 
@@ -1090,8 +1478,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (cart.length === 0) return;
 
+
             let message =
                 'Салом, ман мехоҳам фармоиш диҳам:\n\n';
+
 
             let total = 0;
 
@@ -1102,27 +1492,40 @@ document.addEventListener('DOMContentLoaded', () => {
                     const quantity =
                         Number(item.quantity) || 1;
 
+
                     const price =
-                        getPriceNumber(item.price);
+                        getPriceNumber(
+                            item.price
+                        );
+
 
                     const lineTotal =
                         price * quantity;
 
-                    total += lineTotal;
+
+                    total +=
+                        lineTotal;
 
 
                     message +=
                         `${index + 1}. ${item.name}`;
 
+
                     if (item.price) {
+
                         message +=
                             ` — ${item.price}`;
+
                     }
 
+
                     if (item.unit) {
+
                         message +=
                             ` / ${item.unit}`;
+
                     }
+
 
                     message +=
                         ` × ${quantity}`;
@@ -1132,9 +1535,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         message +=
                             ` = ${formatPrice(lineTotal)}`;
+
                     }
 
+
                     message += '\n';
+
                 }
             );
 
@@ -1143,6 +1549,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 message +=
                     `\nҲамагӣ: ${formatPrice(total)}\n`;
+
             }
 
 
@@ -1152,13 +1559,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const url =
                 'https://wa.me/992000001606?text=' +
-                encodeURIComponent(message);
+                encodeURIComponent(
+                    message
+                );
 
 
             window.open(
                 url,
                 '_blank'
             );
+
         }
     );
 
@@ -1170,12 +1580,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function setActive(button) {
 
         document
-            .querySelectorAll('.bottom-nav-btn')
+            .querySelectorAll(
+                '.bottom-nav-btn'
+            )
             .forEach(btn => {
-                btn.classList.remove('active');
+
+                btn.classList.remove(
+                    'active'
+                );
+
             });
 
-        button?.classList.add('active');
+
+        button?.classList.add(
+            'active'
+        );
+
     }
 
 
@@ -1185,12 +1605,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setActive(homeBtn);
 
-            cartPanel?.classList.remove('open');
+
+            cartPanel?.classList.remove(
+                'open'
+            );
+
 
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
+
         }
     );
 
@@ -1199,9 +1624,15 @@ document.addEventListener('DOMContentLoaded', () => {
         'click',
         () => {
 
-            setActive(favoritesBtn);
+            setActive(
+                favoritesBtn
+            );
 
-            cartPanel?.classList.remove('open');
+
+            cartPanel?.classList.remove(
+                'open'
+            );
+
         }
     );
 
@@ -1210,11 +1641,18 @@ document.addEventListener('DOMContentLoaded', () => {
         'click',
         () => {
 
-            setActive(cartBtn);
+            setActive(
+                cartBtn
+            );
+
 
             updateCart();
 
-            cartPanel?.classList.add('open');
+
+            cartPanel?.classList.add(
+                'open'
+            );
+
         }
     );
 
@@ -1223,9 +1661,77 @@ document.addEventListener('DOMContentLoaded', () => {
         'click',
         () => {
 
-            cartPanel?.classList.remove('open');
+            cartPanel?.classList.remove(
+                'open'
+            );
 
-            setActive(homeBtn);
+
+            setActive(
+                homeBtn
+            );
+
+        }
+    );
+
+
+    /* =========================
+       ADMIN ACCESS
+       ТАНҲО БАРОИ СОҲИБ
+    ========================= */
+
+    /*
+       Режими Админ дар Танзимот
+       барои муштариён пинҳон аст.
+
+       Барои ворид шудан ба админ
+       тугмаи пинҳон вуҷуд дорад:
+       тугмаи VARZID-ро 5 бор зуд пахш кардан.
+    */
+
+    let adminTapCount = 0;
+
+    let adminTapTimer = null;
+
+
+    brandToggle?.addEventListener(
+        'click',
+        () => {
+
+            adminTapCount++;
+
+
+            clearTimeout(
+                adminTapTimer
+            );
+
+
+            adminTapTimer =
+                setTimeout(
+                    () => {
+
+                        adminTapCount = 0;
+
+                    },
+                    1200
+                );
+
+
+            if (
+                adminTapCount >= 5
+            ) {
+
+                adminTapCount = 0;
+
+
+                clearTimeout(
+                    adminTapTimer
+                );
+
+
+                openAdminLogin();
+
+            }
+
         }
     );
 
@@ -1234,13 +1740,21 @@ document.addEventListener('DOMContentLoaded', () => {
        INITIAL
     ========================= */
 
-    applyTheme(currentTheme);
+    applyTheme(
+        currentTheme
+    );
 
-    setLanguage(currentLang);
+
+    setLanguage(
+        currentLang
+    );
+
 
     renderCategories();
 
+
     updateAdminUI();
+
 
     updateCart();
 
