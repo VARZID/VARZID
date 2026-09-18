@@ -23,13 +23,12 @@
         <button class="settings-icon" id="settingsToggle">
             <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.3 7A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.9 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.7 1z"></path>
+                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-.1-.1A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.9 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.7 1z"></path>
             </svg>
         </button>
 
     </div>
 </header>
-
 
 <!-- КАТЕГОРИЯҲО -->
 <div class="dropdown-menu" id="dropdownMenu">
@@ -47,14 +46,31 @@
 
     <div class="menu-header">
         <span data-translate="categoriesTitle">Категорияҳо</span>
-
         <button class="add-btn admin-only" id="addCategoryBtn">+</button>
     </div>
 
     <div class="categories-grid" id="categoryList"></div>
 
+    <div class="admin-access admin-only" id="adminPanelBtn">
+        ⚙ Панели админ
+    </div>
+
 </div>
 
+<!-- МАҲСУЛОТ -->
+<main class="products-section">
+
+    <div class="products-header">
+        <span id="currentCategoryTitle">Варзидан</span>
+    </div>
+
+    <div class="products-grid" id="productsList"></div>
+
+    <div class="empty-products" id="emptyProducts">
+        Ҳоло маҳсулот нест
+    </div>
+
+</main>
 
 <!-- ТАНЗИМОТ -->
 <div class="settings-menu" id="settingsMenu">
@@ -90,28 +106,20 @@
             </span>
         </div>
 
-        <div class="setting-item" id="adminModeToggle">
-            <span data-translate="adminLabel">
-                Режими Админ
-            </span>
-
-            <span class="badge-off" id="adminStatusBadge">
-                Хомӯш
-            </span>
+        <div class="setting-item admin-only" id="adminModeToggle">
+            <span>Режими Админ</span>
+            <span class="badge-off" id="adminStatusBadge">Хомӯш</span>
         </div>
 
     </div>
 </div>
-
 
 <!-- ТЕМА -->
 <div class="theme-modal" id="themeModal">
 
     <div class="theme-modal-content">
 
-        <h3 data-translate="themeModalTitle">
-            Интихоби тема
-        </h3>
+        <h3>Интихоби тема</h3>
 
         <div class="theme-option" data-theme="dark">
             🌙 Режими шабона
@@ -121,23 +129,19 @@
             ☀️ Режими рӯзона
         </div>
 
-        <button class="theme-cancel" id="cancelTheme"
-                data-translate="cancelBtn">
+        <button class="theme-cancel" id="cancelTheme">
             БЕКОР КАРДАН
         </button>
 
     </div>
 </div>
 
-
 <!-- КОРЗИНА -->
 <div class="cart-panel" id="cartPanel">
 
     <div class="cart-header">
 
-        <h3 data-translate="cartTitle">
-            Корзина
-        </h3>
+        <h3>Корзина</h3>
 
         <button id="closeCart" class="cart-close">
             ×
@@ -147,17 +151,14 @@
 
     <div class="cart-items" id="cartItems"></div>
 
-    <div class="cart-empty" id="cartEmpty"
-         data-translate="cartEmpty">
+    <div class="cart-empty" id="cartEmpty">
         Корзина ҳоло холӣ аст
     </div>
 
     <div class="cart-footer">
 
         <div class="cart-total-row">
-            <span data-translate="total">
-                Ҳамагӣ
-            </span>
+            <span>Ҳамагӣ</span>
 
             <strong id="cartTotal">
                 0 сомонӣ
@@ -172,40 +173,24 @@
 
 </div>
 
-
-<!-- ПОЁНИ САЙТ -->
+<!-- ПОЁН -->
 <nav class="bottom-nav">
 
-    <!-- АСОСӢ -->
-    <button class="bottom-nav-btn active"
-            id="homeBtn"
-            aria-label="Асосӣ">
-
+    <button class="bottom-nav-btn active" id="homeBtn">
         <svg viewBox="0 0 24 24">
             <path d="M3.5 10.7L12 3.5l8.5 7.2"></path>
             <path d="M5.5 9.5V21h13V9.5"></path>
             <path d="M9.5 21v-5.5h5V21"></path>
         </svg>
-
     </button>
 
-
-    <!-- ДИЛ -->
-    <button class="bottom-nav-btn"
-            id="favoritesBtn"
-            aria-label="Дӯстдоштаҳо">
-
+    <button class="bottom-nav-btn" id="favoritesBtn">
         <svg viewBox="0 0 24 24">
             <path d="M20.5 8.7c0 5.1-8.5 10-8.5 10s-8.5-4.9-8.5-10a4.6 4.6 0 0 1 8.5-2.4 4.6 4.6 0 0 1 8.5 2.4z"></path>
         </svg>
-
     </button>
 
-
-    <!-- КОРЗИНА -->
-    <button class="bottom-nav-btn"
-            id="cartBtn"
-            aria-label="Корзина">
+    <button class="bottom-nav-btn" id="cartBtn">
 
         <svg viewBox="0 0 24 24">
             <path d="M4 5h2l1.6 10a2 2 0 0 0 2 1.7h7.8a2 2 0 0 0 1.9-1.5L21 8H7"></path>
@@ -218,7 +203,6 @@
     </button>
 
 </nav>
-
 
 <script src="script.js"></script>
 
