@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#16843a">
     <title>VARZID</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,95 +13,92 @@
 <header class="header">
     <div class="header-top">
 
-        <div class="brand-container" id="brandToggle">
+        <button class="brand-container" id="brandToggle" type="button">
             <span>VARZID</span>
 
             <svg class="arrow-icon" viewBox="0 0 24 24">
                 <path d="M6 9l6 6 6-6"></path>
             </svg>
-        </div>
+        </button>
 
-        <button class="settings-icon" id="settingsToggle" aria-label="Танзимот">
+        <button class="settings-icon" id="settingsToggle" type="button">
             <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-.1-.1A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.9 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.7 1z"></path>
+                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-.1-.1A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.9 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.7 1z"></path>
             </svg>
         </button>
 
     </div>
 </header>
 
+<!-- КАТЕГОРИЯҲО -->
 <div class="dropdown-menu" id="dropdownMenu">
 
     <div class="subscribers-info">
         <div class="subscriber-text">
             <span id="subCount">0</span>
-            <span data-translate="subscribers">подписчиков</span>
+            <span id="subscriberLabel">подписчиков</span>
         </div>
 
-        <button id="subBtn" class="sub-btn">
+        <button id="subBtn" class="sub-btn" type="button">
             Подписаться
         </button>
     </div>
 
     <div class="menu-header">
-        <span data-translate="categoriesTitle">Категорияҳо</span>
-        <button class="add-btn admin-only" id="addCategoryBtn">+</button>
+        <span id="categoriesTitle">Категорияҳо</span>
+
+        <button
+            class="add-btn admin-only"
+            id="addCategoryBtn"
+            type="button">
+            +
+        </button>
     </div>
 
     <div class="categories-grid" id="categoryList"></div>
 
 </div>
 
-<main class="products-section">
-
-    <div class="products-header">
-        <span id="currentCategoryTitle">Варзидан</span>
-    </div>
-
-    <div class="products-grid" id="productsList"></div>
-
-    <div class="empty-products" id="emptyProducts">
-        Ҳоло маҳсулот нест
-    </div>
-
-</main>
-
+<!-- SETTINGS -->
 <div class="settings-menu" id="settingsMenu">
 
     <div class="settings-header">
-        <h3 data-translate="settingsTitle">Танзимот</h3>
+        <h3 id="settingsTitle">Танзимот</h3>
 
-        <button id="closeSettingsHeader" class="close-small">
+        <button
+            id="closeSettingsHeader"
+            class="close-small"
+            type="button">
             ×
         </button>
     </div>
 
     <div class="settings-body">
 
-        <div class="setting-item" id="setTheme">
-            <span data-translate="themeLabel">Тема</span>
+        <button class="setting-item" id="setTheme" type="button">
+            <span id="themeLabel">Тема</span>
             <span class="settings-value" id="themeStatus">
                 Режими рӯзона ›
             </span>
-        </div>
+        </button>
 
-        <div class="setting-item" id="setNotifications">
-            <span data-translate="notifLabel">Огоҳиҳо</span>
+        <button class="setting-item" id="setNotifications" type="button">
+            <span id="notifLabel">Огоҳиҳо</span>
             <span class="settings-value" id="notifStatusText">
                 Хомӯш ›
             </span>
-        </div>
+        </button>
 
-        <div class="setting-item" id="setLanguage">
-            <span data-translate="langLabel">Забон</span>
+        <button class="setting-item" id="setLanguage" type="button">
+            <span id="langLabel">Забон</span>
             <span class="settings-value" id="currentLangDisplay">
                 Тоҷикӣ ›
             </span>
-        </div>
+        </button>
 
-        <!-- АДМИН: НАМOЁН, ВАЛЕ БАРОИ МУШТАРӢ ПАХШШАВАНДА НЕСТ -->
-        <div class="setting-item admin-info-row" aria-disabled="true">
+        <!-- Барои муштарӣ танҳо маълумот -->
+        <div class="setting-item admin-info-row">
             <span class="admin-name-wrap">
                 <span class="person-icon">♙</span>
                 <span id="adminInfoText">Админ</span>
@@ -111,83 +109,139 @@
             </span>
         </div>
 
-    </div>
-</div>
-
-<div class="theme-modal" id="themeModal">
-
-    <div class="theme-modal-content">
-
-        <h3 id="themeModalTitle">Интихоби тема</h3>
-
-        <div class="theme-option" data-theme="dark">
-            🌙 Режими шабона
-        </div>
-
-        <div class="theme-option" data-theme="light">
-            ☀️ Режими рӯзона
-        </div>
-
-        <button class="theme-cancel" id="cancelTheme">
-            БЕКОР КАРДАН
+        <!-- Танҳо баъд аз воридшавии админ -->
+        <button
+            class="setting-item"
+            id="adminSessionBtn"
+            type="button"
+            hidden>
+            <span id="adminSessionText">
+                Панели Админ
+            </span>
+            <span class="settings-value">›</span>
         </button>
 
     </div>
 </div>
 
+<!-- МАҲСУЛОТ -->
+<main class="products-section">
+
+    <div class="products-header">
+        <span id="currentCategoryTitle">
+            Варзидан
+        </span>
+    </div>
+
+    <div
+        class="products-grid"
+        id="productsList">
+    </div>
+
+    <div
+        class="empty-products"
+        id="emptyProducts">
+        Ҳоло маҳсулот нест
+    </div>
+
+</main>
+
+<!-- САБАД -->
 <div class="cart-panel" id="cartPanel">
 
     <div class="cart-header">
+        <h3 id="cartTitle">Сабад</h3>
 
-        <h3 id="cartTitle">Корзина</h3>
-
-        <button id="closeCart" class="cart-close">
+        <button
+            id="closeCart"
+            class="cart-close"
+            type="button">
             ×
         </button>
-
     </div>
 
-    <div class="cart-items" id="cartItems"></div>
+    <div
+        class="cart-items"
+        id="cartItems">
+    </div>
 
-    <div class="cart-empty" id="cartEmpty">
-        Корзина ҳоло холӣ аст
+    <div
+        class="cart-empty"
+        id="cartEmpty">
+        Сабад ҳоло холӣ аст
     </div>
 
     <div class="cart-footer">
 
         <div class="cart-total-row">
-            <span id="cartTotalLabel">Ҳамагӣ</span>
+            <span id="cartTotalLabel">
+                Ҳамагӣ
+            </span>
 
             <strong id="cartTotal">
                 0 сомонӣ
             </strong>
         </div>
 
-        <button class="buy-cart-btn" id="buyCartBtn">
+        <button
+            class="buy-cart-btn"
+            id="buyCartBtn"
+            type="button">
             Харидан
         </button>
 
     </div>
+</div>
+
+<!-- MODAL-и дохилии сайт -->
+<div
+    class="app-modal"
+    id="appModal"
+    aria-hidden="true">
+
+    <div
+        class="modal-backdrop"
+        data-close-modal="true">
+    </div>
+
+    <div
+        class="modal-card"
+        id="modalCard">
+    </div>
 
 </div>
 
+<!-- ПОЁН -->
 <nav class="bottom-nav">
 
-    <button class="bottom-nav-btn active" id="homeBtn">
+    <button
+        class="bottom-nav-btn active"
+        id="homeBtn"
+        type="button">
+
         <svg viewBox="0 0 24 24">
             <path d="M3.5 10.7L12 3.5l8.5 7.2"></path>
             <path d="M5.5 9.5V21h13V9.5"></path>
             <path d="M9.5 21v-5.5h5V21"></path>
         </svg>
+
     </button>
 
-    <button class="bottom-nav-btn" id="favoritesBtn">
+    <button
+        class="bottom-nav-btn"
+        id="favoritesBtn"
+        type="button">
+
         <svg viewBox="0 0 24 24">
             <path d="M20.5 8.7c0 5.1-8.5 10-8.5 10s-8.5-4.9-8.5-10a4.6 4.6 0 0 1 8.5-2.4 4.6 4.6 0 0 1 8.5 2.4z"></path>
         </svg>
+
     </button>
 
-    <button class="bottom-nav-btn" id="cartBtn">
+    <button
+        class="bottom-nav-btn"
+        id="cartBtn"
+        type="button">
 
         <svg viewBox="0 0 24 24">
             <path d="M4 5h2l1.6 10a2 2 0 0 0 2 1.7h7.8a2 2 0 0 0 1.9-1.5L21 8H7"></path>
@@ -195,7 +249,11 @@
             <circle cx="18" cy="20" r="1.2"></circle>
         </svg>
 
-        <span class="cart-count" id="cartCount">0</span>
+        <span
+            class="cart-count"
+            id="cartCount">
+            0
+        </span>
 
     </button>
 
