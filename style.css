@@ -229,6 +229,7 @@ body {
     background-color: var(--card-hover);
 }
 
+/* Ҳолати хомӯш / отмена — хокистаранг */
 .badge-off {
     background-color: var(--main-gray) !important;
     color: #fff !important;
@@ -238,7 +239,8 @@ body {
     font-weight: bold;
 }
 
-.badge-on {
+/* Ҳолати фаъол — кабуди якхела барои ҳамаи тугмаҳои ба ин синф тааллуқдошта */
+.badge-on, .checkout-btn, .order-btn {
     background-color: var(--main-blue) !important;
     color: #fff !important;
     padding: 2px 8px;
