@@ -3,45 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ - Базаи Маҳсулот</title>
+    <title>Панели Админ - ВАРЗИД</title>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: #fff; padding: 20px; }
+        .admin-box { max-width: 600px; margin: 0 auto; background: #1e1e1e; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h2 { color: #4CAF50; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #aaa; }
+        input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: #fff; box-sizing: border-box; }
+        button { background: #4CAF50; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #45a049; }
+        .product-list { margin-top: 20px; border-top: 1px solid #444; padding-top: 15px; }
+        .product-item { background: #2a2a2a; padding: 10px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .delete-btn { background: #f44336; width: auto; padding: 5px 10px; font-size: 14px; }
+    </style>
 </head>
 <body>
 
-    <script>
-        // ИН ҶО МАҲСУЛОТИ ХУДРО ИЛОВА МЕКУНЕД (БО АЛОМАТИ +)
-        window.VARZID_PRODUCTS = [
-            {
-                category: "Орд",
-                name: "Орд",
-                price: 250,
-                unit: "кг",
-                image: "ord.jpg"
-            },
-            {
-                category: "Гандум",
-                name: "Гандум",
-                price: 180,
-                unit: "кг",
-                image: "gandum.jpg"
-            },
-            {
-                category: "Корм",
-                name: "Корм",
-                price: 150,
-                unit: "штук",
-                image: "korm.jpg"
-            },
-            {
-                category: "Ҷав",
-                name: "Ҷав",
-                price: 160,
-                unit: "кг",
-                image: "jav.jpg"
-            }
-            // Агар боз маҳсулоти нав оред, бо ин илова мекунед:
-            // , { category: "Ном", name: "Ном", price: Нарх, unit: "кг/штук", image: "расм.jpg" }
-        ];
-    </script>
+    <div class="admin-box" id="loginScreen">
+        <h2>Вуруд ба Режими Админ</h2>
+        <div class="form-group">
+            <label>Паролро ворид кунед:</label>
+            <input type="password" id="adminPasswordInput" placeholder="Парол...">
+        </div>
+        <button onclick="checkAdminPassword()">Дохил шудан</button>
+    </div>
 
+    <div class="admin-box" id="adminPanel" style="display: none;">
+        <h2>Идоракунии Маҳсулот (+ Илова)</h2>
+        
+        <div class="form-group">
+            <label>Номи маҳсулот / Категория:</label>
+            <input type="text" id="pName" placeholder="Масалан: Орд, Гандум...">
+        </div>
+
+        <div class="form-group">
+            <label>Нарх (бо сомонӣ):</label>
+            <input type="number" id="pPrice" placeholder="250">
+        </div>
+
+        <div class="form-group">
+            <label>Воҳид (кг ё штук):</label>
+            <select id="pUnit">
+                <option value="кг">кг</option>
+                <option value="штук">штук</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Миқдор (запас):</label>
+            <input type="number" id="pQty" placeholder="100">
+        </div>
+
+        <div class="form-group">
+            <label>Номи расм (акс):</label>
+            <input type="text" id="pImage" placeholder="ord.jpg">
+        </div>
+
+        <button onclick="addNewProduct()">+ Илова кардани маҳсулот</button>
+
+        <div class="product-list">
+            <h3>Рӯйхати маҳсулоти мавҷуда:</h3>
+            <div id="adminProductsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Пароли худро ин ҷо иваз карда метавонед (ҳозир: 1234)
+        const ADMIN_PASS = "1234";
+
+        function checkAdminPassword() {
+            const pass = document.getElementById('adminPasswordInput').value;
+            if (pass === ADMIN_PASS) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadAdminProducts();
+            } else {
+                alert("Парол хато аст!");
+            }
+        }
+
+        let products = JSON.parse(localStorage.getItem('varzid_custom_products')) || [
+            { category: "Орд", name: "Орд", price: 250, unit: "кг", qty: 100, image: "ord.jpg" },
+            { category: "Гандум", name: "Гандум", price: 180, unit: "кг", qty: 150, image: "gandum.jpg" },
+            { category: "Корм", name: "Корм", price: 150, unit: "штук", qty: 50, image: "korm.jpg" }
+        ];
+
+        function saveAndSync() {
+            localStorage.setItem('varzid_custom_products', JSON.stringify(products));
+        }
+
+        function addNewProduct() {
+            const name = document.getElementById('pName').value.trim();
+            const price = parseFloat(document.getElementById('pPrice').value);
+            const unit = document.getElementById('pUnit').value;
+            const qty = parseInt(document.getElementById('pQty').value) || 0;
+            const image = document.getElementById('pImage').value.trim() || "default.jpg";
+
+            if (!name || isNaN(price)) {
+                alert("Лутфан ном ва нархи маҳсулотро пур кунед!");
+                return;
+            }
+
+            products.push({ category: name, name: name, price: price, unit: unit, qty: qty, image: image });
+            saveAndSync();
+            loadAdminProducts();
+
+            document.getElementById('pName').value = '';
+            document.getElementById('pPrice').value = '';
+            document.getElementById('pQty').value = '';
+            document.getElementById('pImage').value = '';
+            alert("Маҳсулот бомуваффақият илова шуд!");
+        }
+
+        function deleteProduct(index) {
+            products.splice(index, 1);
+            saveAndSync();
+            loadAdminProducts();
+        }
+
+        function loadAdminProducts() {
+            const container = document.getElementById('adminProductsContainer');
+            container.innerHTML = '';
+            products.forEach((p, index) => {
+                container.innerHTML += `
+                    <div class="product-item">
+                        <span><b>${p.name}</b> - ${p.price} сомонӣ (${p.qty} ${p.unit})</span>
+                        <button class="delete-btn" onclick="deleteProduct(${index})">Тоза кардан</button>
+                    </div>
+                `;
+            });
+        }
+    </script>
 </body>
 </html>
