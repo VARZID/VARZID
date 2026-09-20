@@ -2,105 +2,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const brandToggle = document.getElementById('brandToggle');
     const dropdownMenu = document.getElementById('dropdownMenu');
-
     const settingsToggle = document.getElementById('settingsToggle');
     const settingsMenu = document.getElementById('settingsMenu');
-    const closeSettingsHeader =
-        document.getElementById('closeSettingsHeader');
-
+    const closeSettingsHeader = document.getElementById('closeSettingsHeader');
     const subBtn = document.getElementById('subBtn');
+    const categoryList = document.getElementById('categoryList');
+    const adminModeToggle = document.getElementById('adminModeToggle');
+    const adminStatusBadge = document.getElementById('adminStatusBadge');
+    const setThemeBtn = document.getElementById('setTheme');
+    const themeModal = document.getElementById('themeModal');
+    const cancelTheme = document.getElementById('cancelTheme');
+    const themeStatus = document.getElementById('themeStatus');
+    const setLanguageBtn = document.getElementById('setLanguage');
+    const setNotificationsBtn = document.getElementById('setNotifications');
 
-    const addCategoryBtn =
-        document.getElementById('addCategoryBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const favoritesBtn = document.getElementById('favoritesBtn');
+    const cartBtn = document.getElementById('cartBtn');
 
-    const categoryList =
-        document.getElementById('categoryList');
-
-    const adminModeToggle =
-        document.getElementById('adminModeToggle');
-
-    const adminStatusBadge =
-        document.getElementById('adminStatusBadge');
-
-    const setThemeBtn =
-        document.getElementById('setTheme');
-
-    const themeModal =
-        document.getElementById('themeModal');
-
-    const cancelTheme =
-        document.getElementById('cancelTheme');
-
-    const themeStatus =
-        document.getElementById('themeStatus');
-
-    const setLanguageBtn =
-        document.getElementById('setLanguage');
-
-    const setNotificationsBtn =
-        document.getElementById('setNotifications');
-
-
-    /* =========================
-       BOTTOM NAV
-    ========================= */
-
-    const homeBtn =
-        document.getElementById('homeBtn');
-
-    const favoritesBtn =
-        document.getElementById('favoritesBtn');
-
-    const cartBtn =
-        document.getElementById('cartBtn');
-
-
-    /* =========================
-       CART
-    ========================= */
-
-    const cartPanel =
-        document.getElementById('cartPanel');
-
-    const cartItems =
-        document.getElementById('cartItems');
-
-    const cartEmpty =
-        document.getElementById('cartEmpty');
-
-    const cartCount =
-        document.getElementById('cartCount');
-
-    const buyCartBtn =
-        document.getElementById('buyCartBtn');
-
-    const closeCart =
-        document.getElementById('closeCart');
-
-    const cartTotal =
-        document.getElementById('cartTotal');
+    const cartPanel = document.getElementById('cartPanel');
+    const cartItems = document.getElementById('cartItems');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const cartCount = document.getElementById('cartCount');
+    const buyCartBtn = document.getElementById('buyCartBtn');
+    const closeCart = document.getElementById('closeCart');
+    const cartTotal = document.getElementById('cartTotal');
 
 
     /* =========================
        STORAGE
     ========================= */
 
-    let savedSubCount =
-        parseInt(localStorage.getItem('subCount'));
+    let savedSubCount = parseInt(localStorage.getItem('subCount'));
 
-    let subscribers =
-        !isNaN(savedSubCount)
-            ? savedSubCount
-            : 0;
+    let subscribers = !isNaN(savedSubCount)
+        ? savedSubCount
+        : 0;
 
     let isSubscribed =
         localStorage.getItem('isSubscribed') === 'true';
 
-
     let categories =
-        JSON.parse(
-            localStorage.getItem('categories')
-        ) || [
+        JSON.parse(localStorage.getItem('categories')) || [
             'Варзидан',
             'Орд',
             'Комбикорм',
@@ -111,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'Карбамид'
         ];
 
-
     let currentTheme =
         localStorage.getItem('theme') || 'light';
 
@@ -121,12 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let notificationsEnabled =
         localStorage.getItem('notifications') === 'true';
 
-
     let cart =
-        JSON.parse(
-            localStorage.getItem('varzid_cart')
-        ) || [];
-
+        JSON.parse(localStorage.getItem('varzid_cart')) || [];
 
     cart = cart.map(item => ({
         ...item,
@@ -141,115 +79,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const dict = {
 
         tg: {
-
             subscribers: 'подписчиков',
             subscribe: 'Подписаться',
             subscribed: '✓ Шумо обуна ҳастед',
-
             wrongPass: 'Дастрасӣ рад шуд',
-
             settingsTitle: 'Танзимот',
             categoriesTitle: 'Категорияҳо',
-
             themeLabel: 'Тема',
             nightMode: 'Режими шабона ›',
             dayMode: 'Режими рӯзона ›',
-
             notifLabel: 'Огоҳиҳо',
             notifOn: 'Фаъол ›',
             notifOff: 'Хомӯш ›',
-
             langLabel: 'Забон',
-
             adminLabel: 'Админ',
             adminOn: 'Админ',
             adminOff: 'Админ',
-
             themeModalTitle: 'Интихоби тема',
-
             cancelBtn: 'БЕКОР КАРДАН',
-
             cartTitle: 'Корзина',
             cartEmpty: 'Корзина ҳоло холӣ аст',
-
             buy: 'Харидан',
             total: 'Ҳамагӣ'
         },
 
-
         ru: {
-
             subscribers: 'подписчиков',
             subscribe: 'Подписаться',
             subscribed: '✓ Вы подписаны',
-
             wrongPass: 'Доступ запрещён',
-
             settingsTitle: 'Настройки',
             categoriesTitle: 'Категории',
-
             themeLabel: 'Тема',
             nightMode: 'Ночной режим ›',
             dayMode: 'Дневной режим ›',
-
             notifLabel: 'Уведомления',
             notifOn: 'Вкл ›',
             notifOff: 'Выкл ›',
-
             langLabel: 'Язык',
-
             adminLabel: 'Админ',
             adminOn: 'Админ',
             adminOff: 'Админ',
-
             themeModalTitle: 'Выбор темы',
-
             cancelBtn: 'ОТМЕНА',
-
             cartTitle: 'Корзина',
             cartEmpty: 'Корзина пока пуста',
-
             buy: 'Купить',
             total: 'Итого'
         },
 
-
         uz: {
-
             subscribers: 'obunachilar',
             subscribe: 'Obuna bo‘lish',
             subscribed: '✓ Obuna bo‘lgansiz',
-
             wrongPass: 'Kirish rad etildi',
-
             settingsTitle: 'Sozlamalar',
             categoriesTitle: 'Kategoriyalar',
-
             themeLabel: 'Mavzu',
             nightMode: 'Tungi rejim ›',
             dayMode: 'Kunduzgi rejim ›',
-
             notifLabel: 'Bildirishnomalar',
             notifOn: 'Yoqilgan ›',
             notifOff: 'O‘chirilgan ›',
-
             langLabel: 'Til',
-
             adminLabel: 'Admin',
             adminOn: 'Admin',
             adminOff: 'Admin',
-
             themeModalTitle: 'Mavzuni tanlash',
-
             cancelBtn: 'BEKOR QILISH',
-
             cartTitle: 'Savat',
             cartEmpty: 'Savat hozircha bo‘sh',
-
             buy: 'Sotib olish',
             total: 'Jami'
         }
-
     };
 
 
@@ -265,61 +167,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const t = dict[lang];
 
-
-        document
-            .querySelectorAll('[data-translate]')
+        document.querySelectorAll('[data-translate]')
             .forEach(element => {
 
                 const key =
-                    element.getAttribute(
-                        'data-translate'
-                    );
+                    element.getAttribute('data-translate');
 
                 if (t[key]) {
                     element.textContent = t[key];
                 }
-
             });
 
-
         const langNames = {
-
             tg: 'Тоҷикӣ',
             ru: 'Русский',
             uz: 'O‘zbekcha'
-
         };
 
-
         const langDisplay =
-            document.getElementById(
-                'currentLangDisplay'
-            );
-
+            document.getElementById('currentLangDisplay');
 
         if (langDisplay) {
-
             langDisplay.textContent =
                 langNames[lang] + ' ›';
-
         }
 
-
         if (themeStatus) {
-
             themeStatus.textContent =
                 currentTheme === 'light'
                     ? t.dayMode
                     : t.nightMode;
-
         }
 
-
         const notifStatus =
-            document.getElementById(
-                'notifStatusText'
-            );
-
+            document.getElementById('notifStatusText');
 
         if (notifStatus) {
 
@@ -328,14 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? t.notifOn
                     : t.notifOff;
 
-
             notifStatus.className =
                 notificationsEnabled
                     ? 'badge-on'
                     : 'badge-off';
-
         }
-
 
         if (subBtn) {
 
@@ -344,32 +222,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? t.subscribed
                     : t.subscribe;
 
-
             subBtn.classList.toggle(
                 'subscribed',
                 isSubscribed
             );
-
         }
-
 
         if (buyCartBtn) {
-
             buyCartBtn.textContent = t.buy;
-
         }
 
-
         updateSubDisplay();
-
         updateCart();
-
     }
 
 
     /* =========================
-       ADMIN LINK
-       Танзимот → Админ
+       ADMIN
     ========================= */
 
     function setupAdminLink() {
@@ -379,37 +248,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 '#adminModeToggle, [data-admin-link]'
             );
 
-
         adminLinks.forEach(link => {
 
             link.style.display = '';
 
+            link.addEventListener('click', event => {
 
-            link.addEventListener(
-                'click',
-                event => {
+                event.preventDefault();
 
-                    event.preventDefault();
-
-                    window.location.href =
-                        'admin.html';
-
-                }
-            );
-
+                window.location.href = 'admin.html';
+            });
         });
-
 
         if (adminStatusBadge) {
 
-            adminStatusBadge.textContent =
-                'Админ';
-
-            adminStatusBadge.className =
-                'badge-off';
-
+            adminStatusBadge.textContent = 'Админ';
+            adminStatusBadge.className = 'badge-off';
         }
-
     }
 
 
@@ -420,16 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSubDisplay() {
 
         const text =
-            document.querySelector(
-                '.subscriber-text'
-            );
-
+            document.querySelector('.subscriber-text');
 
         if (!text) return;
 
-
         const t = dict[currentLang];
-
 
         const count =
             subscribers >= 1000
@@ -438,174 +288,190 @@ document.addEventListener('DOMContentLoaded', () => {
                     .replace('.0', '') + 'K'
                 : subscribers;
 
-
         text.innerHTML = `
-
-            <span id="subCount">
-                ${count}
-            </span>
-
-            <span>
-                ${t.subscribers}
-            </span>
-
+            <span id="subCount">${count}</span>
+            <span>${t.subscribers}</span>
         `;
-
     }
 
 
     /* =========================
        CATEGORIES
+       + ИЛОВА
+       × НЕСТ КАРДАН
     ========================= */
+
+    function createAddButton() {
+
+        if (!categoryList || !dropdownMenu) return;
+
+        let button =
+            document.getElementById('addCategoryBtn');
+
+        if (button) return;
+
+        button = document.createElement('button');
+
+        button.id = 'addCategoryBtn';
+        button.type = 'button';
+        button.textContent = '+ Илова кардани маҳсулот';
+
+        button.style.cssText = `
+            display:block;
+            width:100%;
+            margin:12px 0 5px;
+            padding:11px;
+            border:1px solid #16843a;
+            border-radius:10px;
+            background:transparent;
+            color:#16843a;
+            font-size:15px;
+            font-weight:600;
+            cursor:pointer;
+        `;
+
+        categoryList.parentNode.appendChild(button);
+
+        button.addEventListener('click', addCategory);
+    }
+
 
     function renderCategories() {
 
         if (!categoryList) return;
 
-
         categoryList.innerHTML = '';
-
 
         categories.forEach((cat, index) => {
 
             const card =
                 document.createElement('div');
 
-
-            card.className =
-                'category-card';
-
+            card.className = 'category-card';
 
             const name =
                 document.createElement('span');
 
-
-            name.className =
-                'cat-name';
-
-
+            name.className = 'cat-name';
             name.textContent = cat;
 
+            const deleteBtn =
+                document.createElement('button');
+
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.type = 'button';
+            deleteBtn.dataset.index = index;
+            deleteBtn.textContent = '×';
+
+            deleteBtn.style.cssText = `
+                color:#e53935;
+                background:transparent;
+                border:0;
+                font-size:22px;
+                font-weight:bold;
+                line-height:1;
+                cursor:pointer;
+                margin-left:auto;
+                padding:0 4px;
+            `;
 
             card.appendChild(name);
-
+            card.appendChild(deleteBtn);
 
             categoryList.appendChild(card);
-
         });
-
 
         localStorage.setItem(
             'categories',
             JSON.stringify(categories)
         );
 
+        createAddButton();
     }
 
 
-    /* =========================
-       ADD CATEGORY
-    ========================= */
+    function addCategory() {
 
-    addCategoryBtn?.addEventListener(
-        'click',
-        () => {
+        const name = prompt(
+            currentLang === 'ru'
+                ? 'Введите название товара:'
+                : currentLang === 'uz'
+                    ? 'Mahsulot nomini kiriting:'
+                    : 'Номи маҳсулотро ворид кунед:'
+        );
 
-            const name =
-                prompt(
-                    currentLang === 'ru'
-                        ? 'Введите название категории:'
-                        : 'Номи категорияро ворид кунед:'
-                );
+        if (name === null) return;
 
+        const newName = name.trim();
 
-            if (name === null) return;
+        if (!newName) return;
 
-
-            const newName =
-                name.trim();
-
-
-            if (!newName) return;
-
-
-            const exists =
-                categories.some(
-                    cat =>
-                        cat.toLowerCase() ===
-                        newName.toLowerCase()
-                );
-
-
-            if (exists) {
-
-                alert(
-                    currentLang === 'ru'
-                        ? 'Такая категория уже существует'
-                        : 'Ин категория аллакай ҳаст'
-                );
-
-                return;
-            }
-
-
-            categories.push(newName);
-
-
-            localStorage.setItem(
-                'categories',
-                JSON.stringify(categories)
+        const exists =
+            categories.some(cat =>
+                cat.toLowerCase() ===
+                newName.toLowerCase()
             );
 
+        if (exists) {
 
-            renderCategories();
+            alert(
+                currentLang === 'ru'
+                    ? 'Такой товар уже существует'
+                    : currentLang === 'uz'
+                        ? 'Bu mahsulot allaqachon mavjud'
+                        : 'Ин маҳсулот аллакай ҳаст'
+            );
 
+            return;
         }
-    );
 
+        categories.push(newName);
 
-    /* =========================
-       DELETE CATEGORY
-       БЕЗ confirm
-    ========================= */
+        localStorage.setItem(
+            'categories',
+            JSON.stringify(categories)
+        );
+
+        renderCategories();
+    }
+
 
     categoryList?.addEventListener(
         'click',
         event => {
 
             const button =
-                event.target.closest(
-                    '.delete-btn'
-                );
-
+                event.target.closest('.delete-btn');
 
             if (!button) return;
 
-
             const index =
                 Number(button.dataset.index);
-
 
             if (
                 Number.isNaN(index) ||
                 !categories[index]
             ) return;
 
+            const question =
+                currentLang === 'ru'
+                    ? `Удалить «${categories[index]}»?`
+                    : currentLang === 'uz'
+                        ? `«${categories[index]}» o‘chirilsinmi?`
+                        : `«${categories[index]}»-ро нест кардан мехоҳед?`;
 
-            categories.splice(
-                index,
-                1
-            );
+            const ok = confirm(question);
 
+            if (!ok) return;
+
+            categories.splice(index, 1);
 
             localStorage.setItem(
                 'categories',
                 JSON.stringify(categories)
             );
 
-
             renderCategories();
-
         }
     );
 
@@ -623,7 +489,6 @@ document.addEventListener('DOMContentLoaded', () => {
             brandToggle.classList.toggle('active');
 
             settingsMenu?.classList.remove('open');
-
         }
     );
 
@@ -637,7 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownMenu?.classList.remove('open');
 
             brandToggle?.classList.remove('active');
-
         }
     );
 
@@ -647,7 +511,6 @@ document.addEventListener('DOMContentLoaded', () => {
         () => {
 
             settingsMenu?.classList.remove('open');
-
         }
     );
 
@@ -660,36 +523,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentTheme = theme;
 
-
         document.body.classList.toggle(
             'light-theme',
             theme === 'light'
         );
-
 
         document.body.classList.toggle(
             'dark-theme',
             theme === 'dark'
         );
 
-
         localStorage.setItem(
             'theme',
             theme
         );
 
-
         setLanguage(currentLang);
-
     }
 
 
     setThemeBtn?.addEventListener(
         'click',
         () => {
-
             themeModal?.classList.add('open');
-
         }
     );
 
@@ -697,9 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelTheme?.addEventListener(
         'click',
         () => {
-
             themeModal?.classList.remove('open');
-
         }
     );
 
@@ -714,62 +568,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const theme =
                         event.currentTarget
-                            .getAttribute(
-                                'data-theme'
-                            );
-
+                            .getAttribute('data-theme');
 
                     if (!theme) return;
 
-
                     applyTheme(theme);
 
-
-                    themeModal?.classList.remove(
-                        'open'
-                    );
-
+                    themeModal?.classList.remove('open');
                 }
             );
-
         });
 
 
     /* =========================
-       LANGUAGE
+       LANGUAGE MODAL
     ========================= */
 
     const langModal =
         document.createElement('div');
 
-
-    langModal.className =
-        'theme-modal';
-
+    langModal.className = 'theme-modal';
 
     langModal.innerHTML = `
-
         <div class="theme-modal-content">
 
             <h3>
                 Интихоби забон / Выбор языка
             </h3>
 
-            <div
-                class="theme-option"
-                id="langTajik">
+            <div class="theme-option" id="langTajik">
                 🇹🇯 Тоҷикӣ
             </div>
 
-            <div
-                class="theme-option"
-                id="langRussian">
+            <div class="theme-option" id="langRussian">
                 🇷🇺 Русский
             </div>
 
-            <div
-                class="theme-option"
-                id="langUzbek">
+            <div class="theme-option" id="langUzbek">
                 🇺🇿 O‘zbekcha
             </div>
 
@@ -780,9 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
 
         </div>
-
     `;
-
 
     document.body.appendChild(langModal);
 
@@ -793,74 +626,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
             langModal.classList.add('open');
 
-            settingsMenu?.classList.remove(
-                'open'
-            );
-
+            settingsMenu?.classList.remove('open');
         }
     );
 
 
-    document.getElementById(
-        'cancelLang'
-    )?.addEventListener(
-        'click',
-        () => {
-
-            langModal.classList.remove(
-                'open'
-            );
-
-        }
-    );
+    document.getElementById('cancelLang')
+        ?.addEventListener(
+            'click',
+            () => {
+                langModal.classList.remove('open');
+            }
+        );
 
 
-    document.getElementById(
-        'langTajik'
-    )?.addEventListener(
-        'click',
-        () => {
+    document.getElementById('langTajik')
+        ?.addEventListener(
+            'click',
+            () => {
 
-            setLanguage('tg');
+                setLanguage('tg');
 
-            langModal.classList.remove(
-                'open'
-            );
-
-        }
-    );
+                langModal.classList.remove('open');
+            }
+        );
 
 
-    document.getElementById(
-        'langRussian'
-    )?.addEventListener(
-        'click',
-        () => {
+    document.getElementById('langRussian')
+        ?.addEventListener(
+            'click',
+            () => {
 
-            setLanguage('ru');
+                setLanguage('ru');
 
-            langModal.classList.remove(
-                'open'
-            );
-
-        }
-    );
+                langModal.classList.remove('open');
+            }
+        );
 
 
-    document.getElementById(
-        'langUzbek'
-    )?.addEventListener(
-        'click',
-        () => {
+    document.getElementById('langUzbek')
+        ?.addEventListener(
+            'click',
+            () => {
 
-            setLanguage('uz');
+                setLanguage('uz');
 
-            langModal.classList.remove(
-                'open'
-            );
-
-        }
-    );
+                langModal.classList.remove('open');
+            }
+        );
 
 
     /* =========================
@@ -874,15 +687,12 @@ document.addEventListener('DOMContentLoaded', () => {
             notificationsEnabled =
                 !notificationsEnabled;
 
-
             localStorage.setItem(
                 'notifications',
                 notificationsEnabled
             );
 
-
             setLanguage(currentLang);
-
         }
     );
 
@@ -898,23 +708,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isSubscribed) {
 
                 subscribers++;
-
                 isSubscribed = true;
-
 
                 localStorage.setItem(
                     'subCount',
                     subscribers
                 );
 
-
                 localStorage.setItem(
                     'isSubscribed',
                     'true'
                 );
-
-
-                setLanguage(currentLang);
 
             } else {
 
@@ -924,26 +728,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         subscribers - 1
                     );
 
-
                 isSubscribed = false;
-
 
                 localStorage.setItem(
                     'subCount',
                     subscribers
                 );
 
-
                 localStorage.setItem(
                     'isSubscribed',
                     'false'
                 );
-
-
-                setLanguage(currentLang);
-
             }
 
+            setLanguage(currentLang);
         }
     );
 
@@ -959,7 +757,6 @@ document.addEventListener('DOMContentLoaded', () => {
             price === null
         ) return 0;
 
-
         const number =
             parseFloat(
                 String(price)
@@ -967,11 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     .replace(/[^\d.]/g, '')
             );
 
-
-        return isNaN(number)
-            ? 0
-            : number;
-
+        return isNaN(number) ? 0 : number;
     }
 
 
@@ -980,7 +773,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Intl.NumberFormat(
             'ru-RU'
         ).format(number) + ' сомонӣ';
-
     }
 
 
@@ -990,7 +782,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'varzid_cart',
             JSON.stringify(cart)
         );
-
     }
 
 
@@ -998,141 +789,102 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!cartItems) return;
 
-
         cartItems.innerHTML = '';
 
-
         let total = 0;
-
         let count = 0;
 
+        cart.forEach((item, index) => {
 
-        cart.forEach(
-            (item, index) => {
+            const quantity =
+                Number(item.quantity) || 1;
 
-                const quantity =
-                    Number(item.quantity) || 1;
+            const price =
+                getPriceNumber(item.price);
 
+            total += price * quantity;
+            count += quantity;
 
-                const price =
-                    getPriceNumber(
-                        item.price
-                    );
+            const row =
+                document.createElement('div');
 
+            row.className = 'cart-item';
 
-                total +=
-                    price * quantity;
+            row.innerHTML = `
+                <div class="cart-item-info">
 
-
-                count += quantity;
-
-
-                const row =
-                    document.createElement(
-                        'div'
-                    );
-
-
-                row.className =
-                    'cart-item';
-
-
-                row.innerHTML = `
-
-                    <div class="cart-item-info">
-
-                        <div class="cart-item-name">
-                            ${item.name}
-                        </div>
-
-                        <div class="cart-item-price">
-                            ${item.price || ''}
-                            ${item.unit
-                                ? ' / ' + item.unit
-                                : ''}
-                        </div>
-
+                    <div class="cart-item-name">
+                        ${item.name}
                     </div>
 
-                    <div class="cart-controls">
-
-                        <button
-                            class="quantity-btn"
-                            data-action="minus"
-                            data-index="${index}">
-                            −
-                        </button>
-
-                        <span class="quantity-number">
-                            ${quantity}
-                        </span>
-
-                        <button
-                            class="quantity-btn"
-                            data-action="plus"
-                            data-index="${index}">
-                            +
-                        </button>
-
+                    <div class="cart-item-price">
+                        ${item.price || ''}
+                        ${item.unit
+                            ? ' / ' + item.unit
+                            : ''}
                     </div>
+
+                </div>
+
+                <div class="cart-controls">
 
                     <button
-                        class="remove-cart-item"
-                        data-action="remove"
+                        class="quantity-btn"
+                        data-action="minus"
                         data-index="${index}">
-                        ×
+                        −
                     </button>
 
-                `;
+                    <span class="quantity-number">
+                        ${quantity}
+                    </span>
 
+                    <button
+                        class="quantity-btn"
+                        data-action="plus"
+                        data-index="${index}">
+                        +
+                    </button>
 
-                cartItems.appendChild(row);
+                </div>
 
-            }
-        );
+                <button
+                    class="remove-cart-item"
+                    data-action="remove"
+                    data-index="${index}">
+                    ×
+                </button>
+            `;
+
+            cartItems.appendChild(row);
+        });
 
 
         if (cart.length === 0) {
 
-            cartEmpty.style.display =
-                'block';
+            cartEmpty.style.display = 'block';
 
+            buyCartBtn.style.display = 'none';
 
-            buyCartBtn.style.display =
-                'none';
-
-
-            cartTotal.textContent =
-                '0 сомонӣ';
+            cartTotal.textContent = '0 сомонӣ';
 
         } else {
 
-            cartEmpty.style.display =
-                'none';
+            cartEmpty.style.display = 'none';
 
-
-            buyCartBtn.style.display =
-                'block';
-
+            buyCartBtn.style.display = 'block';
 
             cartTotal.textContent =
                 formatPrice(total);
-
         }
 
 
-        cartCount.textContent =
-            count;
-
+        cartCount.textContent = count;
 
         cartCount.style.display =
-            count > 0
-                ? 'flex'
-                : 'none';
-
+            count > 0 ? 'flex' : 'none';
 
         saveCart();
-
     }
 
 
@@ -1140,46 +892,33 @@ document.addEventListener('DOMContentLoaded', () => {
        ADD TO CART
     ========================= */
 
-    window.addToCart =
-        function(product) {
+    window.addToCart = function(product) {
 
-            if (
-                !product ||
-                !product.name
-            ) return;
+        if (!product || !product.name) return;
 
-
-            const existing =
-                cart.find(
-                    item =>
-                        item.id ===
-                        product.id
-                );
-
-
-            if (existing) {
-
-                existing.quantity =
-                    (existing.quantity || 1) + 1;
-
-            } else {
-
-                cart.push({
-                    ...product,
-                    quantity: 1
-                });
-
-            }
-
-
-            updateCart();
-
-
-            cartPanel?.classList.add(
-                'open'
+        const existing =
+            cart.find(
+                item =>
+                    item.id === product.id
             );
 
-        };
+        if (existing) {
+
+            existing.quantity =
+                (existing.quantity || 1) + 1;
+
+        } else {
+
+            cart.push({
+                ...product,
+                quantity: 1
+            });
+        }
+
+        updateCart();
+
+        cartPanel?.classList.add('open');
+    };
 
 
     /* =========================
@@ -1191,23 +930,15 @@ document.addEventListener('DOMContentLoaded', () => {
         event => {
 
             const button =
-                event.target.closest(
-                    'button'
-                );
-
+                event.target.closest('button');
 
             if (!button) return;
-
 
             const action =
                 button.dataset.action;
 
-
             const index =
-                parseInt(
-                    button.dataset.index
-                );
-
+                parseInt(button.dataset.index);
 
             if (
                 isNaN(index) ||
@@ -1219,7 +950,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 cart[index].quantity =
                     (cart[index].quantity || 1) + 1;
-
             }
 
 
@@ -1228,33 +958,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 cart[index].quantity =
                     (cart[index].quantity || 1) - 1;
 
-
                 if (
                     cart[index].quantity <= 0
                 ) {
 
-                    cart.splice(
-                        index,
-                        1
-                    );
-
+                    cart.splice(index, 1);
                 }
-
             }
 
 
             if (action === 'remove') {
 
-                cart.splice(
-                    index,
-                    1
-                );
-
+                cart.splice(index, 1);
             }
 
-
             updateCart();
-
         }
     );
 
@@ -1269,80 +987,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (cart.length === 0) return;
 
-
             let message =
                 'Салом, ман мехоҳам фармоиш диҳам:\n\n';
 
-
             let total = 0;
 
+            cart.forEach((item, index) => {
 
-            cart.forEach(
-                (item, index) => {
+                const quantity =
+                    Number(item.quantity) || 1;
 
-                    const quantity =
-                        Number(item.quantity) || 1;
+                const price =
+                    getPriceNumber(item.price);
 
+                const lineTotal =
+                    price * quantity;
 
-                    const price =
-                        getPriceNumber(
-                            item.price
-                        );
+                total += lineTotal;
 
+                message +=
+                    `${index + 1}. ${item.name}`;
 
-                    const lineTotal =
-                        price * quantity;
-
-
-                    total +=
-                        lineTotal;
-
-
+                if (item.price) {
                     message +=
-                        `${index + 1}. ${item.name}`;
-
-
-                    if (item.price) {
-
-                        message +=
-                            ` — ${item.price}`;
-
-                    }
-
-
-                    if (item.unit) {
-
-                        message +=
-                            ` / ${item.unit}`;
-
-                    }
-
-
-                    message +=
-                        ` × ${quantity}`;
-
-
-                    if (lineTotal > 0) {
-
-                        message +=
-                            ` = ${formatPrice(lineTotal)}`;
-
-                    }
-
-
-                    message += '\n';
-
+                        ` — ${item.price}`;
                 }
-            );
+
+                if (item.unit) {
+                    message +=
+                        ` / ${item.unit}`;
+                }
+
+                message +=
+                    ` × ${quantity}`;
+
+                if (lineTotal > 0) {
+                    message +=
+                        ` = ${formatPrice(lineTotal)}`;
+                }
+
+                message += '\n';
+            });
 
 
             if (total > 0) {
 
                 message +=
                     `\nҲамагӣ: ${formatPrice(total)}\n`;
-
             }
-
 
             message +=
                 '\nЛутфан нархи расониданро низ хабар диҳед.';
@@ -1350,16 +1042,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const url =
                 'https://wa.me/992000001606?text=' +
-                encodeURIComponent(
-                    message
-                );
+                encodeURIComponent(message);
 
-
-            window.open(
-                url,
-                '_blank'
-            );
-
+            window.open(url, '_blank');
         }
     );
 
@@ -1371,22 +1056,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function setActive(button) {
 
         document
-            .querySelectorAll(
-                '.bottom-nav-btn'
-            )
+            .querySelectorAll('.bottom-nav-btn')
             .forEach(btn => {
 
-                btn.classList.remove(
-                    'active'
-                );
-
+                btn.classList.remove('active');
             });
 
-
-        button?.classList.add(
-            'active'
-        );
-
+        button?.classList.add('active');
     }
 
 
@@ -1396,17 +1072,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setActive(homeBtn);
 
-
-            cartPanel?.classList.remove(
-                'open'
-            );
-
+            cartPanel?.classList.remove('open');
 
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
-
         }
     );
 
@@ -1415,15 +1086,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'click',
         () => {
 
-            setActive(
-                favoritesBtn
-            );
+            setActive(favoritesBtn);
 
-
-            cartPanel?.classList.remove(
-                'open'
-            );
-
+            cartPanel?.classList.remove('open');
         }
     );
 
@@ -1432,18 +1097,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'click',
         () => {
 
-            setActive(
-                cartBtn
-            );
-
+            setActive(cartBtn);
 
             updateCart();
 
-
-            cartPanel?.classList.add(
-                'open'
-            );
-
+            cartPanel?.classList.add('open');
         }
     );
 
@@ -1452,15 +1110,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'click',
         () => {
 
-            cartPanel?.classList.remove(
-                'open'
-            );
+            cartPanel?.classList.remove('open');
 
-
-            setActive(
-                homeBtn
-            );
-
+            setActive(homeBtn);
         }
     );
 
@@ -1469,21 +1121,13 @@ document.addEventListener('DOMContentLoaded', () => {
        INITIAL
     ========================= */
 
-    applyTheme(
-        currentTheme
-    );
+    applyTheme(currentTheme);
 
-
-    setLanguage(
-        currentLang
-    );
-
+    setLanguage(currentLang);
 
     renderCategories();
 
-
     setupAdminLink();
-
 
     updateCart();
 
