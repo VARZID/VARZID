@@ -3,294 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Админ — VARZID</title>
+    <title>VARZID — Admin</title>
 
     <style>
-        :root {
-            --green: #16843a;
-            --green2: #1fa94b;
-            --bg: #0f1110;
-            --card: #181c19;
-            --input: #222824;
-            --border: #303630;
-            --text: #ffffff;
-            --muted: #9da59f;
-            --red: #d83b3b;
-            --orange: #e39b32;
-        }
-
         * {
             box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            padding: 18px;
             font-family: Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            background: #111;
+            color: #fff;
         }
 
-        .admin-box {
-            width: 100%;
-            max-width: 720px;
-            margin: 0 auto;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 18px;
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            box-shadow: 0 10px 35px rgba(0,0,0,.35);
         }
 
-        .hidden {
-            display: none !important;
+        .login-box {
+            width: 100%;
+            max-width: 360px;
+            background: #1c1c1c;
+            border: 1px solid #303030;
+            border-radius: 16px;
+            padding: 24px;
         }
 
         .logo {
             text-align: center;
-            font-size: 30px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: var(--green2);
-            margin-bottom: 5px;
+            color: #16843a;
+            font-size: 27px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
-        h2 {
+        .login-title {
             text-align: center;
-            margin: 0 0 20px;
-        }
-
-        h3 {
-            margin: 0 0 15px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--muted);
+            color: #aaa;
+            font-size: 13px;
             margin-bottom: 22px;
         }
 
-        .form-group {
-            margin-bottom: 15px;
+        .field {
+            margin-bottom: 14px;
         }
 
-        label {
+        .field label {
             display: block;
+            color: #aaa;
+            font-size: 12px;
             margin-bottom: 7px;
-            color: #c8cec9;
-            font-size: 14px;
-            font-weight: 600;
         }
 
         input,
         select {
             width: 100%;
-            padding: 13px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--input);
-            color: var(--text);
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 9px;
             outline: none;
-            font-size: 15px;
+            background: #252525;
+            color: #fff;
         }
 
         input:focus,
         select:focus {
-            border-color: var(--green2);
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        button {
-            border: 0;
-            border-radius: 10px;
-            padding: 13px 16px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 700;
+            border-color: #16843a;
         }
 
         .main-btn {
             width: 100%;
-            background: var(--green);
-            color: white;
+            padding: 12px;
+            border: 0;
+            border-radius: 9px;
+            background: #16843a;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        .main-btn:hover {
-            background: var(--green2);
+        .main-btn:active {
+            transform: scale(.98);
         }
 
-        .cancel-btn {
-            background: #383d39;
-            color: white;
-            margin-top: 8px;
-            width: 100%;
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            font-size: 12px;
+            margin-top: 10px;
+            min-height: 16px;
         }
 
-        .product-list {
-            margin-top: 28px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
+        .admin-screen {
+            display: none;
+            min-height: 100vh;
         }
 
-        .product-item {
-            background: #202520;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 13px;
-            margin-bottom: 12px;
-        }
+        .admin-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
 
-        .product-top {
             display: flex;
-            gap: 12px;
             align-items: center;
+            justify-content: space-between;
+
+            padding: 14px 15px;
+
+            background: #181818;
+            border-bottom: 1px solid #303030;
+        }
+
+        .admin-brand {
+            color: #16843a;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            border: 1px solid #444;
+            background: transparent;
+            color: #aaa;
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .admin-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 18px 15px 35px;
+        }
+
+        .section {
+            background: #1c1c1c;
+            border: 1px solid #303030;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            margin: 0 0 14px;
+            font-size: 15px;
+        }
+
+        .category-info {
+            background: #242424;
+            border-radius: 9px;
+            padding: 11px;
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .unit-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .save-btn {
+            margin-top: 6px;
+        }
+
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .product-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 10px;
+
+            background: #242424;
+            border: 1px solid #333;
+            border-radius: 10px;
         }
 
         .product-image {
-            width: 70px;
-            height: 70px;
-            border-radius: 10px;
+            width: 52px;
+            height: 52px;
+            flex: 0 0 52px;
+
+            border-radius: 8px;
             object-fit: cover;
-            background: #111;
-            border: 1px solid var(--border);
+
+            background: #181818;
+        }
+
+        .no-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #777;
+            font-size: 10px;
+            text-align: center;
         }
 
         .product-info {
-            flex: 1;
             min-width: 0;
+            flex: 1;
         }
 
         .product-name {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
 
-        .product-meta {
-            color: #b8c0ba;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 7px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-top: 5px;
-        }
-
-        .status.on {
-            background: rgba(22,132,58,.18);
-            color: #4bd875;
-        }
-
-        .status.off {
-            background: rgba(216,59,59,.15);
-            color: #ff7777;
-        }
-
-        .featured {
-            background: rgba(227,155,50,.15);
-            color: #ffbf5a;
-            margin-left: 5px;
-        }
-
-        .actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 12px;
+        .product-details {
+            color: #999;
+            font-size: 11px;
+            line-height: 1.5;
         }
 
         .edit-btn {
-            background: #315c3d;
-            color: white;
+            border: 1px solid #16843a;
+            background: transparent;
+            color: #16843a;
+            border-radius: 7px;
+            padding: 7px 9px;
+            font-size: 11px;
+            cursor: pointer;
         }
 
-        .delete-btn {
-            background: var(--red);
-            color: white;
-        }
-
-        .empty {
+        .empty-admin {
+            color: #777;
             text-align: center;
-            padding: 25px 10px;
-            color: var(--muted);
+            padding: 20px 5px;
+            font-size: 12px;
         }
 
-        .preview-box {
-            margin-top: 8px;
-            display: none;
-        }
-
-        .preview-box img {
+        .back-btn {
             width: 100%;
-            max-height: 180px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            margin-top: 5px;
+            padding: 11px;
+            border: 1px solid #333;
+            border-radius: 9px;
+            background: transparent;
+            color: #aaa;
+            cursor: pointer;
         }
 
-        .check-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background: var(--input);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
-
-        .check-row input {
-            width: auto;
-            transform: scale(1.2);
-        }
-
-        .check-row label {
-            margin: 0;
-            flex: 1;
-        }
-
-        .top-note {
-            background: #202520;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 18px;
-        }
-
-        .logout {
-            width: 100%;
-            margin-top: 18px;
-            background: #292d2a;
-            color: #ddd;
-        }
-
-        @media (max-width: 520px) {
-            body {
-                padding: 10px;
-            }
-
-            .admin-box {
-                padding: 15px;
-                border-radius: 15px;
-            }
-
-            .row {
+        @media (max-width: 430px) {
+            .unit-row {
                 grid-template-columns: 1fr;
-                gap: 0;
             }
         }
     </style>
@@ -298,504 +273,641 @@
 
 <body>
 
-<!-- ================= LOGIN ================= -->
+    <!-- LOGIN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
 
-<div class="admin-box" id="loginScreen">
+            <div class="logo">VARZID</div>
 
-    <div class="logo">VARZID</div>
+            <div class="login-title">
+                Панели идоракунӣ
+            </div>
 
-    <h2>Режими Админ</h2>
+            <div class="field">
+                <label>Парол</label>
+                <input
+                    type="password"
+                    id="adminPassword"
+                    placeholder="Паролро ворид кунед"
+                    autocomplete="off"
+                >
+            </div>
 
-    <div class="subtitle">
-        Танҳо барои идоракунии маҳсулот
-    </div>
+            <button class="main-btn" id="loginBtn">
+                Даромадан
+            </button>
 
-    <div class="form-group">
-        <label>Парол</label>
+            <div class="error" id="loginError"></div>
 
-        <input
-            type="password"
-            id="adminPasswordInput"
-            placeholder="Паролро ворид кунед"
-            autocomplete="off"
-        >
-    </div>
-
-    <button class="main-btn" onclick="checkAdminPassword()">
-        Дохил шудан
-    </button>
-
-</div>
-
-
-<!-- ================= ADMIN ================= -->
-
-<div class="admin-box hidden" id="adminPanel">
-
-    <div class="logo">VARZID</div>
-
-    <h2>Идоракунии маҳсулот</h2>
-
-    <div class="top-note">
-        Номи маҳсулот худи номи категория мебошад.
-        Ҳар маҳсулоти навро метавонӣ худат илова кунӣ.
-        Нарх, кг/штук, миқдор, халта ва акс аз ҳамин ҷо идора карда мешаванд.
+        </div>
     </div>
 
 
-    <!-- FORM -->
+    <!-- ADMIN -->
+    <div class="admin-screen" id="adminScreen">
 
-    <div id="formTitle">
-        <h3>➕ Маҳсулоти нав</h3>
-    </div>
+        <header class="admin-header">
 
-    <div class="form-group">
+            <div class="admin-brand">
+                VARZID
+            </div>
 
-        <label>
-            Номи маҳсулот / Категория
-        </label>
+            <button class="logout-btn" id="logoutBtn">
+                Баромадан
+            </button>
 
-        <input
-            type="text"
-            id="pName"
-            placeholder="Масалан: Орд"
-        >
-
-    </div>
+        </header>
 
 
-    <div class="row">
+        <main class="admin-content">
 
-        <div class="form-group">
+            <!-- PRODUCT SETTINGS -->
+            <section class="section">
 
-            <label>
-                Нарх (сомонӣ)
-            </label>
+                <h2 class="section-title">
+                    Маҳсулот
+                </h2>
 
-            <input
-                type="number"
-                id="pPrice"
-                min="0"
-                step="0.01"
-                placeholder="Нарх"
+                <div class="field">
+
+                    <label>
+                        Маҳсулотро интихоб кунед
+                    </label>
+
+                    <select id="productCategory">
+                        <option value="">
+                            Интихоб кунед
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="category-info" id="categoryInfo">
+                    Номи маҳсулот аз категория гирифта мешавад.
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Нарх (сомонӣ)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        min="0"
+                        step="0.01"
+                        placeholder="Масалан: 35"
+                    >
+
+                </div>
+
+
+                <div class="unit-row">
+
+                    <div class="field">
+
+                        <label>
+                            Воҳид
+                        </label>
+
+                        <select id="productUnit">
+
+                            <option value="кг">
+                                кг
+                            </option>
+
+                            <option value="халта">
+                                халта
+                            </option>
+
+                            <option value="дона">
+                                дона
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Миқдор
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productQty"
+                            min="0"
+                            step="1"
+                            placeholder="0"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Вазни халта
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productBag"
+                            min="0"
+                            step="0.1"
+                            placeholder="кг"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Акси маҳсулот
+                    </label>
+
+                    <input
+                        type="file"
+                        id="productImage"
+                        accept="image/*"
+                    >
+
+                </div>
+
+
+                <div
+                    class="category-info"
+                    id="currentImageInfo"
+                    style="display:none;"
+                >
+                    Акси ҳозира нигоҳ дошта мешавад, агар акси нав интихоб нашавад.
+                </div>
+
+
+                <button
+                    class="main-btn save-btn"
+                    id="saveProductBtn"
+                >
+                    Захира кардан
+                </button>
+
+            </section>
+
+
+            <!-- PRODUCT LIST -->
+            <section class="section">
+
+                <h2 class="section-title">
+                    Маҳсулотҳои категорияҳо
+                </h2>
+
+                <div
+                    class="products-list"
+                    id="productsList"
+                ></div>
+
+            </section>
+
+
+            <button
+                class="back-btn"
+                id="backToSiteBtn"
             >
+                ← Бозгашт ба VARZID
+            </button>
 
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Воҳид
-            </label>
-
-            <select id="pUnit">
-
-                <option value="кг">
-                    кг
-                </option>
-
-                <option value="штук">
-                    штук
-                </option>
-
-            </select>
-
-        </div>
+        </main>
 
     </div>
-
-
-    <div class="row">
-
-        <div class="form-group">
-
-            <label>
-                Миқдор / Запас
-            </label>
-
-            <input
-                type="number"
-                id="pQty"
-                min="0"
-                step="1"
-                placeholder="Масалан: 100"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Вазни як халта
-            </label>
-
-            <input
-                type="number"
-                id="pBag"
-                min="0"
-                step="0.01"
-                placeholder="Масалан: 50"
-            >
-
-        </div>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Номи расм / суроғаи акс
-        </label>
-
-        <input
-            type="text"
-            id="pImage"
-            placeholder="ord.jpg ё URL-и акс"
-            oninput="previewImage()"
-        >
-
-        <div class="preview-box" id="previewBox">
-            <img id="previewImageElement" src="" alt="Пешнамоиши акс">
-        </div>
-
-    </div>
-
-
-    <!-- STATUS -->
-
-    <div class="check-row">
-
-        <input
-            type="checkbox"
-            id="pOnSale"
-            checked
-        >
-
-        <label for="pOnSale">
-            Дар фурӯш
-        </label>
-
-    </div>
-
-
-    <!-- TV / TOP AD -->
-
-    <div class="check-row">
-
-        <input
-            type="checkbox"
-            id="pFeatured"
-        >
-
-        <label for="pFeatured">
-            Дар баннери болоӣ / «телевизор» нишон дода шавад
-        </label>
-
-    </div>
-
-
-    <button
-        class="main-btn"
-        id="saveProductBtn"
-        onclick="saveProduct()"
-    >
-        + Илова кардани маҳсулот
-    </button>
-
-
-    <button
-        class="cancel-btn hidden"
-        id="cancelEditBtn"
-        onclick="cancelEdit()"
-    >
-        Бекор кардани таҳрир
-    </button>
-
-
-    <!-- PRODUCT LIST -->
-
-    <div class="product-list">
-
-        <h3>
-            Маҳсулотҳо
-        </h3>
-
-        <div id="adminProductsContainer"></div>
-
-    </div>
-
-
-    <button
-        class="logout"
-        onclick="logoutAdmin()"
-    >
-        Баромадан аз Админ
-    </button>
-
-</div>
 
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================================
-       ADMIN PASSWORD
-    ========================================= */
-
+    /*
+     * ПАРОЛ
+     * ҲАМОН ПАРОЛИ ҲОЗИРА:
+     */
     const ADMIN_PASS = "1604";
 
 
-    /* =========================================
-       STORAGE
-    ========================================= */
+    const loginScreen = document.getElementById("loginScreen");
+    const adminScreen = document.getElementById("adminScreen");
 
-    const STORAGE_KEY = "varzid_custom_products";
+    const adminPassword = document.getElementById("adminPassword");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginError = document.getElementById("loginError");
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const productCategory = document.getElementById("productCategory");
+    const categoryInfo = document.getElementById("categoryInfo");
+
+    const productPrice = document.getElementById("productPrice");
+    const productUnit = document.getElementById("productUnit");
+    const productQty = document.getElementById("productQty");
+    const productBag = document.getElementById("productBag");
+    const productImage = document.getElementById("productImage");
+
+    const currentImageInfo = document.getElementById("currentImageInfo");
+
+    const saveProductBtn = document.getElementById("saveProductBtn");
+    const productsList = document.getElementById("productsList");
+
+    const backToSiteBtn = document.getElementById("backToSiteBtn");
 
 
-    let products =
-        JSON.parse(
-            localStorage.getItem(STORAGE_KEY)
-        ) || [];
+    const DEFAULT_CATEGORIES = [
+        "Варзидан",
+        "Орд",
+        "Комбикорм",
+        "Гандум",
+        "Ҷав",
+        "Ҷуворимакка",
+        "Селитра",
+        "Карбамид"
+    ];
 
 
-    let editIndex = -1;
+    function getCategories() {
 
+        let categories = [];
 
-    /* =========================================
-       LOGIN
-    ========================================= */
-
-    function checkAdminPassword() {
-
-        const pass =
-            document.getElementById(
-                "adminPasswordInput"
-            ).value;
-
-        if (pass === ADMIN_PASS) {
-
-            document
-                .getElementById("loginScreen")
-                .classList.add("hidden");
-
-            document
-                .getElementById("adminPanel")
-                .classList.remove("hidden");
-
-            loadAdminProducts();
-
-        } else {
-
-            alert("Парол хато аст!");
-
+        try {
+            categories = JSON.parse(
+                localStorage.getItem("categories") || "null"
+            );
+        } catch (e) {
+            categories = [];
         }
 
+        if (!Array.isArray(categories) || !categories.length) {
+
+            categories = [...DEFAULT_CATEGORIES];
+
+            localStorage.setItem(
+                "categories",
+                JSON.stringify(categories)
+            );
+        }
+
+        if (!categories.includes("Варзидан")) {
+            categories.unshift("Варзидан");
+        }
+
+        return categories;
     }
 
 
-    document
-        .getElementById("adminPasswordInput")
-        .addEventListener(
-            "keydown",
-            function(event) {
+    function getProducts() {
 
-                if (event.key === "Enter") {
-                    checkAdminPassword();
+        let raw = null;
+
+        try {
+            raw = JSON.parse(
+                localStorage.getItem("varzid_custom_products") || "null"
+            );
+        } catch (e) {
+            raw = null;
+        }
+
+
+        /*
+         * Агар версияи кӯҳна ARRAY бошад,
+         * ба OBJECT табдил медиҳем.
+         */
+        if (Array.isArray(raw)) {
+
+            const converted = {};
+
+            raw.forEach(product => {
+
+                if (!product) return;
+
+                const name =
+                    product.category ||
+                    product.name;
+
+                if (!name || name === "Варзидан") {
+                    return;
                 }
 
-            }
-        );
+                converted[name] = {
+                    category: name,
+                    name: name,
+                    price: Number(product.price) || 0,
+                    unit: product.unit || "кг",
+                    qty: Number(product.qty) || 0,
+                    bag: Number(product.bag) || 0,
+                    image: product.image || "",
+                    onSale: !!product.onSale,
+                    featured: !!product.featured
+                };
+
+            });
+
+            localStorage.setItem(
+                "varzid_custom_products",
+                JSON.stringify(converted)
+            );
+
+            return converted;
+        }
 
 
-    /* =========================================
-       SAVE
-    ========================================= */
+        if (
+            raw &&
+            typeof raw === "object" &&
+            !Array.isArray(raw)
+        ) {
+            return raw;
+        }
 
-    function saveAndSync() {
+
+        return {};
+    }
+
+
+    function saveProducts(products) {
 
         localStorage.setItem(
-            STORAGE_KEY,
+            "varzid_custom_products",
             JSON.stringify(products)
         );
+    }
+
+
+    function ensureProducts() {
+
+        const categories = getCategories();
+        const products = getProducts();
+
+        let changed = false;
+
+        categories.forEach(category => {
+
+            if (category === "Варзидан") {
+                return;
+            }
+
+            if (!products[category]) {
+
+                products[category] = {
+                    category: category,
+                    name: category,
+                    price: 0,
+                    unit: "кг",
+                    qty: 0,
+                    bag: 0,
+                    image: "",
+                    onSale: false,
+                    featured: false
+                };
+
+                changed = true;
+            }
+
+        });
+
+
+        if (changed) {
+            saveProducts(products);
+        }
+
+        return products;
+    }
+
+
+    function showAdmin() {
+
+        loginScreen.style.display = "none";
+        adminScreen.style.display = "block";
+
+        loadCategorySelect();
+        renderProductsList();
 
     }
 
 
-    /* =========================================
-       ADD / EDIT PRODUCT
-    ========================================= */
+    function showLogin() {
 
-    function saveProduct() {
+        loginScreen.style.display = "flex";
+        adminScreen.style.display = "none";
 
-        const name =
-            document
-                .getElementById("pName")
-                .value
-                .trim();
+        adminPassword.value = "";
+        loginError.textContent = "";
+
+    }
 
 
-        const price =
-            parseFloat(
-                document
-                    .getElementById("pPrice")
-                    .value
-            );
+    function loadCategorySelect() {
+
+        const categories = getCategories();
+
+        productCategory.innerHTML = `
+            <option value="">
+                Интихоб кунед
+            </option>
+        `;
+
+        categories.forEach(category => {
+
+            if (category === "Варзидан") {
+                return;
+            }
+
+            const option = document.createElement("option");
+
+            option.value = category;
+            option.textContent = category;
+
+            productCategory.appendChild(option);
+
+        });
+
+    }
 
 
-        const unit =
-            document
-                .getElementById("pUnit")
-                .value;
+    function clearForm() {
+
+        productCategory.value = "";
+        productPrice.value = "";
+        productUnit.value = "кг";
+        productQty.value = "";
+        productBag.value = "";
+        productImage.value = "";
+
+        categoryInfo.textContent =
+            "Номи маҳсулот аз категория гирифта мешавад.";
+
+        currentImageInfo.style.display = "none";
+
+    }
 
 
-        const qty =
-            parseFloat(
-                document
-                    .getElementById("pQty")
-                    .value
-            );
+    function loadProductToForm(category) {
+
+        if (!category) {
+
+            clearForm();
+            return;
+
+        }
+
+        const products = ensureProducts();
+        const product = products[category];
+
+        if (!product) {
+            return;
+        }
 
 
-        const bag =
-            parseFloat(
-                document
-                    .getElementById("pBag")
-                    .value
-            ) || 0;
+        productCategory.value = category;
+
+        productPrice.value =
+            product.price || "";
+
+        productUnit.value =
+            product.unit || "кг";
+
+        productQty.value =
+            product.qty || "";
+
+        productBag.value =
+            product.bag || "";
 
 
-        const image =
-            document
-                .getElementById("pImage")
-                .value
-                .trim();
+        categoryInfo.textContent =
+            "Маҳсулот: " + category;
 
 
-        const onSale =
-            document
-                .getElementById("pOnSale")
-                .checked;
+        if (product.image) {
+            currentImageInfo.style.display = "block";
+        } else {
+            currentImageInfo.style.display = "none";
+        }
+
+        productImage.value = "";
+
+    }
 
 
-        const featured =
-            document
-                .getElementById("pFeatured")
-                .checked;
+    function readImage(file) {
+
+        return new Promise((resolve) => {
+
+            if (!file) {
+                resolve("");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+
+            reader.onerror = () => {
+                resolve("");
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
 
 
-        /* VALIDATION */
+    async function saveProduct() {
 
-        if (!name) {
+        const category = productCategory.value;
 
-            alert(
-                "Номи маҳсулотро ворид кун!"
-            );
+        if (!category) {
+
+            alert("Аввал маҳсулотро интихоб кунед.");
 
             return;
         }
 
 
-        if (isNaN(price)) {
+        const products = ensureProducts();
 
-            alert(
-                "Нархро ворид кун!"
-            );
+        const oldProduct = products[category] || {};
 
-            return;
-        }
+        const newImage =
+            await readImage(productImage.files[0]);
 
 
-        if (isNaN(qty)) {
+        products[category] = {
 
-            alert(
-                "Миқдорро ворид кун!"
-            );
+            ...oldProduct,
 
-            return;
-        }
+            category: category,
 
+            name: category,
 
-        /* OBJECT */
+            price: Number(productPrice.value) || 0,
 
-        const product = {
+            unit: productUnit.value || "кг",
 
-            category: name,
+            qty: Number(productQty.value) || 0,
 
-            name: name,
+            bag: Number(productBag.value) || 0,
 
-            price: price,
+            image:
+                newImage ||
+                oldProduct.image ||
+                "",
 
-            unit: unit,
+            onSale:
+                !!oldProduct.onSale,
 
-            qty: qty,
-
-            bag: bag,
-
-            image: image,
-
-            onSale: onSale,
-
-            featured: featured
+            featured:
+                !!oldProduct.featured
 
         };
 
 
-        /* EDIT */
+        saveProducts(products);
 
-        if (editIndex >= 0) {
+        renderProductsList();
 
-            products[editIndex] = product;
-
-            alert(
-                "Маҳсулот нав карда шуд!"
-            );
-
-        }
-
-        /* NEW */
-
-        else {
-
-            products.push(product);
-
-            alert(
-                "Маҳсулот илова шуд!"
-            );
-
+        if (products[category].image) {
+            currentImageInfo.style.display = "block";
         }
 
 
-        saveAndSync();
-
-        loadAdminProducts();
-
-        clearForm();
+        alert("Маҳсулот захира шуд.");
 
     }
 
 
-    /* =========================================
-       LOAD PRODUCTS
-    ========================================= */
+    function renderProductsList() {
 
-    function loadAdminProducts() {
+        const categories = getCategories();
+        const products = ensureProducts();
 
-        const container =
-            document.getElementById(
-                "adminProductsContainer"
+        productsList.innerHTML = "";
+
+
+        const productCategories =
+            categories.filter(
+                category => category !== "Варзидан"
             );
 
 
-        container.innerHTML = "";
+        if (!productCategories.length) {
 
-
-        if (!products.length) {
-
-            container.innerHTML = `
-                <div class="empty">
-                    Ҳоло ягон маҳсулот илова нашудааст.
+            productsList.innerHTML = `
+                <div class="empty-admin">
+                    Ҳоло маҳсулот нест.
                 </div>
             `;
 
@@ -803,420 +915,228 @@
         }
 
 
-        products.forEach(
-            function(p, index) {
+        productCategories.forEach(category => {
 
-                const image =
-                    p.image ||
-                    "default.jpg";
-
-
-                const bagText =
-                    p.bag > 0
-                    ? `Халта: ${p.bag} кг`
-                    : "Халта: —";
-
-
-                const saleStatus =
-                    p.onSale !== false
-                    ? `
-                        <span class="status on">
-                            Дар фурӯш
-                        </span>
-                      `
-                    : `
-                        <span class="status off">
-                            Тамом шуд
-                        </span>
-                      `;
+            const product =
+                products[category] || {
+                    category: category,
+                    name: category,
+                    price: 0,
+                    unit: "кг",
+                    qty: 0,
+                    bag: 0,
+                    image: ""
+                };
 
 
-                const featuredStatus =
-                    p.featured
-                    ? `
-                        <span class="status featured">
-                            Болоӣ
-                        </span>
-                      `
-                    : "";
+            const row =
+                document.createElement("div");
+
+            row.className = "product-row";
 
 
-                container.innerHTML += `
+            if (product.image) {
 
-                    <div class="product-item">
+                const img =
+                    document.createElement("img");
 
-                        <div class="product-top">
+                img.className = "product-image";
 
-                            <img
-                                class="product-image"
-                                src="${escapeHtml(image)}"
-                                onerror="this.style.display='none'"
-                                alt=""
-                            >
+                img.src = product.image;
 
-                            <div class="product-info">
+                img.alt = category;
 
-                                <div class="product-name">
-                                    ${escapeHtml(p.name)}
-                                </div>
+                row.appendChild(img);
 
-                                <div class="product-meta">
+            } else {
 
-                                    Нарх:
-                                    <b>
-                                        ${formatNumber(p.price)}
-                                    </b>
-                                    сомонӣ
+                const noImage =
+                    document.createElement("div");
 
-                                    <br>
+                noImage.className =
+                    "product-image no-image";
 
-                                    Воҳид:
-                                    ${escapeHtml(p.unit)}
+                noImage.textContent =
+                    "Акс нест";
 
-                                    <br>
-
-                                    Миқдор:
-                                    ${formatNumber(p.qty)}
-                                    ${escapeHtml(p.unit)}
-
-                                    <br>
-
-                                    ${bagText}
-
-                                </div>
-
-                                ${saleStatus}
-                                ${featuredStatus}
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="actions">
-
-                            <button
-                                class="edit-btn"
-                                onclick="editProduct(${index})"
-                            >
-                                Тағйир додан
-                            </button>
-
-
-                            <button
-                                class="delete-btn"
-                                onclick="deleteProduct(${index})"
-                            >
-                                Тоза кардан
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
+                row.appendChild(noImage);
 
             }
-        );
-
-    }
 
 
-    /* =========================================
-       EDIT
-    ========================================= */
+            const info =
+                document.createElement("div");
 
-    function editProduct(index) {
-
-        const p = products[index];
-
-        document
-            .getElementById("pName")
-            .value = p.name || "";
+            info.className = "product-info";
 
 
-        document
-            .getElementById("pPrice")
-            .value = p.price ?? "";
+            const name =
+                document.createElement("div");
+
+            name.className = "product-name";
+
+            name.textContent = category;
 
 
-        document
-            .getElementById("pUnit")
-            .value = p.unit || "кг";
+            const details =
+                document.createElement("div");
+
+            details.className = "product-details";
 
 
-        document
-            .getElementById("pQty")
-            .value = p.qty ?? "";
+            let unitText =
+                `${product.qty || 0} ${product.unit || "кг"}`;
 
 
-        document
-            .getElementById("pBag")
-            .value = p.bag ?? "";
+            if (
+                product.unit === "халта" &&
+                product.bag
+            ) {
+
+                unitText +=
+                    ` • ${product.bag} кг/халта`;
+
+            }
 
 
-        document
-            .getElementById("pImage")
-            .value = p.image || "";
+            details.textContent =
+                `${product.price || 0} сомонӣ • ${unitText}`;
 
 
-        document
-            .getElementById("pOnSale")
-            .checked =
-                p.onSale !== false;
+            info.appendChild(name);
+            info.appendChild(details);
 
 
-        document
-            .getElementById("pFeatured")
-            .checked =
-                p.featured === true;
+            const editBtn =
+                document.createElement("button");
+
+            editBtn.className = "edit-btn";
+
+            editBtn.textContent = "Тағйир";
+
+            editBtn.addEventListener(
+                "click",
+                () => {
+                    loadProductToForm(category);
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                }
+            );
 
 
-        editIndex = index;
+            row.appendChild(info);
+            row.appendChild(editBtn);
 
+            productsList.appendChild(row);
 
-        document
-            .getElementById("formTitle")
-            .innerHTML =
-                "<h3>✏️ Тағйири маҳсулот</h3>";
-
-
-        document
-            .getElementById("saveProductBtn")
-            .innerText =
-                "💾 Нигоҳ доштани тағйирот";
-
-
-        document
-            .getElementById("cancelEditBtn")
-            .classList
-            .remove("hidden");
-
-
-        previewImage();
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
         });
 
     }
 
 
-    /* =========================================
-       CANCEL EDIT
-    ========================================= */
+    loginBtn.addEventListener(
+        "click",
+        () => {
 
-    function cancelEdit() {
+            if (
+                adminPassword.value === ADMIN_PASS
+            ) {
 
-        editIndex = -1;
-
-        clearForm();
-
-    }
-
-
-    /* =========================================
-       DELETE
-    ========================================= */
-
-    function deleteProduct(index) {
-
-        const name =
-            products[index]?.name || "маҳсулот";
-
-
-        if (
-            !confirm(
-                `«${name}»-ро тоза кардан мехоҳӣ?`
-            )
-        ) {
-            return;
-        }
-
-
-        products.splice(index, 1);
-
-        saveAndSync();
-
-        loadAdminProducts();
-
-    }
-
-
-    /* =========================================
-       CLEAR FORM
-    ========================================= */
-
-    function clearForm() {
-
-        editIndex = -1;
-
-
-        document
-            .getElementById("pName")
-            .value = "";
-
-
-        document
-            .getElementById("pPrice")
-            .value = "";
-
-
-        document
-            .getElementById("pUnit")
-            .value = "кг";
-
-
-        document
-            .getElementById("pQty")
-            .value = "";
-
-
-        document
-            .getElementById("pBag")
-            .value = "";
-
-
-        document
-            .getElementById("pImage")
-            .value = "";
-
-
-        document
-            .getElementById("pOnSale")
-            .checked = true;
-
-
-        document
-            .getElementById("pFeatured")
-            .checked = false;
-
-
-        document
-            .getElementById("formTitle")
-            .innerHTML =
-                "<h3>➕ Маҳсулоти нав</h3>";
-
-
-        document
-            .getElementById("saveProductBtn")
-            .innerText =
-                "+ Илова кардани маҳсулот";
-
-
-        document
-            .getElementById("cancelEditBtn")
-            .classList
-            .add("hidden");
-
-
-        document
-            .getElementById("previewBox")
-            .style.display = "none";
-
-    }
-
-
-    /* =========================================
-       IMAGE PREVIEW
-    ========================================= */
-
-    function previewImage() {
-
-        const image =
-            document
-                .getElementById("pImage")
-                .value
-                .trim();
-
-
-        const box =
-            document
-                .getElementById("previewBox");
-
-
-        const img =
-            document
-                .getElementById(
-                    "previewImageElement"
+                sessionStorage.setItem(
+                    "varzid_admin",
+                    "true"
                 );
 
+                showAdmin();
 
-        if (!image) {
+            } else {
 
-            box.style.display = "none";
+                loginError.textContent =
+                    "Парол хато аст.";
 
-            return;
+            }
 
         }
+    );
 
 
-        img.src = image;
+    adminPassword.addEventListener(
+        "keydown",
+        event => {
 
-        box.style.display = "block";
+            if (event.key === "Enter") {
+                loginBtn.click();
+            }
 
-    }
-
-
-    /* =========================================
-       NUMBER FORMAT
-    ========================================= */
-
-    function formatNumber(value) {
-
-        const n = Number(value);
-
-        if (Number.isInteger(n)) {
-            return n;
         }
+    );
 
-        return n.toFixed(2);
+
+    logoutBtn.addEventListener(
+        "click",
+        () => {
+
+            sessionStorage.removeItem(
+                "varzid_admin"
+            );
+
+            showLogin();
+
+        }
+    );
+
+
+    productCategory.addEventListener(
+        "change",
+        () => {
+
+            loadProductToForm(
+                productCategory.value
+            );
+
+        }
+    );
+
+
+    saveProductBtn.addEventListener(
+        "click",
+        saveProduct
+    );
+
+
+    backToSiteBtn.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+    /*
+     * Агар Admin аллакай дар ҳамин
+     * сессия ворид шуда бошад.
+     */
+    if (
+        sessionStorage.getItem(
+            "varzid_admin"
+        ) === "true"
+    ) {
+
+        showAdmin();
+
+    } else {
+
+        showLogin();
 
     }
 
-
-    /* =========================================
-       HTML SAFETY
-    ========================================= */
-
-    function escapeHtml(value) {
-
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    /* =========================================
-       LOGOUT
-    ========================================= */
-
-    function logoutAdmin() {
-
-        document
-            .getElementById("adminPanel")
-            .classList
-            .add("hidden");
-
-
-        document
-            .getElementById("loginScreen")
-            .classList
-            .remove("hidden");
-
-
-        document
-            .getElementById("adminPasswordInput")
-            .value = "";
-
-    }
-
+});
 </script>
 
 </body>
