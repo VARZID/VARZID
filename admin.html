@@ -95,21 +95,16 @@
             right: 8px;
             top: 50%;
             transform: translateY(-50%);
-
             width: 34px;
             height: 34px;
-
             border: 0;
             background: transparent;
             color: #888;
-
             border-radius: 7px;
             cursor: pointer;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             font-size: 17px;
         }
 
@@ -149,13 +144,10 @@
             position: sticky;
             top: 0;
             z-index: 20;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             padding: 14px 15px;
-
             background: #181818;
             border-bottom: 1px solid #303030;
         }
@@ -166,6 +158,12 @@
             font-weight: 700;
         }
 
+        .admin-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
         .logout-btn {
             border: 1px solid #444;
             background: transparent;
@@ -174,6 +172,23 @@
             padding: 7px 10px;
             font-size: 12px;
             cursor: pointer;
+        }
+
+        .close-admin-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #444;
+            background: transparent;
+            color: #999;
+            border-radius: 8px;
+            padding: 0;
+            font-size: 21px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .close-admin-btn:active {
+            background: #333;
         }
 
         .admin-content {
@@ -224,9 +239,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-
             padding: 10px;
-
             background: #242424;
             border: 1px solid #333;
             border-radius: 10px;
@@ -236,10 +249,8 @@
             width: 52px;
             height: 52px;
             flex: 0 0 52px;
-
             border-radius: 8px;
             object-fit: cover;
-
             background: #181818;
         }
 
@@ -247,7 +258,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
             color: #777;
             font-size: 10px;
             text-align: center;
@@ -340,8 +350,8 @@
 
 <body>
 
-    <!-- LOGIN -->
     <div class="login-screen" id="loginScreen">
+
         <div class="login-box">
 
             <div class="logo">VARZID</div>
@@ -351,6 +361,7 @@
             </div>
 
             <div class="field">
+
                 <label>Парол</label>
 
                 <div class="password-wrap">
@@ -373,6 +384,7 @@
                     </button>
 
                 </div>
+
             </div>
 
             <button class="main-btn" id="loginBtn">
@@ -382,10 +394,10 @@
             <div class="error" id="loginError"></div>
 
         </div>
+
     </div>
 
 
-    <!-- ADMIN -->
     <div class="admin-screen" id="adminScreen">
 
         <header class="admin-header">
@@ -394,16 +406,31 @@
                 VARZID
             </div>
 
-            <button class="logout-btn" id="logoutBtn">
-                Баромадан
-            </button>
+            <div class="admin-header-actions">
+
+                <button
+                    class="logout-btn"
+                    id="logoutBtn"
+                >
+                    Баромадан
+                </button>
+
+                <button
+                    class="close-admin-btn"
+                    id="closeAdminBtn"
+                    type="button"
+                    aria-label="Пӯшидани Admin"
+                >
+                    ×
+                </button>
+
+            </div>
 
         </header>
 
 
         <main class="admin-content">
 
-            <!-- PRODUCT SETTINGS -->
             <section class="section">
 
                 <h2 class="section-title">
@@ -417,14 +444,19 @@
                     </label>
 
                     <select id="productCategory">
+
                         <option value="">
                             Интихоб кунед
                         </option>
+
                     </select>
 
                 </div>
 
-                <div class="category-info" id="categoryInfo">
+                <div
+                    class="category-info"
+                    id="categoryInfo"
+                >
                     Номи маҳсулот аз категория гирифта мешавад.
                 </div>
 
@@ -543,7 +575,6 @@
             </section>
 
 
-            <!-- PRODUCT LIST -->
             <section class="section">
 
                 <h2 class="section-title">
@@ -575,18 +606,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ADMIN_PASS = "1604";
 
+    const loginScreen =
+        document.getElementById("loginScreen");
 
-    const loginScreen = document.getElementById("loginScreen");
-    const adminScreen = document.getElementById("adminScreen");
+    const adminScreen =
+        document.getElementById("adminScreen");
 
-    const adminPassword = document.getElementById("adminPassword");
+    const adminPassword =
+        document.getElementById("adminPassword");
+
     const showPasswordBtn =
         document.getElementById("showPasswordBtn");
 
-    const loginBtn = document.getElementById("loginBtn");
-    const loginError = document.getElementById("loginError");
+    const loginBtn =
+        document.getElementById("loginBtn");
 
-    const logoutBtn = document.getElementById("logoutBtn");
+    const loginError =
+        document.getElementById("loginError");
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
+
+    const closeAdminBtn =
+        document.getElementById("closeAdminBtn");
 
     const productCategory =
         document.getElementById("productCategory");
@@ -634,33 +676,26 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
 
-    /* НИШОН ДОДАН / ПИНҲОН КАРДАНИ ПАРОЛ */
-
     showPasswordBtn.addEventListener(
         "click",
         () => {
 
-            if (adminPassword.type === "password") {
+            if (
+                adminPassword.type === "password"
+            ) {
 
                 adminPassword.type = "text";
 
-                showPasswordBtn.textContent = "🙈";
-
-                showPasswordBtn.setAttribute(
-                    "aria-label",
-                    "Пинҳон кардани парол"
-                );
+                showPasswordBtn.textContent =
+                    "🙈";
 
             } else {
 
-                adminPassword.type = "password";
+                adminPassword.type =
+                    "password";
 
-                showPasswordBtn.textContent = "👁";
-
-                showPasswordBtn.setAttribute(
-                    "aria-label",
-                    "Нишон додани парол"
-                );
+                showPasswordBtn.textContent =
+                    "👁";
 
             }
 
@@ -673,28 +708,49 @@ document.addEventListener("DOMContentLoaded", () => {
         let categories = [];
 
         try {
+
             categories = JSON.parse(
-                localStorage.getItem("categories") || "null"
+                localStorage.getItem(
+                    "categories"
+                ) || "null"
             );
+
         } catch (e) {
+
             categories = [];
+
         }
 
-        if (!Array.isArray(categories) || !categories.length) {
 
-            categories = [...DEFAULT_CATEGORIES];
+        if (
+            !Array.isArray(categories) ||
+            !categories.length
+        ) {
+
+            categories =
+                [...DEFAULT_CATEGORIES];
 
             localStorage.setItem(
                 "categories",
                 JSON.stringify(categories)
             );
+
         }
 
-        if (!categories.includes("Варзидан")) {
-            categories.unshift("Варзидан");
+
+        if (
+            !categories.includes("Варзидан")
+        ) {
+
+            categories.unshift(
+                "Варзидан"
+            );
+
         }
+
 
         return categories;
+
     }
 
 
@@ -703,13 +759,17 @@ document.addEventListener("DOMContentLoaded", () => {
         let raw = null;
 
         try {
+
             raw = JSON.parse(
                 localStorage.getItem(
                     "varzid_custom_products"
                 ) || "null"
             );
+
         } catch (e) {
+
             raw = null;
+
         }
 
 
@@ -725,30 +785,54 @@ document.addEventListener("DOMContentLoaded", () => {
                     product.category ||
                     product.name;
 
-                if (!name || name === "Варзидан") {
+                if (
+                    !name ||
+                    name === "Варзидан"
+                ) {
                     return;
                 }
 
+
                 converted[name] = {
+
                     category: name,
+
                     name: name,
-                    price: Number(product.price) || 0,
-                    unit: product.unit || "кг",
-                    qty: Number(product.qty) || 0,
-                    bag: Number(product.bag) || 0,
-                    image: product.image || "",
-                    onSale: !!product.onSale,
-                    featured: !!product.featured
+
+                    price:
+                        Number(product.price) || 0,
+
+                    unit:
+                        product.unit || "кг",
+
+                    qty:
+                        Number(product.qty) || 0,
+
+                    bag:
+                        Number(product.bag) || 0,
+
+                    image:
+                        product.image || "",
+
+                    onSale:
+                        !!product.onSale,
+
+                    featured:
+                        !!product.featured
+
                 };
 
             });
+
 
             localStorage.setItem(
                 "varzid_custom_products",
                 JSON.stringify(converted)
             );
 
+
             return converted;
+
         }
 
 
@@ -757,11 +841,14 @@ document.addEventListener("DOMContentLoaded", () => {
             typeof raw === "object" &&
             !Array.isArray(raw)
         ) {
+
             return raw;
+
         }
 
 
         return {};
+
     }
 
 
@@ -771,54 +858,80 @@ document.addEventListener("DOMContentLoaded", () => {
             "varzid_custom_products",
             JSON.stringify(products)
         );
+
     }
 
 
     function ensureProducts() {
 
-        const categories = getCategories();
-        const products = getProducts();
+        const categories =
+            getCategories();
+
+        const products =
+            getProducts();
 
         let changed = false;
 
+
         categories.forEach(category => {
 
-            if (category === "Варзидан") {
+            if (
+                category === "Варзидан"
+            ) {
                 return;
             }
+
 
             if (!products[category]) {
 
                 products[category] = {
+
                     category: category,
+
                     name: category,
+
                     price: 0,
+
                     unit: "кг",
+
                     qty: 0,
+
                     bag: 0,
+
                     image: "",
+
                     onSale: false,
+
                     featured: false
+
                 };
 
                 changed = true;
+
             }
 
         });
 
 
         if (changed) {
+
             saveProducts(products);
+
         }
 
+
         return products;
+
     }
 
 
     function showAdmin() {
 
-        loginScreen.style.display = "none";
-        adminScreen.style.display = "block";
+        loginScreen.style.display =
+            "none";
+
+        adminScreen.style.display =
+            "block";
 
         loadCategorySelect();
         renderProductsList();
@@ -828,21 +941,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showLogin() {
 
-        loginScreen.style.display = "flex";
-        adminScreen.style.display = "none";
+        loginScreen.style.display =
+            "flex";
 
-        adminPassword.value = "";
-        loginError.textContent = "";
+        adminScreen.style.display =
+            "none";
 
-        adminPassword.type = "password";
-        showPasswordBtn.textContent = "👁";
+        adminPassword.value =
+            "";
+
+        loginError.textContent =
+            "";
+
+        adminPassword.type =
+            "password";
+
+        showPasswordBtn.textContent =
+            "👁";
+
+    }
+
+
+    function closeAdmin() {
+
+        sessionStorage.removeItem(
+            "varzid_admin"
+        );
+
+        window.location.href =
+            "index.html";
 
     }
 
 
     function loadCategorySelect() {
 
-        const categories = getCategories();
+        const categories =
+            getCategories();
 
         productCategory.innerHTML = `
             <option value="">
@@ -850,19 +985,30 @@ document.addEventListener("DOMContentLoaded", () => {
             </option>
         `;
 
+
         categories.forEach(category => {
 
-            if (category === "Варзидан") {
+            if (
+                category === "Варзидан"
+            ) {
                 return;
             }
 
+
             const option =
-                document.createElement("option");
+                document.createElement(
+                    "option"
+                );
 
-            option.value = category;
-            option.textContent = category;
+            option.value =
+                category;
 
-            productCategory.appendChild(option);
+            option.textContent =
+                category;
+
+            productCategory.appendChild(
+                option
+            );
 
         });
 
@@ -871,17 +1017,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function clearForm() {
 
-        productCategory.value = "";
-        productPrice.value = "";
-        productUnit.value = "кг";
-        productQty.value = "";
-        productBag.value = "";
-        productImage.value = "";
+        productCategory.value =
+            "";
+
+        productPrice.value =
+            "";
+
+        productUnit.value =
+            "кг";
+
+        productQty.value =
+            "";
+
+        productBag.value =
+            "";
+
+        productImage.value =
+            "";
 
         categoryInfo.textContent =
             "Номи маҳсулот аз категория гирифта мешавад.";
 
-        currentImageInfo.style.display = "none";
+        currentImageInfo.style.display =
+            "none";
 
     }
 
@@ -891,19 +1049,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!category) {
 
             clearForm();
+
             return;
 
         }
 
-        const products = ensureProducts();
-        const product = products[category];
+
+        const products =
+            ensureProducts();
+
+        const product =
+            products[category];
+
 
         if (!product) {
             return;
         }
 
 
-        productCategory.value = category;
+        productCategory.value =
+            category;
 
         productPrice.value =
             product.price || "";
@@ -923,35 +1088,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (product.image) {
-            currentImageInfo.style.display = "block";
+
+            currentImageInfo.style.display =
+                "block";
+
         } else {
-            currentImageInfo.style.display = "none";
+
+            currentImageInfo.style.display =
+                "none";
+
         }
 
-        productImage.value = "";
+
+        productImage.value =
+            "";
 
     }
 
 
     function readImage(file) {
 
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
 
             if (!file) {
+
                 resolve("");
+
                 return;
+
             }
+
 
             const reader =
                 new FileReader();
 
+
             reader.onload = () => {
-                resolve(reader.result);
+
+                resolve(
+                    reader.result
+                );
+
             };
 
+
             reader.onerror = () => {
+
                 resolve("");
+
             };
+
 
             reader.readAsDataURL(file);
 
@@ -965,6 +1151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const category =
             productCategory.value;
 
+
         if (!category) {
 
             alert(
@@ -972,10 +1159,12 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             return;
+
         }
 
 
-        const products = ensureProducts();
+        const products =
+            ensureProducts();
 
         const oldProduct =
             products[category] || {};
@@ -995,16 +1184,22 @@ document.addEventListener("DOMContentLoaded", () => {
             name: category,
 
             price:
-                Number(productPrice.value) || 0,
+                Number(
+                    productPrice.value
+                ) || 0,
 
             unit:
                 productUnit.value || "кг",
 
             qty:
-                Number(productQty.value) || 0,
+                Number(
+                    productQty.value
+                ) || 0,
 
             bag:
-                Number(productBag.value) || 0,
+                Number(
+                    productBag.value
+                ) || 0,
 
             image:
                 newImage ||
@@ -1024,28 +1219,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderProductsList();
 
-        if (products[category].image) {
-            currentImageInfo.style.display = "block";
+
+        if (
+            products[category].image
+        ) {
+
+            currentImageInfo.style.display =
+                "block";
+
         }
 
 
-        alert("Маҳсулот захира шуд.");
+        alert(
+            "Маҳсулот захира шуд."
+        );
 
     }
 
 
     function deleteProduct(category) {
 
-        const products = ensureProducts();
+        const products =
+            ensureProducts();
+
 
         if (!products[category]) {
             return;
         }
 
 
-        const confirmed = confirm(
-            `Маҳсулоти «${category}» нест карда шавад?`
-        );
+        const confirmed =
+            confirm(
+                `Маҳсулоти «${category}» нест карда шавад?`
+            );
+
 
         if (!confirmed) {
             return;
@@ -1065,10 +1272,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderProductsList() {
 
-        const categories = getCategories();
-        const products = ensureProducts();
+        const categories =
+            getCategories();
 
-        productsList.innerHTML = "";
+        const products =
+            ensureProducts();
+
+        productsList.innerHTML =
+            "";
 
 
         const productCategories =
@@ -1078,7 +1289,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        if (!productCategories.length) {
+        if (
+            !productCategories.length
+        ) {
 
             productsList.innerHTML = `
                 <div class="empty-admin">
@@ -1087,175 +1300,231 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
 
             return;
+
         }
 
 
-        productCategories.forEach(category => {
+        productCategories.forEach(
+            category => {
 
-            const product =
-                products[category] || {
-                    category: category,
-                    name: category,
-                    price: 0,
-                    unit: "кг",
-                    qty: 0,
-                    bag: 0,
-                    image: ""
-                };
+                const product =
+                    products[category] || {
 
+                        category: category,
 
-            const row =
-                document.createElement("div");
+                        name: category,
 
-            row.className = "product-row";
+                        price: 0,
 
+                        unit: "кг",
 
-            if (product.image) {
+                        qty: 0,
 
-                const img =
-                    document.createElement("img");
+                        bag: 0,
 
-                img.className =
-                    "product-image";
+                        image: ""
 
-                img.src =
-                    product.image;
-
-                img.alt =
-                    category;
-
-                row.appendChild(img);
-
-            } else {
-
-                const noImage =
-                    document.createElement("div");
-
-                noImage.className =
-                    "product-image no-image";
-
-                noImage.textContent =
-                    "Акс нест";
-
-                row.appendChild(noImage);
-
-            }
+                    };
 
 
-            const info =
-                document.createElement("div");
-
-            info.className =
-                "product-info";
-
-
-            const name =
-                document.createElement("div");
-
-            name.className =
-                "product-name";
-
-            name.textContent =
-                category;
-
-
-            const details =
-                document.createElement("div");
-
-            details.className =
-                "product-details";
-
-
-            let unitText =
-                `${product.qty || 0} ${product.unit || "кг"}`;
-
-
-            if (
-                product.unit === "халта" &&
-                product.bag
-            ) {
-
-                unitText +=
-                    ` • ${product.bag} кг/халта`;
-
-            }
-
-
-            details.textContent =
-                `${product.price || 0} сомонӣ • ${unitText}`;
-
-
-            info.appendChild(name);
-            info.appendChild(details);
-
-
-            const actions =
-                document.createElement("div");
-
-            actions.className =
-                "product-actions";
-
-
-            const editBtn =
-                document.createElement("button");
-
-            editBtn.className =
-                "edit-btn";
-
-            editBtn.textContent =
-                "Тағйир";
-
-            editBtn.addEventListener(
-                "click",
-                () => {
-
-                    loadProductToForm(
-                        category
+                const row =
+                    document.createElement(
+                        "div"
                     );
 
-                    window.scrollTo({
-                        top: 0,
-                        behavior: "smooth"
-                    });
+                row.className =
+                    "product-row";
+
+
+                if (product.image) {
+
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
+
+                    img.className =
+                        "product-image";
+
+                    img.src =
+                        product.image;
+
+                    img.alt =
+                        category;
+
+                    row.appendChild(
+                        img
+                    );
+
+                } else {
+
+                    const noImage =
+                        document.createElement(
+                            "div"
+                        );
+
+                    noImage.className =
+                        "product-image no-image";
+
+                    noImage.textContent =
+                        "Акс нест";
+
+                    row.appendChild(
+                        noImage
+                    );
 
                 }
-            );
 
 
-            const deleteBtn =
-                document.createElement("button");
+                const info =
+                    document.createElement(
+                        "div"
+                    );
 
-            deleteBtn.className =
-                "delete-btn";
+                info.className =
+                    "product-info";
 
-            deleteBtn.textContent =
-                "×";
 
-            deleteBtn.title =
-                "Нест кардан";
+                const name =
+                    document.createElement(
+                        "div"
+                    );
 
-            deleteBtn.setAttribute(
-                "aria-label",
-                "Нест кардани маҳсулот"
-            );
+                name.className =
+                    "product-name";
 
-            deleteBtn.addEventListener(
-                "click",
-                () => {
-                    deleteProduct(category);
+                name.textContent =
+                    category;
+
+
+                const details =
+                    document.createElement(
+                        "div"
+                    );
+
+                details.className =
+                    "product-details";
+
+
+                let unitText =
+                    `${product.qty || 0} ${product.unit || "кг"}`;
+
+
+                if (
+                    product.unit === "халта" &&
+                    product.bag
+                ) {
+
+                    unitText +=
+                        ` • ${product.bag} кг/халта`;
+
                 }
-            );
 
 
-            actions.appendChild(editBtn);
-            actions.appendChild(deleteBtn);
+                details.textContent =
+                    `${product.price || 0} сомонӣ • ${unitText}`;
 
-            row.appendChild(info);
-            row.appendChild(actions);
 
-            productsList.appendChild(row);
+                info.appendChild(name);
 
-        });
+                info.appendChild(details);
+
+
+                const actions =
+                    document.createElement(
+                        "div"
+                    );
+
+                actions.className =
+                    "product-actions";
+
+
+                const editBtn =
+                    document.createElement(
+                        "button"
+                    );
+
+                editBtn.className =
+                    "edit-btn";
+
+                editBtn.textContent =
+                    "Тағйир";
+
+
+                editBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        loadProductToForm(
+                            category
+                        );
+
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "smooth"
+                        });
+
+                    }
+                );
+
+
+                const deleteBtn =
+                    document.createElement(
+                        "button"
+                    );
+
+                deleteBtn.className =
+                    "delete-btn";
+
+                deleteBtn.textContent =
+                    "×";
+
+                deleteBtn.title =
+                    "Нест кардан";
+
+
+                deleteBtn.setAttribute(
+                    "aria-label",
+                    "Нест кардани маҳсулот"
+                );
+
+
+                deleteBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        deleteProduct(
+                            category
+                        );
+
+                    }
+                );
+
+
+                actions.appendChild(
+                    editBtn
+                );
+
+                actions.appendChild(
+                    deleteBtn
+                );
+
+
+                row.appendChild(
+                    info
+                );
+
+                row.appendChild(
+                    actions
+                );
+
+
+                productsList.appendChild(
+                    row
+                );
+
+            }
+        );
 
     }
 
@@ -1265,7 +1534,8 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
             if (
-                adminPassword.value === ADMIN_PASS
+                adminPassword.value ===
+                ADMIN_PASS
             ) {
 
                 sessionStorage.setItem(
@@ -1290,8 +1560,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "keydown",
         event => {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
+
                 loginBtn.click();
+
             }
 
         }
@@ -1307,6 +1581,16 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             showLogin();
+
+        }
+    );
+
+
+    closeAdminBtn.addEventListener(
+        "click",
+        () => {
+
+            closeAdmin();
 
         }
     );
@@ -1334,8 +1618,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
 
-            window.location.href =
-                "index.html";
+            closeAdmin();
 
         }
     );
