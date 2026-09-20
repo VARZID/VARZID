@@ -159,7 +159,7 @@ select {
 
 
 /* =========================
-   MODERN SETTINGS ICON
+   MODERN PROFILE + SETTINGS
 ========================= */
 
 .settings-icon {
@@ -202,8 +202,8 @@ select {
 
 
 .settings-icon svg {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
 
     fill: none;
 
@@ -214,6 +214,12 @@ select {
 
     stroke-linecap: round;
     stroke-linejoin: round;
+}
+
+
+/* чархи танзимот калонтар ва равшантар */
+.settings-icon svg .settings-gear {
+    stroke-width: 1.55;
 }
 
 
