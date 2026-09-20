@@ -1,199 +1,311 @@
 <!DOCTYPE html>
 <html lang="tg">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ВАРЗИД</title>
-    <link rel="stylesheet" href="style.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VARZID</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body class="light-theme">
 
+
 <header class="header">
+
     <div class="header-top">
 
-        <div class="brand-container" id="brandToggle">
+
+        <!-- BRAND -->
+        <div
+            class="brand-container"
+            id="brandToggle"
+        >
+
             <span>VARZID</span>
 
-            <svg class="arrow-icon" viewBox="0 0 24 24">
+            <svg
+                class="arrow-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
                 <path d="M6 9l6 6 6-6"></path>
             </svg>
+
         </div>
 
-        <button class="settings-icon" id="settingsToggle">
-            <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.3 7A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.9 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.7 1z"></path>
+
+        <!-- MODERN PROFILE + SETTINGS -->
+        <button
+            class="settings-icon"
+            id="settingsToggle"
+            aria-label="Танзимот"
+        >
+
+            <svg
+                viewBox="0 0 32 32"
+                aria-hidden="true"
+            >
+
+                <!-- одамча -->
+                <circle
+                    cx="13"
+                    cy="11"
+                    r="4"
+                ></circle>
+
+                <path
+                    d="M6.5 23c.7-4 2.8-6 6.5-6s5.8 2 6.5 6"
+                ></path>
+
+                <!-- чархи хурди settings -->
+                <circle
+                    cx="23.5"
+                    cy="21.5"
+                    r="3.2"
+                ></circle>
+
+                <path
+                    d="M23.5 16.8v1.4
+                       M23.5 24.8v1.4
+                       M18.8 21.5h1.4
+                       M26.8 21.5h1.4
+                       M20.2 18.2l1 1
+                       M25.8 23.8l1 1
+                       M26.8 18.2l-1 1
+                       M21.2 23.8l-1 1"
+                ></path>
+
             </svg>
+
         </button>
 
     </div>
+
+
+    <!-- BRAND DROPDOWN -->
+    <div
+        class="dropdown-menu"
+        id="dropdownMenu"
+    >
+
+        <div class="subscribers-info">
+
+            <div class="subscriber-text">
+
+                <span id="subCount">
+                    0
+                </span>
+
+                <span data-i18n="subscribers">
+                    обуна
+                </span>
+
+            </div>
+
+
+            <button
+                class="sub-btn"
+                id="subBtn"
+                data-i18n="subscribe"
+            >
+                Обуна шудан
+            </button>
+
+        </div>
+
+
+        <div class="menu-header">
+
+            <span data-i18n="categories">
+                Категорияҳо
+            </span>
+
+            <button
+                class="add-btn"
+                id="addCategoryBtn"
+                aria-label="Илова"
+            >
+                +
+            </button>
+
+        </div>
+
+
+        <div
+            class="categories-grid"
+            id="categoryList"
+        ></div>
+
+    </div>
+
+
+    <!-- SETTINGS -->
+    <div
+        class="settings-menu"
+        id="settingsMenu"
+    >
+
+        <div class="settings-header">
+
+            <h3 data-i18n="settings">
+                Танзимот
+            </h3>
+
+            <button
+                class="close-small"
+                id="closeSettingsHeader"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="settings-body">
+
+
+            <!-- THEME -->
+            <div
+                class="setting-item"
+                id="themeToggle"
+            >
+
+                <span data-i18n="theme">
+                    Мавзӯъ
+                </span>
+
+                <span
+                    class="settings-value"
+                    id="themeValue"
+                >
+                    Сафед
+                </span>
+
+            </div>
+
+
+            <!-- NOTIFICATIONS -->
+            <div
+                class="setting-item"
+                id="notificationToggle"
+            >
+
+                <span data-i18n="notifications">
+                    Огоҳиномаҳо
+                </span>
+
+                <span
+                    class="badge-on"
+                    id="notificationStatus"
+                >
+                    ON
+                </span>
+
+            </div>
+
+
+            <!-- LANGUAGE -->
+            <div
+                class="setting-item"
+                id="languageToggle"
+            >
+
+                <span data-i18n="language">
+                    Забон
+                </span>
+
+                <span
+                    class="settings-value"
+                    id="languageValue"
+                >
+                    Тоҷикӣ
+                </span>
+
+            </div>
+
+
+            <!-- ADMIN -->
+            <div
+                class="setting-item"
+                id="adminModeToggle"
+                data-admin-link="admin.html"
+            >
+
+                <span>
+                    Admin
+                </span>
+
+                <span class="settings-value">
+                    →
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
 </header>
 
 
-<!-- КАТЕГОРИЯҲО -->
-<div class="dropdown-menu" id="dropdownMenu">
 
-    <div class="subscribers-info">
-
-        <div class="subscriber-text">
-            <span id="subCount">0</span>
-
-            <span data-translate="subscribers">
-                подписчиков
-            </span>
-        </div>
-
-        <button id="subBtn" class="sub-btn">
-            Подписаться
-        </button>
-
-    </div>
-
-
-    <div class="menu-header">
-
-        <span data-translate="categoriesTitle">
-            Категорияҳо
-        </span>
-
-    </div>
-
-
-    <div
-        class="categories-grid"
-        id="categoryList">
-    </div>
-
-</div>
-
-
-<!-- ТАНЗИМОТ -->
-<div class="settings-menu" id="settingsMenu">
-
-    <div class="settings-header">
-
-        <h3 data-translate="settingsTitle">
-            Танзимот
-        </h3>
-
-        <button
-            id="closeSettingsHeader"
-            class="close-small">
-            ×
-        </button>
-
-    </div>
-
-
-    <div class="settings-body">
-
-        <!-- ТЕМА -->
-        <div class="setting-item" id="setTheme">
-
-            <span data-translate="themeLabel">
-                Тема
-            </span>
-
-            <span
-                class="settings-value"
-                id="themeStatus">
-                Режими рӯзона ›
-            </span>
-
-        </div>
-
-
-        <!-- ОГОҲИҲО -->
-        <div
-            class="setting-item"
-            id="setNotifications">
-
-            <span data-translate="notifLabel">
-                Огоҳиҳо
-            </span>
-
-            <span
-                class="settings-value"
-                id="notifStatusText">
-                Хомӯш ›
-            </span>
-
-        </div>
-
-
-        <!-- ЗАБОН -->
-        <div
-            class="setting-item"
-            id="setLanguage">
-
-            <span data-translate="langLabel">
-                Забон
-            </span>
-
-            <span
-                class="settings-value"
-                id="currentLangDisplay">
-                Тоҷикӣ ›
-            </span>
-
-        </div>
-
-
-        <!-- АДМИН -->
-        <div
-            class="setting-item"
-            id="adminModeToggle"
-            data-admin-link>
-
-            <span data-translate="adminLabel">
-                Админ
-            </span>
-
-            <span
-                class="badge-off"
-                id="adminStatusBadge">
-                Админ ›
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ТЕМА -->
+<!-- THEME MODAL -->
 <div
     class="theme-modal"
-    id="themeModal">
+    id="themeModal"
+>
 
     <div class="theme-modal-content">
 
-        <h3 data-translate="themeModalTitle">
-            Интихоби тема
+        <h3 data-i18n="chooseTheme">
+            Мавзӯъро интихоб кунед
         </h3>
 
 
         <div
             class="theme-option"
-            data-theme="dark">
-            🌙 Режими шабона
+            data-theme="light"
+        >
+            Сафед
         </div>
 
 
         <div
             class="theme-option"
-            data-theme="light">
-            ☀️ Режими рӯзона
+            data-theme="dark"
+        >
+            Торик
+        </div>
+
+
+        <div
+            class="theme-option"
+            data-theme="system"
+        >
+            Системавӣ
         </div>
 
 
         <button
             class="theme-cancel"
-            id="cancelTheme"
-            data-translate="cancelBtn">
-            БЕКОР КАРДАН
+            id="themeCancel"
+            data-i18n="cancel"
+        >
+            Бекор кардан
         </button>
 
     </div>
@@ -201,20 +313,100 @@
 </div>
 
 
-<!-- КОРЗИНА -->
+
+<!-- LANGUAGE MODAL -->
+<div
+    class="theme-modal"
+    id="languageModal"
+>
+
+    <div class="theme-modal-content">
+
+        <h3>
+            Забон
+        </h3>
+
+
+        <div
+            class="theme-option language-option"
+            data-lang="tg"
+        >
+            Тоҷикӣ
+        </div>
+
+
+        <div
+            class="theme-option language-option"
+            data-lang="ru"
+        >
+            Русский
+        </div>
+
+
+        <div
+            class="theme-option language-option"
+            data-lang="uz"
+        >
+            O‘zbekcha
+        </div>
+
+
+        <button
+            class="theme-cancel"
+            id="languageCancel"
+        >
+            Бекор кардан
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- PRODUCTS -->
+<main
+    class="products-area"
+    id="productsArea"
+>
+
+    <div
+        class="products-header"
+        id="productsHeader"
+    >
+
+        <h2 id="currentCategoryTitle">
+            Варзидан
+        </h2>
+
+    </div>
+
+
+    <div
+        class="product-grid"
+        id="productGrid"
+    ></div>
+
+</main>
+
+
+
+<!-- CART -->
 <div
     class="cart-panel"
-    id="cartPanel">
+    id="cartPanel"
+>
 
     <div class="cart-header">
 
-        <h3 data-translate="cartTitle">
-            Корзина
+        <h3 data-i18n="cart">
+            Сабад
         </h3>
 
         <button
-            id="closeCart"
-            class="cart-close">
+            class="cart-close"
+            id="cartClose"
+        >
             ×
         </button>
 
@@ -223,15 +415,16 @@
 
     <div
         class="cart-items"
-        id="cartItems">
-    </div>
+        id="cartItems"
+    ></div>
 
 
     <div
         class="cart-empty"
         id="cartEmpty"
-        data-translate="cartEmpty">
-        Корзина ҳоло холӣ аст
+        data-i18n="cartEmpty"
+    >
+        Сабад холӣ аст.
     </div>
 
 
@@ -239,12 +432,15 @@
 
         <div class="cart-total-row">
 
-            <span data-translate="total">
+            <span data-i18n="total">
                 Ҳамагӣ
             </span>
 
-            <strong id="cartTotal">
-                0 сомонӣ
+            <strong>
+                <span id="cartTotal">
+                    0
+                </span>
+                сомонӣ
             </strong>
 
         </div>
@@ -252,8 +448,10 @@
 
         <button
             class="buy-cart-btn"
-            id="buyCartBtn">
-            Харидан
+            id="buyCartBtn"
+            data-i18n="order"
+        >
+            Фармоиш диҳед
         </button>
 
     </div>
@@ -261,58 +459,105 @@
 </div>
 
 
-<!-- ПОЁНИ САЙТ -->
+
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
 
-    <!-- АСОСӢ -->
+
+    <!-- HOME -->
     <button
         class="bottom-nav-btn active"
         id="homeBtn"
-        aria-label="Асосӣ">
+        aria-label="Асосӣ"
+    >
 
-        <svg viewBox="0 0 24 24">
-            <path d="M3.5 10.7L12 3.5l8.5 7.2"></path>
-            <path d="M5.5 9.5V21h13V9.5"></path>
-            <path d="M9.5 21v-5.5h5V21"></path>
+        <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+
+            <path
+                d="M3 10.5L12 3l9 7.5"
+            ></path>
+
+            <path
+                d="M5.5 9.5V21h13V9.5"
+            ></path>
+
+            <path
+                d="M9.5 21v-6h5v6"
+            ></path>
+
         </svg>
 
     </button>
 
 
-    <!-- ДӮСТДОШТАҲО -->
+
+    <!-- FAVORITES -->
     <button
         class="bottom-nav-btn"
         id="favoritesBtn"
-        aria-label="Дӯстдоштаҳо">
+        aria-label="Дӯстдоштаҳо"
+    >
 
-        <svg viewBox="0 0 24 24">
-            <path d="M20.5 8.7c0 5.1-8.5 10-8.5 10s-8.5-4.9-8.5-10a4.6 4.6 0 0 1 8.5-2.4 4.6 4.6 0 0 1 8.5 2.4z"></path>
+        <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+
+            <path
+                d="M20.8 8.7c0 5-8.8 11-8.8 11s-8.8-6-8.8-11A4.7 4.7 0 0 1 12 5.4a4.7 4.7 0 0 1 8.8 3.3z"
+            ></path>
+
         </svg>
 
     </button>
 
 
-    <!-- КОРЗИНА -->
+
+    <!-- CART -->
     <button
         class="bottom-nav-btn"
         id="cartBtn"
-        aria-label="Корзина">
+        aria-label="Сабад"
+    >
 
-        <svg viewBox="0 0 24 24">
-            <path d="M4 5h2l1.6 10a2 2 0 0 0 2 1.7h7.8a2 2 0 0 0 1.9-1.5L21 8H7"></path>
-            <circle cx="10" cy="20" r="1.2"></circle>
-            <circle cx="18" cy="20" r="1.2"></circle>
+        <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+
+            <path
+                d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6"
+            ></path>
+
+            <circle
+                cx="10"
+                cy="20"
+                r="1"
+            ></circle>
+
+            <circle
+                cx="18"
+                cy="20"
+                r="1"
+            ></circle>
+
         </svg>
+
 
         <span
             class="cart-count"
-            id="cartCount">
+            id="cartCount"
+        >
             0
         </span>
 
     </button>
 
 </nav>
+
 
 
 <script src="script.js"></script>
