@@ -123,7 +123,12 @@ document.addEventListener("DOMContentLoaded", () => {
             newCategory: "Номи маҳсулоти навро ворид кунед:",
             deleteFailed: "Нест кардан иҷро нашуд.",
             emptyName: "Номи маҳсулот холӣ буда наметавонад.",
-            noStock: "Миқдор кофӣ нест."
+            noStock: "Миқдор кофӣ нест.",
+            noImage: "Акс нест",
+            alreadyExists: "Ин маҳсулот аллакай ҳаст.",
+            orderGreeting: "Салом, ман мехоҳам фармоиш диҳам:",
+            delivery: "Арзиши расонидан вобаста ба масофа аст.",
+            sum: "Ҳамагӣ:"
         },
 
         ru: {
@@ -150,7 +155,12 @@ document.addEventListener("DOMContentLoaded", () => {
             newCategory: "Введите название нового товара:",
             deleteFailed: "Не удалось удалить.",
             emptyName: "Название не может быть пустым.",
-            noStock: "Недостаточно количества."
+            noStock: "Недостаточно количества.",
+            noImage: "Нет фото",
+            alreadyExists: "Этот товар уже есть.",
+            orderGreeting: "Здравствуйте, я хочу сделать заказ:",
+            delivery: "Стоимость доставки зависит от расстояния.",
+            sum: "Итого:"
         },
 
         uz: {
@@ -177,7 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
             newCategory: "Yangi mahsulot nomini kiriting:",
             deleteFailed: "O‘chirish amalga oshmadi.",
             emptyName: "Mahsulot nomi bo‘sh bo‘lishi mumkin emas.",
-            noStock: "Miqdor yetarli emas."
+            noStock: "Miqdor yetarli emas.",
+            noImage: "Rasm yo‘q",
+            alreadyExists: "Bu mahsulot allaqachon mavjud.",
+            orderGreeting: "Salom, men buyurtma bermoqchiman:",
+            delivery: "Yetkazib berish narxi masofaga bog‘liq.",
+            sum: "Jami:"
         }
 
     };
@@ -189,10 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function getLang() {
 
         const lang =
-            localStorage.getItem("lang") || "tg";
+            localStorage.getItem("lang") || "ru";
 
         if (!translations[lang]) {
-            return "tg";
+            return "ru";
         }
 
         return lang;
@@ -205,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return (
             translations[lang][key] ||
-            translations.tg[key] ||
+            translations.ru[key] ||
             key
         );
 
@@ -287,10 +302,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-         * Версияи кӯҳна метавонад ARRAY бошад.
-         * Онро ба OBJECT табдил медиҳем.
-         */
         if (Array.isArray(raw)) {
 
             const converted = {};
@@ -457,8 +468,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "product-card";
 
 
-        /* IMAGE */
-
         const imageBox =
             document.createElement("div");
 
@@ -489,7 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "product-no-image";
 
             noImage.textContent =
-                "Акс нест";
+                t("noImage");
 
             imageBox.appendChild(noImage);
 
@@ -498,8 +507,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.appendChild(imageBox);
 
-
-        /* INFO */
 
         const info =
             document.createElement("div");
@@ -520,8 +527,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         info.appendChild(name);
 
-
-        /* PRICE */
 
         const price =
             document.createElement("div");
@@ -549,8 +554,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         info.appendChild(price);
 
-
-        /* UNIT */
 
         const unit =
             document.createElement("div");
@@ -580,8 +583,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         info.appendChild(unit);
 
-
-        /* STATUS */
 
         const status =
             document.createElement("div");
@@ -617,8 +618,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         info.appendChild(status);
 
-
-        /* BUTTON */
 
         const addButton =
             document.createElement("button");
@@ -860,9 +859,6 @@ document.addEventListener("DOMContentLoaded", () => {
             card.appendChild(name);
 
 
-            /*
-             * Варзидан нест карда намешавад.
-             */
             if (category !== "Варзидан") {
 
                 const deleteButton =
@@ -963,9 +959,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        /*
-         * PLUS ALWAYS AT THE END
-         */
         const plusCard =
             document.createElement("div");
 
@@ -1053,7 +1046,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (exists) {
 
             window.alert(
-                "Ин маҳсулот аллакай ҳаст."
+                t("alreadyExists")
             );
 
             return;
@@ -2307,7 +2300,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 lines.push(
-                    "Салом, ман мехоҳам фармоиш диҳам:"
+                    t("orderGreeting")
                 );
 
 
@@ -2338,14 +2331,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 lines.push("");
 
                 lines.push(
-                    `Ҳамагӣ: ${total} сомонӣ`
+                    `${t("sum")} ${total} сомонӣ`
                 );
 
 
                 lines.push("");
 
                 lines.push(
-                    "Арзиши расонидан вобаста ба масофа аст."
+                    t("delivery")
                 );
 
 
