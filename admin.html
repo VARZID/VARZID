@@ -229,21 +229,19 @@
         .image-preview-list {
             display: flex;
             gap: 8px;
-            overflow-x: auto;
             padding: 4px 0 2px;
             margin-top: 10px;
         }
 
         .image-preview-item {
             position: relative;
-            width: 70px;
-            height: 70px;
-            flex: 0 0 70px;
+            width: 90px;
+            height: 90px;
         }
 
         .image-preview-item img {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             object-fit: cover;
             border-radius: 9px;
             border: 1px solid #444;
@@ -573,18 +571,17 @@
             <div class="field">
 
                 <label>
-                    Аксҳои маҳсулот
+                    Акси маҳсулот
                 </label>
 
                 <input
                     type="file"
                     id="productImage"
                     accept="image/*"
-                    multiple
                 >
 
                 <div class="image-help">
-                    Метавонед якбора 2 ё бештар акс интихоб кунед.
+                    Танҳо 1 акс интихоб кунед.
                 </div>
 
                 <div
@@ -600,7 +597,7 @@
                 id="currentImageInfo"
                 style="display:none;"
             >
-                Аксҳои ҳозира нигоҳ дошта мешаванд, агар акси нав интихоб нашавад.
+                Акси ҳозира нигоҳ дошта мешавад, агар акси нав интихоб нашавад.
             </div>
 
 
@@ -818,20 +815,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                let images = [];
-
-                if (
-                    Array.isArray(product.images)
-                ) {
-
-                    images =
-                        product.images.filter(Boolean);
-
-                } else if (product.image) {
-
-                    images = [product.image];
-
-                }
+                const image =
+                    product.image || "";
 
 
                 converted[name] = {
@@ -852,10 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     bag:
                         Number(product.bag) || 0,
 
-                    image:
-                        images[0] || "",
-
-                    images: images,
+                    image: image,
 
                     onSale:
                         !!product.onSale,
@@ -916,6 +898,16 @@ document.addEventListener("DOMContentLoaded", () => {
         let changed = false;
 
 
+        /* Варзидан маҳсулот нест */
+        if (products["Варзидан"]) {
+
+            delete products["Варзидан"];
+
+            changed = true;
+
+        }
+
+
         categories.forEach(category => {
 
             if (category === "Варзидан") {
@@ -941,8 +933,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     image: "",
 
-                    images: [],
-
                     onSale: false,
 
                     featured: false
@@ -950,23 +940,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
 
                 changed = true;
-
-            } else {
-
-                if (
-                    !Array.isArray(
-                        products[category].images
-                    )
-                ) {
-
-                    products[category].images =
-                        products[category].image
-                            ? [products[category].image]
-                            : [];
-
-                    changed = true;
-
-                }
 
             }
 
@@ -1060,51 +1033,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function showImagePreview(images) {
+    function showImagePreview(image) {
 
         clearImagePreview();
 
 
-        if (
-            !Array.isArray(images) ||
-            images.length === 0
-        ) {
+        if (!image) {
             return;
         }
 
 
-        images.forEach((image, index) => {
+        const item =
+            document.createElement("div");
 
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "image-preview-item";
+        item.className =
+            "image-preview-item";
 
 
-            const img =
-                document.createElement("img");
+        const img =
+            document.createElement("img");
 
-            img.src = image;
-            img.alt = `Акс ${index + 1}`;
-
-
-            const number =
-                document.createElement("div");
-
-            number.className =
-                "image-preview-number";
-
-            number.textContent =
-                index + 1;
+        img.src = image;
+        img.alt = "Акси маҳсулот";
 
 
-            item.appendChild(img);
-            item.appendChild(number);
+        item.appendChild(img);
 
-            imagePreviewList.appendChild(item);
-
-        });
+        imagePreviewList.appendChild(item);
 
     }
 
@@ -1169,26 +1124,14 @@ document.addEventListener("DOMContentLoaded", () => {
             "Маҳсулот: " + category;
 
 
-        let images = [];
-
-        if (
-            Array.isArray(product.images)
-        ) {
-
-            images =
-                product.images.filter(Boolean);
-
-        } else if (product.image) {
-
-            images = [product.image];
-
-        }
+        const image =
+            product.image || "";
 
 
-        showImagePreview(images);
+        showImagePreview(image);
 
 
-        if (images.length > 0) {
+        if (image) {
 
             currentImageInfo.style.display =
                 "block";
@@ -1321,56 +1264,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    async function readImages(files) {
-
-        const images = [];
-
-        if (!files || files.length === 0) {
-            return images;
-        }
-
-
-        for (
-            let i = 0;
-            i < files.length;
-            i++
-        ) {
-
-            const image =
-                await compressImage(files[i]);
-
-            if (image) {
-                images.push(image);
-            }
-
-        }
-
-
-        return images;
-
-    }
-
-
     productImage.addEventListener(
         "change",
         async () => {
 
-            const files =
-                Array.from(
-                    productImage.files || []
-                );
+            const file =
+                productImage.files &&
+                productImage.files[0];
 
 
-            if (!files.length) {
+            if (!file) {
+
+                clearImagePreview();
+
                 return;
+
             }
 
 
-            const images =
-                await readImages(files);
+            const image =
+                await compressImage(file);
 
 
-            showImagePreview(images);
+            showImagePreview(image);
 
         }
     );
@@ -1393,6 +1309,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        if (category === "Варзидан") {
+
+            alert(
+                "Варзидан танҳо категория аст."
+            );
+
+            return;
+
+        }
+
+
         const products =
             ensureProducts();
 
@@ -1400,30 +1327,19 @@ document.addEventListener("DOMContentLoaded", () => {
             products[category] || {};
 
 
-        const files =
-            Array.from(
-                productImage.files || []
-            );
+        const file =
+            productImage.files &&
+            productImage.files[0];
 
 
-        let images = [];
+        let image =
+            oldProduct.image || "";
 
 
-        if (files.length > 0) {
+        if (file) {
 
-            images =
-                await readImages(files);
-
-        } else if (
-            Array.isArray(oldProduct.images)
-        ) {
-
-            images =
-                oldProduct.images.filter(Boolean);
-
-        } else if (oldProduct.image) {
-
-            images = [oldProduct.image];
+            image =
+                await compressImage(file);
 
         }
 
@@ -1454,10 +1370,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     productBag.value
                 ) || 0,
 
-            image:
-                images[0] || "",
-
-            images: images,
+            image: image,
 
             onSale:
                 !!oldProduct.onSale,
@@ -1475,7 +1388,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
 
             alert(
-                "Аксҳо хеле калонанд. Аксҳои камтар ё хурдтар интихоб кунед."
+                "Сурат хеле калон аст. Суратро хурдтар интихоб кунед."
             );
 
             return;
@@ -1485,10 +1398,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderProductsList();
 
-        showImagePreview(images);
+        showImagePreview(image);
 
 
-        if (images.length > 0) {
+        if (image) {
 
             currentImageInfo.style.display =
                 "block";
@@ -1497,7 +1410,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         alert(
-            "Маҳсулот ва аксҳо захира шуданд."
+            "Маҳсулот захира шуд."
         );
 
     }
@@ -1578,26 +1491,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     unit: "кг",
                     qty: 0,
                     bag: 0,
-                    image: "",
-                    images: []
+                    image: ""
 
                 };
 
 
-            let images = [];
-
-            if (
-                Array.isArray(product.images)
-            ) {
-
-                images =
-                    product.images.filter(Boolean);
-
-            } else if (product.image) {
-
-                images = [product.image];
-
-            }
+            const image =
+                product.image || "";
 
 
             const row =
@@ -1607,7 +1507,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "product-row";
 
 
-            if (images[0]) {
+            if (image) {
 
                 const img =
                     document.createElement("img");
@@ -1616,7 +1516,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "product-image";
 
                 img.src =
-                    images[0];
+                    image;
 
                 img.alt =
                     category;
@@ -1678,14 +1578,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            const imageText =
-                images.length > 0
-                    ? ` • ${images.length} акс`
-                    : "";
-
-
             details.textContent =
-                `${product.price || 0} сомонӣ • ${unitText}${imageText}`;
+                `${product.price || 0} сомонӣ • ${unitText}`;
 
 
             info.appendChild(name);
