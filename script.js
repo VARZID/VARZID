@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inStock: "Дар фурӯш",
             noPrice: "Нарх муайян нашудааст",
             noProducts: "Маҳсулот ҳоло илова нашудааст.",
+            favorites: "Дӯстдоштаҳо",
             deleteConfirm: "Ин категорияро нест мекунед?",
             newCategory: "Номи маҳсулоти навро ворид кунед:",
             deleteFailed: "Нест кардан иҷро нашуд.",
@@ -151,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inStock: "В продаже",
             noPrice: "Цена не указана",
             noProducts: "Товар пока не добавлен.",
+            favorites: "Избранное",
             deleteConfirm: "Удалить эту категорию?",
             newCategory: "Введите название нового товара:",
             deleteFailed: "Не удалось удалить.",
@@ -183,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inStock: "Sotuvda",
             noPrice: "Narx belgilanmagan",
             noProducts: "Mahsulot hali qo‘shilmagan.",
+            favorites: "Sevimlilar",
             deleteConfirm: "Bu kategoriyani o‘chirasizmi?",
             newCategory: "Yangi mahsulot nomini kiriting:",
             deleteFailed: "O‘chirish amalga oshmadi.",
@@ -199,6 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     let currentCategory = "Варзидан";
+    let favoritesMode = false;
 
 
     function getLang() {
@@ -456,6 +460,215 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =========================
+       FAVORITES
+    ========================= */
+
+    function getFavorites() {
+
+        let favorites;
+
+        try {
+
+            favorites = JSON.parse(
+                localStorage.getItem(
+                    "varzid_favorites"
+                ) || "[]"
+            );
+
+        } catch (error) {
+
+            favorites = [];
+
+        }
+
+
+        if (!Array.isArray(favorites)) {
+
+            favorites = [];
+
+        }
+
+
+        return favorites;
+
+    }
+
+
+    function saveFavorites(favorites) {
+
+        localStorage.setItem(
+            "varzid_favorites",
+            JSON.stringify(favorites)
+        );
+
+    }
+
+
+    function isFavorite(id) {
+
+        return getFavorites().includes(id);
+
+    }
+
+
+    function toggleFavorite(id) {
+
+        const favorites =
+            getFavorites();
+
+        const index =
+            favorites.indexOf(id);
+
+
+        if (index === -1) {
+
+            favorites.push(id);
+
+        } else {
+
+            favorites.splice(
+                index,
+                1
+            );
+
+        }
+
+
+        saveFavorites(favorites);
+
+    }
+
+
+    function setBottomActive(button) {
+
+        document
+            .querySelectorAll(
+                ".bottom-nav-btn"
+            )
+            .forEach(btn => {
+
+                btn.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+        if (button) {
+
+            button.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+
+    function createFavoriteButton(category) {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "product-favorite-btn";
+
+        button.type =
+            "button";
+
+        button.setAttribute(
+            "aria-label",
+            "Favorite"
+        );
+
+
+        const svg =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "svg"
+            );
+
+        svg.setAttribute(
+            "viewBox",
+            "0 0 24 24"
+        );
+
+
+        const path =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path"
+            );
+
+
+        /* Айнан ҳамон шакли дили Дӯстдоштаҳо */
+
+        path.setAttribute(
+            "d",
+            "M20.8 8.7c0 5-8.8 11-8.8 11s-8.8-6-8.8-11A4.7 4.7 0 0 1 12 5.4a4.7 4.7 0 0 1 8.8 3.3z"
+        );
+
+
+        svg.appendChild(path);
+
+        button.appendChild(svg);
+
+
+        function updateState() {
+
+            const active =
+                isFavorite(category);
+
+            button.classList.toggle(
+                "active",
+                active
+            );
+
+            button.setAttribute(
+                "aria-pressed",
+                String(active)
+            );
+
+        }
+
+
+        updateState();
+
+
+        button.addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                toggleFavorite(category);
+
+                updateState();
+
+
+                if (favoritesMode) {
+
+                    renderProducts();
+
+                }
+
+            }
+        );
+
+
+        return button;
+
+    }
+
+
+    /* =========================
+       PRODUCT CARD
+    ========================= */
+
     function createProductCard(
         category,
         product
@@ -473,6 +686,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         imageBox.className =
             "product-image-box";
+
+
+        /* ДИЛИ МАҲСУЛОТ */
+
+        const favoriteButton =
+            createFavoriteButton(
+                category
+            );
+
+        imageBox.appendChild(
+            favoriteButton
+        );
 
 
         if (product.image) {
@@ -699,7 +924,29 @@ document.addEventListener("DOMContentLoaded", () => {
         let categoriesToShow = [];
 
 
-        if (currentCategory === "Варзидан") {
+        /*
+         * ВАРЗИДАН:
+         * танҳо категорияи асосӣ мемонад.
+         * Худи "Варзидан" ҳамчун маҳсулот НИШОН ДОДА НАМЕШАВАД.
+         */
+
+        if (favoritesMode) {
+
+            const favorites =
+                getFavorites();
+
+
+            categoriesToShow =
+                categories.filter(
+                    category =>
+                        category !== "Варзидан" &&
+                        favorites.includes(category)
+                );
+
+
+        } else if (
+            currentCategory === "Варзидан"
+        ) {
 
             categoriesToShow =
                 categories.filter(
@@ -712,7 +959,8 @@ document.addEventListener("DOMContentLoaded", () => {
             categoriesToShow =
                 categories.includes(
                     currentCategory
-                )
+                ) &&
+                currentCategory !== "Варзидан"
                     ? [currentCategory]
                     : [];
 
@@ -722,7 +970,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentCategoryTitle) {
 
             currentCategoryTitle.textContent =
-                currentCategory;
+                favoritesMode
+                    ? t("favorites")
+                    : currentCategory;
 
         }
 
@@ -738,7 +988,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 "products-empty";
 
             empty.textContent =
-                t("noProducts");
+                favoritesMode
+                    ? t("noProducts")
+                    : t("noProducts");
 
             productGrid.appendChild(empty);
 
@@ -750,23 +1002,17 @@ document.addEventListener("DOMContentLoaded", () => {
         categoriesToShow.forEach(category => {
 
             const product =
-                products[category] || {
+                products[category];
 
-                    category: category,
 
-                    name: category,
+            /*
+             * Агар маҳсулоти категория
+             * вуҷуд надошта бошад, нишон надиҳ.
+             */
 
-                    price: 0,
-
-                    unit: "кг",
-
-                    qty: 0,
-
-                    bag: 0,
-
-                    image: ""
-
-                };
+            if (!product) {
+                return;
+            }
 
 
             productGrid.appendChild(
@@ -805,7 +1051,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
-                category === currentCategory
+                category === currentCategory &&
+                !favoritesMode
             ) {
 
                 card.classList.add(
@@ -829,8 +1076,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 "click",
                 () => {
 
+                    favoritesMode =
+                        false;
+
                     currentCategory =
                         category;
+
+                    setBottomActive(
+                        homeBtn
+                    );
 
                     renderCategories();
 
@@ -926,6 +1180,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         );
 
 
+                        const favorites =
+                            getFavorites();
+
+
+                        saveFavorites(
+                            favorites.filter(
+                                item =>
+                                    item !== category
+                            )
+                        );
+
+
                         if (
                             currentCategory ===
                             category
@@ -935,6 +1201,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                 "Варзидан";
 
                         }
+
+
+                        favoritesMode =
+                            false;
 
 
                         renderCategories();
@@ -1099,6 +1369,14 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCategory =
             cleanName;
 
+        favoritesMode =
+            false;
+
+
+        setBottomActive(
+            homeBtn
+        );
+
 
         renderCategories();
 
@@ -1206,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             localStorage.getItem(
                                 "subCount"
                             ) || 0
-                        );
+                            );
 
 
                     count += 1;
@@ -2215,6 +2493,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
+                favoritesMode =
+                    false;
+
                 currentCategory =
                     "Варзидан";
 
@@ -2227,19 +2508,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                document
-                    .querySelectorAll(
-                        ".bottom-nav-btn"
-                    )
-                    .forEach(btn => {
-                        btn.classList.remove(
-                            "active"
-                        );
-                    });
-
-
-                homeBtn.classList.add(
-                    "active"
+                setBottomActive(
+                    homeBtn
                 );
 
             }
@@ -2254,19 +2524,22 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
-                document
-                    .querySelectorAll(
-                        ".bottom-nav-btn"
-                    )
-                    .forEach(btn => {
-                        btn.classList.remove(
-                            "active"
-                        );
-                    });
+                favoritesMode =
+                    true;
+
+                renderProducts();
+
+                if (cartPanel) {
+
+                    cartPanel.classList.remove(
+                        "open"
+                    );
+
+                }
 
 
-                favoritesBtn.classList.add(
-                    "active"
+                setBottomActive(
+                    favoritesBtn
                 );
 
             }
