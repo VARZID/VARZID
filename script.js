@@ -1,3211 +1,1071 @@
-document.addEventListener("DOMContentLoaded", () => {
+'use strict';
 
-    const brandToggle = document.getElementById("brandToggle");
-    const dropdownMenu = document.getElementById("dropdownMenu");
+const WA_NUMBER = '992000001606';
+const ALL = '__all__';
 
-    const settingsToggle = document.getElementById("settingsToggle");
-    const settingsMenu = document.getElementById("settingsMenu");
-    const closeSettingsHeader =
-        document.getElementById("closeSettingsHeader");
+const KEYS = {
+    cats: 'varzid_categories',
+    products: 'varzid_products',
+    cart: 'varzid_cart',
+    lang: 'varzid_lang',
+    theme: 'varzid_theme',
+    notify: 'varzid_notify',
+    sub: 'varzid_subscribed'
+};
 
-    const subBtn = document.getElementById("subBtn");
-    const subCount = document.getElementById("subCount");
+const DEFAULT_CATEGORIES = [
+    'Орд',
+    'Комбикорм',
+    'Гандум',
+    'Ҷав',
+    'Ҷуворимакка',
+    'Селитра',
+    'Карбамид'
+];
 
-    const categoryList = document.getElementById("categoryList");
-    const addCategoryBtn =
-        document.getElementById("addCategoryBtn");
+const CATEGORY_RU = {
+    'Орд': 'Мука',
+    'Комбикорм': 'Комбикорм',
+    'Гандум': 'Пшеница',
+    'Ҷав': 'Ячмень',
+    'Ҷуворимакка': 'Кукуруза',
+    'Селитра': 'Селитра',
+    'Карбамид': 'Карбамид'
+};
 
-    const productGrid =
-        document.getElementById("productGrid");
+const CATEGORY_UZ = {
+    'Орд': 'Un',
+    'Комбикорм': 'Kombikorm',
+    'Гандум': 'Bug‘doy',
+    'Ҷав': 'Arpa',
+    'Ҷуворимакка': 'Makkajo‘xori',
+    'Селитра': 'Selitra',
+    'Карбамид': 'Karbamid'
+};
 
-    const currentCategoryTitle =
-        document.getElementById("currentCategoryTitle");
+const $ = id => document.getElementById(id);
 
-    const themeToggle =
-        document.getElementById("themeToggle");
+function load(key, fallback) {
+    try {
+        const value = localStorage.getItem(key);
+        return value === null ? fallback : JSON.parse(value);
+    } catch {
+        return fallback;
+    }
+}
 
-    const themeValue =
-        document.getElementById("themeValue");
+function save(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
 
-    const notificationToggle =
-        document.getElementById("notificationToggle");
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]));
+}
 
-    const notificationStatus =
-        document.getElementById("notificationStatus");
+function money(value) {
+    return `${Number(value || 0).toLocaleString('ru-RU')} сомонӣ`;
+}
 
-    const languageToggle =
-        document.getElementById("languageToggle");
+function newId() {
+    return 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+}
 
-    const languageValue =
-        document.getElementById("languageValue");
+let categories = Array.from(
+    new Set(
+        (
+            Array.isArray(load(KEYS.cats, DEFAULT_CATEGORIES))
+                ? load(KEYS.cats, DEFAULT_CATEGORIES)
+                : DEFAULT_CATEGORIES
+        ).filter(c => c && c !== 'Варзидан')
+    )
+);
 
-    const adminModeToggle =
-        document.getElementById("adminModeToggle");
+let products = load(KEYS.products, []);
+let cart = load(KEYS.cart, []);
 
-    const themeModal =
-        document.getElementById("themeModal");
+let lang = ['tg', 'ru', 'uz'].includes(
+    localStorage.getItem(KEYS.lang)
+)
+    ? localStorage.getItem(KEYS.lang)
+    : 'tg';
 
-    const themeCancel =
-        document.getElementById("themeCancel");
+let theme =
+    localStorage.getItem(KEYS.theme) === 'dark'
+        ? 'dark'
+        : 'light';
 
-    const languageModal =
-        document.getElementById("languageModal");
+let notifications =
+    localStorage.getItem(KEYS.notify) === 'true';
 
-    const languageCancel =
-        document.getElementById("languageCancel");
+let currentCategory = ALL;
 
-    const cartPanel =
-        document.getElementById("cartPanel");
+const TEXT = {
+    tg: {
+        subscribers: 'обуначӣ',
+        subscribe: 'Обуна шудан',
+        subscribed: 'Обуна шуд',
+        categories: 'Категорияҳо',
+        settings: 'Танзимот',
+        theme: 'Тема',
+        day: 'Режими рӯзона ›',
+        night: 'Режими шабона ›',
+        notifications: 'Огоҳиҳо',
+        on: 'Фаъол ›',
+        off: 'Хомӯш ›',
+        language: 'Забон',
+        admin: 'Админ',
+        home: 'Асосӣ',
+        favorites: 'Дӯстдоштаҳо',
+        cart: 'Сабад',
+        profile: 'Профил',
+        empty: 'Ҳоло маҳсулот нест',
+        add: 'Илова ба сабад',
+        available: 'ДАР ФУРӮШ',
+        sold: 'ТАМОМ ШУД',
+        total: 'Ҳамагӣ',
+        buy: 'Харидан',
+        cartEmpty: 'Сабад ҳоло холӣ аст',
+        delivery: 'Арзиши расонидан вобаста ба масофа аст.'
+    },
 
-    const cartClose =
-        document.getElementById("cartClose");
+    ru: {
+        subscribers: 'подписчиков',
+        subscribe: 'Подписаться',
+        subscribed: 'Вы подписаны',
+        categories: 'Категории',
+        settings: 'Настройки',
+        theme: 'Тема',
+        day: 'Дневной режим ›',
+        night: 'Ночной режим ›',
+        notifications: 'Уведомления',
+        on: 'Включены ›',
+        off: 'Выключены ›',
+        language: 'Язык',
+        admin: 'Админ',
+        home: 'Главная',
+        favorites: 'Избранное',
+        cart: 'Корзина',
+        profile: 'Профиль',
+        empty: 'Товаров пока нет',
+        add: 'Добавить в корзину',
+        available: 'В ПРОДАЖЕ',
+        sold: 'ЗАКОНЧИЛСЯ',
+        total: 'Итого',
+        buy: 'Заказать',
+        cartEmpty: 'Корзина пуста',
+        delivery: 'Стоимость доставки зависит от расстояния.'
+    },
 
-    const cartItems =
-        document.getElementById("cartItems");
+    uz: {
+        subscribers: 'obunachi',
+        subscribe: 'Obuna bo‘lish',
+        subscribed: 'Obuna bo‘lindi',
+        categories: 'Kategoriyalar',
+        settings: 'Sozlamalar',
+        theme: 'Mavzu',
+        day: 'Kunduzgi rejim ›',
+        night: 'Tungi rejim ›',
+        notifications: 'Bildirishnomalar',
+        on: 'Yoqilgan ›',
+        off: 'O‘chirilgan ›',
+        language: 'Til',
+        admin: 'Admin',
+        home: 'Bosh sahifa',
+        favorites: 'Sevimlilar',
+        cart: 'Savat',
+        profile: 'Profil',
+        empty: 'Hozircha mahsulot yo‘q',
+        add: 'Savatga qo‘shish',
+        available: 'SOTUVDA',
+        sold: 'TUGAGAN',
+        total: 'Jami',
+        buy: 'Buyurtma berish',
+        cartEmpty: 'Savat bo‘sh',
+        delivery: 'Yetkazib berish narxi masofaga bog‘liq.'
+    }
+};
 
-    const cartEmpty =
-        document.getElementById("cartEmpty");
+function t(key) {
+    return TEXT[lang][key] || TEXT.tg[key] || key;
+}
 
-    const cartTotal =
-        document.getElementById("cartTotal");
+function categoryName(category) {
+    if (lang === 'ru') {
+        return CATEGORY_RU[category] || category;
+    }
 
-    const cartCount =
-        document.getElementById("cartCount");
+    if (lang === 'uz') {
+        return CATEGORY_UZ[category] || category;
+    }
 
-    const buyCartBtn =
-        document.getElementById("buyCartBtn");
+    return category;
+}
 
-    const cartBtn =
-        document.getElementById("cartBtn");
+function persist() {
+    save(KEYS.cats, categories);
+    save(KEYS.products, products);
+    save(KEYS.cart, cart);
 
-    const homeBtn =
-        document.getElementById("homeBtn");
+    localStorage.setItem(KEYS.lang, lang);
+    localStorage.setItem(KEYS.theme, theme);
+    localStorage.setItem(KEYS.notify, String(notifications));
+}
 
-    const favoritesBtn =
-        document.getElementById("favoritesBtn");
+function applyTheme() {
+    document.body.classList.toggle(
+        'dark-theme',
+        theme === 'dark'
+    );
+
+    document.body.classList.toggle(
+        'light-theme',
+        theme !== 'dark'
+    );
+}
+
+function openModal(id) {
+    const element = $(id);
+
+    if (element) {
+        element.classList.remove('hidden');
+    }
+}
+
+function closeModal(id) {
+    const element = $(id);
+
+    if (element) {
+        element.classList.add('hidden');
+    }
+}
 
 
-    const DEFAULT_CATEGORIES = [
-        "Варзидан",
-        "Орд",
-        "Комбикорм",
-        "Гандум",
-        "Ҷав",
-        "Ҷуворимакка",
-        "Селитра",
-        "Карбамид"
-    ];
+/* =========================
+   CATEGORIES
+========================= */
 
+function renderCategories() {
+    const menu = $('categoryMenu');
 
-    const translations = {
+    if (!menu) return;
 
-        tg: {
-            subscribers: "обуна",
-            subscribe: "Обуна шудан",
-            subscribed: "Обуна шуд",
-            categories: "Категорияҳо",
-            settings: "Танзимот",
-            theme: "Мавзӯъ",
-            notifications: "Огоҳиномаҳо",
-            language: "Забон",
-            chooseTheme: "Мавзӯъро интихоб кунед",
-            cancel: "Бекор кардан",
-            cart: "Сабад",
-            cartEmpty: "Сабад холӣ аст.",
-            total: "Ҳамагӣ",
-            order: "Фармоиш диҳед",
-            addToCart: "Илова ба сабад",
-            outOfStock: "Тамом шуд",
-            inStock: "Дар фурӯш",
-            noPrice: "Нарх муайян нашудааст",
-            noProducts: "Маҳсулот ҳоло илова нашудааст.",
-            favorites: "Дӯстдоштаҳо",
-            deleteConfirm: "Ин категорияро нест мекунед?",
-            newCategory: "Номи маҳсулоти навро ворид кунед:",
-            deleteFailed: "Нест кардан иҷро нашуд.",
-            emptyName: "Номи маҳсулот холӣ буда наметавонад.",
-            noStock: "Миқдор кофӣ нест.",
-            noImage: "Акс нест",
-            alreadyExists: "Ин маҳсулот аллакай ҳаст.",
-            orderGreeting: "Салом, ман мехоҳам фармоиш диҳам:",
-            delivery: "Арзиши расонидан вобаста ба масофа аст.",
-            sum: "Ҳамагӣ:"
-        },
+    menu.innerHTML = '';
 
-        ru: {
-            subscribers: "подписчиков",
-            subscribe: "Подписаться",
-            subscribed: "Вы подписаны",
-            categories: "Категории",
-            settings: "Настройки",
-            theme: "Тема",
-            notifications: "Уведомления",
-            language: "Язык",
-            chooseTheme: "Выберите тему",
-            cancel: "Отмена",
-            cart: "Корзина",
-            cartEmpty: "Корзина пуста.",
-            total: "Итого",
-            order: "Заказать",
-            addToCart: "В корзину",
-            outOfStock: "Нет в наличии",
-            inStock: "В продаже",
-            noPrice: "Цена не указана",
-            noProducts: "Товар пока не добавлен.",
-            favorites: "Избранное",
-            deleteConfirm: "Удалить эту категорию?",
-            newCategory: "Введите название нового товара:",
-            deleteFailed: "Не удалось удалить.",
-            emptyName: "Название не может быть пустым.",
-            noStock: "Недостаточно количества.",
-            noImage: "Нет фото",
-            alreadyExists: "Этот товар уже есть.",
-            orderGreeting: "Здравствуйте, я хочу сделать заказ:",
-            delivery: "Стоимость доставки зависит от расстояния.",
-            sum: "Итого:"
-        },
+    const allButton = document.createElement('button');
 
-        uz: {
-            subscribers: "obunachi",
-            subscribe: "Obuna bo‘lish",
-            subscribed: "Obuna bo‘lindi",
-            categories: "Kategoriyalar",
-            settings: "Sozlamalar",
-            theme: "Mavzu",
-            notifications: "Bildirishnomalar",
-            language: "Til",
-            chooseTheme: "Mavzuni tanlang",
-            cancel: "Bekor qilish",
-            cart: "Savat",
-            cartEmpty: "Savat bo‘sh.",
-            total: "Jami",
-            order: "Buyurtma berish",
-            addToCart: "Savatga qo‘shish",
-            outOfStock: "Tugagan",
-            inStock: "Sotuvda",
-            noPrice: "Narx belgilanmagan",
-            noProducts: "Mahsulot hali qo‘shilmagan.",
-            favorites: "Sevimlilar",
-            deleteConfirm: "Bu kategoriyani o‘chirasizmi?",
-            newCategory: "Yangi mahsulot nomini kiriting:",
-            deleteFailed: "O‘chirish amalga oshmadi.",
-            emptyName: "Mahsulot nomi bo‘sh bo‘lishi mumkin emas.",
-            noStock: "Miqdor yetarli emas.",
-            noImage: "Rasm yo‘q",
-            alreadyExists: "Bu mahsulot allaqachon mavjud.",
-            orderGreeting: "Salom, men buyurtma bermoqchiman:",
-            delivery: "Yetkazib berish narxi masofaga bog‘liq.",
-            sum: "Jami:"
+    allButton.type = 'button';
+    allButton.className =
+        'category-btn' +
+        (currentCategory === ALL ? ' active' : '');
+
+    allButton.textContent =
+        lang === 'ru'
+            ? 'Все товары'
+            : lang === 'uz'
+                ? 'Barcha mahsulotlar'
+                : 'Варзидан';
+
+    allButton.onclick = () => {
+        currentCategory = ALL;
+
+        const dropdown = $('dropdownMenu');
+
+        if (dropdown) {
+            dropdown.classList.remove('open');
         }
 
+        renderAll();
     };
 
+    menu.appendChild(allButton);
 
-    let currentCategory = "Варзидан";
-    let favoritesMode = false;
+    categories.forEach(category => {
+        const button = document.createElement('button');
 
+        button.type = 'button';
+        button.className =
+            'category-btn' +
+            (currentCategory === category ? ' active' : '');
 
-    /* =========================
-       IMAGE VIEWER
-    ========================= */
+        button.textContent = categoryName(category);
 
-    function createImageViewer() {
+        button.onclick = () => {
+            currentCategory = category;
 
-        if (document.getElementById("varzidImageViewer")) {
-            return;
-        }
+            const dropdown = $('dropdownMenu');
 
-        const style =
-            document.createElement("style");
-
-        style.id =
-            "varzidImageViewerStyle";
-
-        style.textContent = `
-            #varzidImageViewer {
-                position: fixed;
-                inset: 0;
-                z-index: 99999;
-                display: none;
-                align-items: center;
-                justify-content: center;
-                background: rgba(0,0,0,.94);
-                padding: 18px;
-                box-sizing: border-box;
-                touch-action: pan-y;
+            if (dropdown) {
+                dropdown.classList.remove('open');
             }
 
-            #varzidImageViewer.open {
-                display: flex;
-            }
+            renderAll();
+        };
 
-            #varzidImageViewer img {
-                max-width: 100%;
-                max-height: 88vh;
-                width: auto;
-                height: auto;
-                object-fit: contain;
-                border-radius: 10px;
-                user-select: none;
-                -webkit-user-select: none;
-                -webkit-user-drag: none;
-            }
+        menu.appendChild(button);
+    });
+}
 
-            #varzidImageBack {
-                position: absolute;
-                left: 16px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 52px;
-                height: 52px;
-                border: 0;
-                border-radius: 50%;
-                background: rgba(0,0,0,.55);
-                color: #fff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 40px;
-                font-weight: 400;
-                line-height: 1;
-                cursor: pointer;
-                z-index: 2;
-                box-shadow: 0 2px 12px rgba(0,0,0,.25);
-                -webkit-tap-highlight-color: transparent;
-            }
 
-            #varzidImageBack:active {
-                transform: translateY(-50%) scale(.92);
-                background: rgba(0,0,0,.72);
-            }
+/* =========================
+   PRODUCTS
+========================= */
 
-            #varzidImageViewerName {
-                position: absolute;
-                left: 50%;
-                bottom: 18px;
-                transform: translateX(-50%);
-                color: #fff;
-                font-size: 14px;
-                font-weight: 500;
-                text-align: center;
-                max-width: 75%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                opacity: .9;
-            }
+function renderProducts() {
+    const list = $('productList');
 
-            @media (max-width: 480px) {
-                #varzidImageBack {
-                    left: 12px;
-                    width: 50px;
-                    height: 50px;
-                    font-size: 38px;
-                }
+    if (!list) return;
 
-                #varzidImageViewer {
-                    padding: 12px;
-                }
+    list.innerHTML = '';
 
-                #varzidImageViewer img {
-                    max-height: 84vh;
-                }
-            }
+    let visibleProducts;
+
+    if (currentCategory === ALL) {
+        visibleProducts = products.filter(
+            product => product.active !== false
+        );
+    } else {
+        visibleProducts = products.filter(
+            product =>
+                product.category === currentCategory &&
+                product.active !== false
+        );
+    }
+
+    if (!visibleProducts.length) {
+        list.innerHTML = `
+            <div class="empty">
+                ${t('empty')}
+            </div>
         `;
 
-        document.head.appendChild(style);
-
-
-        const viewer =
-            document.createElement("div");
-
-        viewer.id =
-            "varzidImageViewer";
-
-
-        const backButton =
-            document.createElement("button");
-
-        backButton.id =
-            "varzidImageBack";
-
-        backButton.type =
-            "button";
-
-        backButton.textContent =
-            "‹";
-
-        backButton.setAttribute(
-            "aria-label",
-            "Баромадан аз акс"
-        );
-
-
-        const image =
-            document.createElement("img");
-
-        image.id =
-            "varzidLargeImage";
-
-        image.alt =
-            "";
-
-
-        const imageName =
-            document.createElement("div");
-
-        imageName.id =
-            "varzidImageViewerName";
-
-
-        viewer.appendChild(
-            backButton
-        );
-
-        viewer.appendChild(
-            image
-        );
-
-        viewer.appendChild(
-            imageName
-        );
-
-
-        document.body.appendChild(
-            viewer
-        );
-
-
-        function closeViewer() {
-
-            viewer.classList.remove(
-                "open"
-            );
-
-            image.src = "";
-
-            imageName.textContent = "";
-
-            document.body.style.overflow = "";
-        }
-
-
-        backButton.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-                closeViewer();
-
-            }
-        );
-
-
-        viewer.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target === viewer
-                ) {
-
-                    closeViewer();
-
-                }
-
-            }
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    !viewer.classList.contains(
-                        "open"
-                    )
-                ) {
-
-                    return;
-
-                }
-
-
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    closeViewer();
-
-                }
-
-            }
-        );
-
-
-        return {
-            viewer,
-            image,
-            imageName,
-            closeViewer
-        };
-
+        return;
     }
 
-
-    const imageViewer =
-        createImageViewer();
-
-
-    function openProductImage(
-        imageUrl,
-        productName
-    ) {
-
-        if (
-            !imageUrl ||
-            !imageViewer
-        ) {
-
-            return;
-
-        }
-
-
-        imageViewer.image.src =
-            imageUrl;
-
-        imageViewer.image.alt =
-            productName || "";
-
-
-        imageViewer.imageName.textContent =
-            productName || "";
-
-
-        imageViewer.viewer.classList.add(
-            "open"
-        );
-
-
-        document.body.style.overflow =
-            "hidden";
-
-    }
-
-
-    function getLang() {
-
-        const lang =
-            localStorage.getItem("lang") || "ru";
-
-        if (!translations[lang]) {
-            return "ru";
-        }
-
-        return lang;
-
-    }
-
-
-    function t(key) {
-
-        const lang = getLang();
-
-        return (
-            translations[lang][key] ||
-            translations.ru[key] ||
-            key
-        );
-
-    }
-
-
-    function getCategories() {
-
-        let categories;
-
-        try {
-
-            categories = JSON.parse(
-                localStorage.getItem("categories") || "null"
-            );
-
-        } catch (error) {
-
-            categories = null;
-
-        }
-
-
-        if (
-            !Array.isArray(categories) ||
-            categories.length === 0
-        ) {
-
-            categories = [
-                ...DEFAULT_CATEGORIES
-            ];
-
-            localStorage.setItem(
-                "categories",
-                JSON.stringify(categories)
-            );
-
-        }
-
-
-        if (!categories.includes("Варзидан")) {
-
-            categories.unshift("Варзидан");
-
-        }
-
-
-        return categories;
-
-    }
-
-
-    function saveCategories(categories) {
-
-        localStorage.setItem(
-            "categories",
-            JSON.stringify(categories)
-        );
-
-    }
-
-
-    function getProducts() {
-
-        let raw;
-
-        try {
-
-            raw = JSON.parse(
-                localStorage.getItem(
-                    "varzid_custom_products"
-                ) || "null"
-            );
-
-        } catch (error) {
-
-            raw = null;
-
-        }
-
-
-        if (Array.isArray(raw)) {
-
-            const converted = {};
-
-            raw.forEach(product => {
-
-                if (!product) {
-                    return;
-                }
-
-
-                const name =
-                    product.category ||
-                    product.name;
-
-
-                if (
-                    !name ||
-                    name === "Варзидан"
-                ) {
-                    return;
-                }
-
-
-                converted[name] = {
-
-                    category: name,
-
-                    name: name,
-
-                    price:
-                        Number(product.price) || 0,
-
-                    unit:
-                        product.unit || "кг",
-
-                    qty:
-                        Number(product.qty) || 0,
-
-                    bag:
-                        Number(product.bag) || 0,
-
-                    image:
-                        product.image || "",
-
-                    onSale:
-                        !!product.onSale,
-
-                    featured:
-                        !!product.featured
-
-                };
-
-            });
-
-
-            localStorage.setItem(
-                "varzid_custom_products",
-                JSON.stringify(converted)
-            );
-
-
-            return converted;
-
-        }
-
-
-        if (
-            raw &&
-            typeof raw === "object" &&
-            !Array.isArray(raw)
-        ) {
-
-            return raw;
-
-        }
-
-
-        return {};
-
-    }
-
-
-    function saveProducts(products) {
-
-        localStorage.setItem(
-            "varzid_custom_products",
-            JSON.stringify(products)
-        );
-
-    }
-
-
-    function ensureProducts() {
-
-        const categories =
-            getCategories();
-
-        const products =
-            getProducts();
-
-        let changed = false;
-
-
-        categories.forEach(category => {
-
-            if (category === "Варзидан") {
-                return;
-            }
-
-
-            if (!products[category]) {
-
-                products[category] = {
-
-                    category: category,
-
-                    name: category,
-
-                    price: 0,
-
-                    unit: "кг",
-
-                    qty: 0,
-
-                    bag: 0,
-
-                    image: "",
-
-                    onSale: false,
-
-                    featured: false
-
-                };
-
-                changed = true;
-
-            }
-
-        });
-
-
-        if (changed) {
-
-            saveProducts(products);
-
-        }
-
-
-        return products;
-
-    }
-
-
-    /* =========================
-       FAVORITES
-    ========================= */
-
-    function getFavorites() {
-
-        let favorites;
-
-        try {
-
-            favorites = JSON.parse(
-                localStorage.getItem(
-                    "varzid_favorites"
-                ) || "[]"
-            );
-
-        } catch (error) {
-
-            favorites = [];
-
-        }
-
-
-        if (!Array.isArray(favorites)) {
-
-            favorites = [];
-
-        }
-
-
-        return favorites;
-
-    }
-
-
-    function saveFavorites(favorites) {
-
-        localStorage.setItem(
-            "varzid_favorites",
-            JSON.stringify(favorites)
-        );
-
-        updateFavoritesCount();
-
-    }
-
-
-    function isFavorite(id) {
-
-        return getFavorites().includes(id);
-
-    }
-
-
-    function toggleFavorite(id) {
-
-        const favorites =
-            getFavorites();
-
-        const index =
-            favorites.indexOf(id);
-
-
-        if (index === -1) {
-
-            favorites.push(id);
-
-        } else {
-
-            favorites.splice(
-                index,
-                1
-            );
-
-        }
-
-
-        saveFavorites(favorites);
-
-    }
-
-
-    function updateFavoritesCount() {
-
-        if (!favoritesBtn) {
-            return;
-        }
-
-
-        const count =
-            getFavorites().length;
-
-
-        let badge =
-            document.getElementById(
-                "favoritesCount"
-            );
-
-
-        if (!badge) {
-
-            badge =
-                document.createElement("span");
-
-            badge.id =
-                "favoritesCount";
-
-            badge.textContent =
-                "0";
-
-            badge.style.position =
-                "absolute";
-
-            badge.style.top =
-                "5px";
-
-            badge.style.right =
-                "calc(50% - 25px)";
-
-            badge.style.minWidth =
-                "17px";
-
-            badge.style.height =
-                "17px";
-
-            badge.style.padding =
-                "0 4px";
-
-            badge.style.boxSizing =
-                "border-box";
-
-            badge.style.borderRadius =
-                "10px";
-
-            badge.style.background =
-                "var(--main-green, #16843a)";
-
-            badge.style.color =
-                "#fff";
-
-            badge.style.fontSize =
-                "10px";
-
-            badge.style.fontWeight =
-                "600";
-
-            badge.style.lineHeight =
-                "17px";
-
-            badge.style.textAlign =
-                "center";
-
-            badge.style.display =
-                "none";
-
-            badge.style.zIndex =
-                "10";
-
-            if (
-                getComputedStyle(
-                    favoritesBtn
-                ).position === "static"
-            ) {
-
-                favoritesBtn.style.position =
-                    "relative";
-
-            }
-
-
-            favoritesBtn.appendChild(
-                badge
-            );
-
-        }
-
-
-        badge.textContent =
-            count;
-
-
-        badge.style.display =
-            count > 0
-                ? "block"
-                : "none";
-
-    }
-
-
-    function setBottomActive(button) {
-
-        document
-            .querySelectorAll(
-                ".bottom-nav-btn"
-            )
-            .forEach(btn => {
-
-                btn.classList.remove(
-                    "active"
-                );
-
-            });
-
-
-        if (button) {
-
-            button.classList.add(
-                "active"
-            );
-
-        }
-
-    }
-
-
-    function createFavoriteButton(category) {
-
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "product-favorite-btn";
-
-        button.type =
-            "button";
-
-        button.setAttribute(
-            "aria-label",
-            "Favorite"
-        );
-
-
-        const svg =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "svg"
-            );
-
-        svg.setAttribute(
-            "viewBox",
-            "0 0 24 24"
-        );
-
-
-        const path =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "path"
-            );
-
-
-        path.setAttribute(
-            "d",
-            "M20.8 8.7c0 5-8.8 11-8.8 11s-8.8-6-8.8-11A4.7 4.7 0 0 1 12 5.4a4.7 4.7 0 0 1 8.8 3.3z"
-        );
-
-
-        svg.appendChild(path);
-
-        button.appendChild(svg);
-
-
-        function updateState() {
-
-            const active =
-                isFavorite(category);
-
-            button.classList.toggle(
-                "active",
-                active
-            );
-
-            button.setAttribute(
-                "aria-pressed",
-                String(active)
-            );
-
-        }
-
-
-        updateState();
-
-
-        button.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-
-                toggleFavorite(category);
-
-                updateState();
-
-
-                if (favoritesMode) {
-
-                    renderProducts();
-
-                }
-
-            }
-        );
-
-
-        return button;
-
-    }
-
-
-    /* =========================
-       PRODUCT CARD
-    ========================= */
-
-    function createProductCard(
-        category,
-        product
-    ) {
-
-        const card =
-            document.createElement("article");
-
-        card.className =
-            "product-card";
-
-
-        const imageBox =
-            document.createElement("div");
-
-        imageBox.className =
-            "product-image-box";
-
-
-        const favoriteButton =
-            createFavoriteButton(
-                category
-            );
-
-        imageBox.appendChild(
-            favoriteButton
-        );
-
-
-        if (product.image) {
-
-            const img =
-                document.createElement("img");
-
-            img.src =
-                product.image;
-
-            img.alt =
-                category;
-
-            img.className =
-                "product-image";
-
-            img.setAttribute(
-                "draggable",
-                "false"
-            );
-
-
-            img.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-
-                    event.stopPropagation();
-
-                    openProductImage(
-                        product.image,
-                        category
-                    );
-
-                }
-            );
-
-
-            imageBox.appendChild(
-                img
-            );
-
-        } else {
-
-            const noImage =
-                document.createElement("div");
-
-            noImage.className =
-                "product-no-image";
-
-            noImage.textContent =
-                t("noImage");
-
-            imageBox.appendChild(
-                noImage
-            );
-
-        }
-
-
-        card.appendChild(
-            imageBox
-        );
-
-
-        const info =
-            document.createElement("div");
-
-        info.className =
-            "product-info";
-
-
-        const name =
-            document.createElement("div");
-
-        name.className =
-            "product-name";
-
-        name.textContent =
-            category;
-
-
-        info.appendChild(
-            name
-        );
-
-
-        const price =
-            document.createElement("div");
-
-        price.className =
-            "product-price";
-
-
-        if (Number(product.price) > 0) {
-
-            price.textContent =
-                `${product.price} сомонӣ`;
-
-        } else {
-
-            price.textContent =
-                t("noPrice");
-
-            price.classList.add(
-                "price-empty"
-            );
-
-        }
-
-
-        info.appendChild(
-            price
-        );
-
-
-        const unit =
-            document.createElement("div");
-
-        unit.className =
-            "product-unit";
-
-
-        let unitText =
-            `${product.qty || 0} ${product.unit || "кг"}`;
-
-
-        if (
-            product.unit === "халта" &&
-            Number(product.bag) > 0
-        ) {
-
-            unitText +=
-                ` • ${product.bag} кг/халта`;
-
-        }
-
-
-        unit.textContent =
-            unitText;
-
-
-        info.appendChild(
-            unit
-        );
-
-
-        const status =
-            document.createElement("div");
-
-        status.className =
-            "product-status";
-
+    visibleProducts.forEach(product => {
+        const card = document.createElement('article');
+
+        card.className = 'product-card';
+
+        const image = product.image
+            ? `
+                <img
+                    class="product-image"
+                    src="${product.image}"
+                    alt="${escapeHtml(product.name)}"
+                >
+            `
+            : `
+                <div class="product-image placeholder-image"></div>
+            `;
 
         const stock =
-            Number(product.qty) || 0;
+            Number(product.qty || 0) > 0
+                ? t('available')
+                : t('sold');
+
+        card.innerHTML = `
+            ${image}
+
+            <div class="product-body">
+
+                <div class="product-name">
+                    ${escapeHtml(product.name)}
+                </div>
+
+                <div class="product-price">
+                    ${money(product.price)}
+                    /
+                    ${escapeHtml(product.unit || 'кг')}
+                </div>
+
+                <div class="product-status">
+                    ${stock}
+                </div>
+
+                <div class="card-actions">
+
+                    <button
+                        type="button"
+                        class="card-btn"
+                        data-add="${product.id}"
+                    >
+                        ${t('add')}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="card-btn secondary"
+                        data-fav="${product.id}"
+                    >
+                        ♡
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        list.appendChild(card);
+    });
+
+    list.querySelectorAll('[data-add]').forEach(button => {
+        button.onclick = () => {
+            addToCart(button.dataset.add);
+        };
+    });
+
+    list.querySelectorAll('[data-fav]').forEach(button => {
+        button.onclick = () => {
+            button.textContent =
+                button.textContent === '♥'
+                    ? '♡'
+                    : '♥';
+        };
+    });
+}
 
 
-        if (stock > 0) {
+/* =========================
+   CART
+========================= */
 
-            status.textContent =
-                t("inStock");
+function renderCart() {
+    const box = $('cartItems');
 
-            status.classList.add(
-                "in-stock"
-            );
+    if (!box) return;
 
-        } else {
+    box.innerHTML = '';
 
-            status.textContent =
-                t("outOfStock");
+    let total = 0;
 
-            status.classList.add(
-                "out-of-stock"
-            );
+    cart = cart.filter(item =>
+        products.some(product => product.id === item.id)
+    );
 
-        }
+    cart.forEach(item => {
+        const product =
+            products.find(p => p.id === item.id);
 
+        if (!product) return;
 
-        info.appendChild(
-            status
-        );
+        const quantity = Number(item.qty || 1);
 
+        const sum =
+            Number(product.price || 0) * quantity;
 
-        const addButton =
-            document.createElement("button");
+        total += sum;
 
-        addButton.className =
-            "add-cart-btn";
+        const row = document.createElement('div');
 
-        addButton.textContent =
-            stock > 0
-                ? t("addToCart")
-                : t("outOfStock");
+        row.className = 'cart-row';
 
+        row.innerHTML = `
+            <span>
+                ${escapeHtml(product.name)}
+                × ${quantity}
+            </span>
 
-        if (
-            stock <= 0 ||
-            Number(product.price) <= 0
-        ) {
+            <strong>
+                ${money(sum)}
+            </strong>
+        `;
 
-            addButton.disabled = true;
+        box.appendChild(row);
+    });
 
-        }
-
-
-        addButton.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                addToCart({
-
-                    id: category,
-
-                    name: category,
-
-                    price:
-                        Number(product.price) || 0,
-
-                    unit:
-                        product.unit || "кг",
-
-                    stock:
-                        Number(product.qty) || 0
-
-                });
-
-            }
-        );
-
-
-        info.appendChild(
-            addButton
-        );
-
-
-        card.appendChild(
-            info
-        );
-
-
-        return card;
-
+    if (!box.children.length) {
+        box.innerHTML = `
+            <div class="empty">
+                ${t('cartEmpty')}
+            </div>
+        `;
     }
 
+    if ($('cartTotal')) {
+        $('cartTotal').textContent = money(total);
+    }
 
-    function renderProducts() {
-
-        if (!productGrid) {
-            return;
-        }
-
-
-        productGrid.innerHTML = "";
-
-
-        const categories =
-            getCategories();
-
-        const products =
-            ensureProducts();
-
-
-        let categoriesToShow = [];
-
-
-        if (favoritesMode) {
-
-            const favorites =
-                getFavorites();
-
-
-            categoriesToShow =
-                categories.filter(
-                    category =>
-                        category !== "Варзидан" &&
-                        favorites.includes(category)
-                );
-
-
-        } else if (
-            currentCategory === "Варзидан"
-        ) {
-
-            categoriesToShow =
-                categories.filter(
-                    category =>
-                        category !== "Варзидан"
-                );
-
-        } else {
-
-            categoriesToShow =
-                categories.includes(
-                    currentCategory
-                ) &&
-                currentCategory !== "Варзидан"
-                    ? [currentCategory]
-                    : [];
-
-        }
-
-
-        if (currentCategoryTitle) {
-
-            currentCategoryTitle.textContent =
-                favoritesMode
-                    ? t("favorites")
-                    : currentCategory;
-
-        }
-
-
-        if (
-            categoriesToShow.length === 0
-        ) {
-
-            const empty =
-                document.createElement("div");
-
-            empty.className =
-                "products-empty";
-
-            empty.textContent =
-                t("noProducts");
-
-            productGrid.appendChild(
-                empty
+    if ($('cartBadge')) {
+        $('cartBadge').textContent =
+            cart.reduce(
+                (sum, item) =>
+                    sum + Number(item.qty || 0),
+                0
             );
+    }
+}
 
-            updateFavoritesCount();
+function addToCart(id) {
+    const product =
+        products.find(p => p.id === id);
 
-            return;
+    if (!product) return;
 
-        }
+    const available =
+        Number(product.qty || 0);
+
+    if (available <= 0) {
+        return;
+    }
+
+    const item =
+        cart.find(x => x.id === id);
+
+    const currentQty =
+        item ? Number(item.qty || 0) : 0;
+
+    if (currentQty >= available) {
+        return;
+    }
+
+    if (item) {
+        item.qty += 1;
+    } else {
+        cart.push({
+            id,
+            qty: 1
+        });
+    }
+
+    persist();
+    renderCart();
+
+    openModal('cartModal');
+}
 
 
-        categoriesToShow.forEach(category => {
+/* =========================
+   SETTINGS
+========================= */
+
+function updateSettingsText() {
+
+    if ($('themeValue')) {
+        $('themeValue').textContent =
+            theme === 'dark'
+                ? t('night')
+                : t('day');
+    }
+
+    if ($('notificationValue')) {
+        $('notificationValue').textContent =
+            notifications
+                ? t('on')
+                : t('off');
+    }
+
+    if ($('languageValue')) {
+        $('languageValue').textContent =
+            lang === 'ru'
+                ? 'Русский'
+                : lang === 'uz'
+                    ? 'O‘zbekcha'
+                    : 'Тоҷикӣ';
+    }
+
+    if ($('adminStatusBadge')) {
+        $('adminStatusBadge').textContent =
+            lang === 'ru'
+                ? 'Открыть ›'
+                : lang === 'uz'
+                    ? 'Ochish ›'
+                    : 'Кушодан ›';
+    }
+
+    if ($('settingsTitle')) {
+        $('settingsTitle').textContent = t('settings');
+    }
+
+    if ($('themeLabel')) {
+        $('themeLabel').textContent = t('theme');
+    }
+
+    if ($('notificationLabel')) {
+        $('notificationLabel').textContent =
+            t('notifications');
+    }
+
+    if ($('languageLabel')) {
+        $('languageLabel').textContent =
+            t('language');
+    }
+
+    if ($('adminLabel')) {
+        $('adminLabel').textContent =
+            t('admin');
+    }
+
+    if ($('categoryTitle')) {
+        $('categoryTitle').textContent =
+            t('categories');
+    }
+
+    if ($('homeNav')) {
+        const span = $('homeNav').querySelector('span');
+
+        if (span) span.textContent = t('home');
+    }
+
+    if ($('favoritesNav')) {
+        const span =
+            $('favoritesNav').querySelector('span');
+
+        if (span) span.textContent = t('favorites');
+    }
+
+    if ($('cartNav')) {
+        const span =
+            $('cartNav').querySelector('span');
+
+        if (span) span.textContent = t('cart');
+    }
+
+    if ($('profileNav')) {
+        const span =
+            $('profileNav').querySelector('span');
+
+        if (span) span.textContent = t('profile');
+    }
+
+    if ($('themeModalTitle')) {
+        $('themeModalTitle').textContent =
+            lang === 'ru'
+                ? 'Выбор темы'
+                : lang === 'uz'
+                    ? 'Mavzuni tanlash'
+                    : 'Интихоби тема';
+    }
+
+    if ($('darkThemeBtn')) {
+        $('darkThemeBtn').textContent =
+            lang === 'ru'
+                ? '🌙 Ночной режим'
+                : lang === 'uz'
+                    ? '🌙 Tungi rejim'
+                    : '🌙 Режими шабона';
+    }
+
+    if ($('lightThemeBtn')) {
+        $('lightThemeBtn').textContent =
+            lang === 'ru'
+                ? '☀️ Дневной режим'
+                : lang === 'uz'
+                    ? '☀️ Kunduzgi rejim'
+                    : '☀️ Режими рӯзона';
+    }
+
+    if ($('themeCancel')) {
+        $('themeCancel').textContent = 'БЕКОР КАРДАН';
+    }
+
+    if ($('languageModalTitle')) {
+        $('languageModalTitle').textContent =
+            t('language');
+    }
+
+    if ($('cartTitle')) {
+        $('cartTitle').textContent =
+            t('cart');
+    }
+
+    if ($('cartTotalLabel')) {
+        $('cartTotalLabel').textContent =
+            t('total');
+    }
+
+    if ($('buyBtn')) {
+        $('buyBtn').textContent =
+            t('buy');
+    }
+
+    if ($('subscriberCount')) {
+        $('subscriberCount').textContent =
+            `0 ${t('subscribers')}`;
+    }
+
+    if ($('subscribeBtn')) {
+        $('subscribeBtn').textContent =
+            localStorage.getItem(KEYS.sub) === 'true'
+                ? t('subscribed')
+                : t('subscribe');
+    }
+}
+
+
+/* =========================
+   LANGUAGE
+========================= */
+
+function changeLanguage(newLang) {
+    if (!['tg', 'ru', 'uz'].includes(newLang)) {
+        return;
+    }
+
+    lang = newLang;
+
+    persist();
+    renderAll();
+
+    closeModal('languageModal');
+}
+
+
+/* =========================
+   WHATSAPP ORDER
+========================= */
+
+function sendOrder() {
+
+    if (!cart.length) {
+        return;
+    }
+
+    const lines = [];
+
+    cart.forEach(item => {
+
+        const product =
+            products.find(p => p.id === item.id);
+
+        if (!product) return;
+
+        const quantity =
+            Number(item.qty || 1);
+
+        const sum =
+            Number(product.price || 0) *
+            quantity;
+
+        lines.push(
+            `${product.name} × ${quantity} = ${sum} сомонӣ`
+        );
+    });
+
+    if (!lines.length) {
+        return;
+    }
+
+    const total =
+        cart.reduce((sum, item) => {
 
             const product =
-                products[category];
+                products.find(p => p.id === item.id);
 
+            if (!product) return sum;
 
-            if (!product) {
-                return;
-            }
+            return sum +
+                Number(product.price || 0) *
+                Number(item.qty || 1);
 
+        }, 0);
 
-            productGrid.appendChild(
-                createProductCard(
-                    category,
-                    product
-                )
-            );
+    const message =
+`Салом, ман фармоиш додан мехоҳам:
 
-        });
+${lines.join('\n')}
 
+Ҳамагӣ: ${total} сомонӣ
 
-        updateFavoritesCount();
+Ном:
+Телефон:
+Ҷойи расонидан:
 
-    }
+${t('delivery')}`;
 
+    window.open(
+        `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`,
+        '_blank'
+    );
+}
 
-    function renderCategories() {
 
-        if (!categoryList) {
-            return;
-        }
+/* =========================
+   EVENTS
+========================= */
 
+function setupEvents() {
 
-        categoryList.innerHTML = "";
+    const menuToggle =
+        $('menuToggle');
 
+    if (menuToggle) {
+        menuToggle.onclick = () => {
 
-        const categories =
-            getCategories();
+            const menu =
+                $('dropdownMenu');
 
+            if (!menu) return;
 
-        categories.forEach(category => {
+            menu.classList.toggle('open');
 
-            const card =
-                document.createElement("div");
-
-            card.className =
-                "category-card";
-
-
-            if (
-                category === currentCategory &&
-                !favoritesMode
-            ) {
-
-                card.classList.add(
-                    "active"
-                );
-
-            }
-
-
-            const name =
-                document.createElement("button");
-
-            name.className =
-                "cat-name";
-
-            name.textContent =
-                category;
-
-
-            name.addEventListener(
-                "click",
-                () => {
-
-                    favoritesMode =
-                        false;
-
-                    currentCategory =
-                        category;
-
-                    setBottomActive(
-                        homeBtn
-                    );
-
-                    renderCategories();
-
-                    renderProducts();
-
-                    if (dropdownMenu) {
-
-                        dropdownMenu.classList.remove(
-                            "open"
-                        );
-
-                    }
-
-                    if (brandToggle) {
-
-                        brandToggle.classList.remove(
-                            "active"
-                        );
-
-                    }
-
-                }
-            );
-
-
-            card.appendChild(
-                name
-            );
-
-
-            if (category !== "Варзидан") {
-
-                const deleteButton =
-                    document.createElement("button");
-
-                deleteButton.className =
-                    "delete-btn";
-
-                deleteButton.textContent =
-                    "×";
-
-                deleteButton.setAttribute(
-                    "aria-label",
-                    "Delete"
-                );
-
-
-                deleteButton.addEventListener(
-                    "click",
-                    event => {
-
-                        event.stopPropagation();
-
-
-                        const confirmed =
-                            window.confirm(
-                                t("deleteConfirm") +
-                                "\n\n" +
-                                category
-                            );
-
-
-                        if (!confirmed) {
-                            return;
-                        }
-
-
-                        let current =
-                            getCategories();
-
-
-                        current =
-                            current.filter(
-                                item =>
-                                    item !== category
-                            );
-
-
-                        saveCategories(
-                            current
-                        );
-
-
-                        const products =
-                            getProducts();
-
-
-                        delete products[
-                            category
-                        ];
-
-
-                        saveProducts(
-                            products
-                        );
-
-
-                        const favorites =
-                            getFavorites();
-
-
-                        saveFavorites(
-                            favorites.filter(
-                                item =>
-                                    item !== category
-                            )
-                        );
-
-
-                        if (
-                            currentCategory ===
-                            category
-                        ) {
-
-                            currentCategory =
-                                "Варзидан";
-
-                        }
-
-
-                        favoritesMode =
-                            false;
-
-
-                        renderCategories();
-
-                        renderProducts();
-
-                    }
-                );
-
-
-                card.appendChild(
-                    deleteButton
-                );
-
-            }
-
-
-            categoryList.appendChild(
-                card
-            );
-
-        });
-
-
-        const plusCard =
-            document.createElement("div");
-
-        plusCard.className =
-            "category-add-card";
-
-
-        const plusButton =
-            document.createElement("button");
-
-        plusButton.className =
-            "category-add-button";
-
-        plusButton.textContent =
-            "+";
-
-
-        plusButton.addEventListener(
-            "click",
-            addNewCategory
-        );
-
-
-        plusCard.appendChild(
-            plusButton
-        );
-
-
-        categoryList.appendChild(
-            plusCard
-        );
-
-    }
-
-
-    function addNewCategory() {
-
-        const name =
-            window.prompt(
-                t("newCategory")
-            );
-
-
-        if (name === null) {
-            return;
-        }
-
-
-        const cleanName =
-            name.trim();
-
-
-        if (!cleanName) {
-
-            window.alert(
-                t("emptyName")
-            );
-
-            return;
-
-        }
-
-
-        if (
-            cleanName === "Варзидан"
-        ) {
-
-            return;
-
-        }
-
-
-        const categories =
-            getCategories();
-
-
-        const exists =
-            categories.some(
-                category =>
-                    category.toLowerCase() ===
-                    cleanName.toLowerCase()
-            );
-
-
-        if (exists) {
-
-            window.alert(
-                t("alreadyExists")
-            );
-
-            return;
-
-        }
-
-
-        categories.push(
-            cleanName
-        );
-
-
-        saveCategories(
-            categories
-        );
-
-
-        const products =
-            getProducts();
-
-
-        products[cleanName] = {
-
-            category: cleanName,
-
-            name: cleanName,
-
-            price: 0,
-
-            unit: "кг",
-
-            qty: 0,
-
-            bag: 0,
-
-            image: "",
-
-            onSale: false,
-
-            featured: false
-
+            renderCategories();
         };
-
-
-        saveProducts(
-            products
-        );
-
-
-        currentCategory =
-            cleanName;
-
-        favoritesMode =
-            false;
-
-
-        setBottomActive(
-            homeBtn
-        );
-
-
-        renderCategories();
-
-        renderProducts();
-
     }
 
+    const settingsButton =
+        $('settingsButton');
 
-    function updateSubscriber() {
-
-        const count =
-            Number(
-                localStorage.getItem(
-                    "subCount"
-                ) || 0
-            );
-
-
-        const subscribed =
-            localStorage.getItem(
-                "isSubscribed"
-            ) === "true";
-
-
-        if (subCount) {
-
-            subCount.textContent =
-                count;
-
-        }
-
-
-        if (subBtn) {
-
-            subBtn.textContent =
-                subscribed
-                    ? t("subscribed")
-                    : t("subscribe");
-
-
-            subBtn.classList.toggle(
-                "subscribed",
-                subscribed
-            );
-
-        }
-
+    if (settingsButton) {
+        settingsButton.onclick = () =>
+            openModal('settingsModal');
     }
 
-
-    if (subBtn) {
-
-        subBtn.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-
-                const subscribed =
-                    localStorage.getItem(
-                        "isSubscribed"
-                    ) === "true";
-
-
-                if (subscribed) {
-
-                    localStorage.setItem(
-                        "isSubscribed",
-                        "false"
-                    );
-
-
-                    let count =
-                        Number(
-                            localStorage.getItem(
-                                "subCount"
-                            ) || 0
-                        );
-
-
-                    count =
-                        Math.max(
-                            0,
-                            count - 1
-                        );
-
-
-                    localStorage.setItem(
-                        "subCount",
-                        count
-                    );
-
-
-                } else {
-
-                    localStorage.setItem(
-                        "isSubscribed",
-                        "true"
-                    );
-
-
-                    let count =
-                        Number(
-                            localStorage.getItem(
-                                "subCount"
-                            ) || 0
-                        );
-
-
-                    count += 1;
-
-
-                    localStorage.setItem(
-                        "subCount",
-                        count
-                    );
-
-                }
-
-
-                updateSubscriber();
-
-            }
-        );
-
+    if ($('themeSetting')) {
+        $('themeSetting').onclick = () =>
+            openModal('themeModal');
     }
 
+    if ($('languageSetting')) {
+        $('languageSetting').onclick = () =>
+            openModal('languageModal');
+    }
 
-    /* BRAND MENU */
+    if ($('notificationSetting')) {
+        $('notificationSetting').onclick = () => {
 
-    if (brandToggle) {
+            notifications = !notifications;
 
-        brandToggle.addEventListener(
-            "click",
-            event => {
+            persist();
+            updateSettingsText();
+        };
+    }
 
-                event.stopPropagation();
+    if ($('darkThemeBtn')) {
+        $('darkThemeBtn').onclick = () => {
 
+            theme = 'dark';
 
-                if (
-                    settingsMenu
-                ) {
+            persist();
+            applyTheme();
+            updateSettingsText();
 
-                    settingsMenu.classList.remove(
-                        "open"
-                    );
+            closeModal('themeModal');
+        };
+    }
 
-                }
+    if ($('lightThemeBtn')) {
+        $('lightThemeBtn').onclick = () => {
 
+            theme = 'light';
 
-                brandToggle.classList.toggle(
-                    "active"
+            persist();
+            applyTheme();
+            updateSettingsText();
+
+            closeModal('themeModal');
+        };
+    }
+
+    document
+        .querySelectorAll('[data-lang]')
+        .forEach(button => {
+
+            button.onclick = () =>
+                changeLanguage(
+                    button.dataset.lang
                 );
-
-
-                if (dropdownMenu) {
-
-                    dropdownMenu.classList.toggle(
-                        "open"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* SETTINGS */
-
-    if (settingsToggle) {
-
-        settingsToggle.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-
-                if (dropdownMenu) {
-
-                    dropdownMenu.classList.remove(
-                        "open"
-                    );
-
-                }
-
-
-                if (brandToggle) {
-
-                    brandToggle.classList.remove(
-                        "active"
-                    );
-
-                }
-
-
-                if (settingsMenu) {
-
-                    settingsMenu.classList.toggle(
-                        "open"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    if (closeSettingsHeader) {
-
-        closeSettingsHeader.addEventListener(
-            "click",
-            () => {
-
-                settingsMenu.classList.remove(
-                    "open"
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ADD CATEGORY */
-
-    if (addCategoryBtn) {
-
-        addCategoryBtn.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                addNewCategory();
-
-            }
-        );
-
-    }
-
-
-    /* THEME */
-
-    function applyTheme(theme) {
-
-        let actualTheme =
-            theme;
-
-
-        if (theme === "system") {
-
-            actualTheme =
-                window.matchMedia(
-                    "(prefers-color-scheme: dark)"
-                ).matches
-                    ? "dark"
-                    : "light";
-
-        }
-
-
-        document.body.classList.toggle(
-            "light-theme",
-            actualTheme === "light"
-        );
-
-
-        document.body.classList.toggle(
-            "dark-theme",
-            actualTheme === "dark"
-        );
-
-
-        if (themeValue) {
-
-            if (theme === "dark") {
-
-                themeValue.textContent =
-                    getLang() === "ru"
-                        ? "Тёмная"
-                        : getLang() === "uz"
-                            ? "Qorong‘i"
-                            : "Торик";
-
-            } else if (
-                theme === "system"
-            ) {
-
-                themeValue.textContent =
-                    getLang() === "ru"
-                        ? "Система"
-                        : getLang() === "uz"
-                            ? "Tizim"
-                            : "Система";
-
-            } else {
-
-                themeValue.textContent =
-                    getLang() === "ru"
-                        ? "Светлая"
-                        : getLang() === "uz"
-                            ? "Oq"
-                            : "Сафед";
-
-            }
-
-        }
-
-    }
-
-
-    if (themeToggle) {
-
-        themeToggle.addEventListener(
-            "click",
-            () => {
-
-                if (themeModal) {
-
-                    themeModal.classList.add(
-                        "open"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    document.querySelectorAll(
-        ".theme-option[data-theme]"
-    ).forEach(option => {
-
-        option.addEventListener(
-            "click",
-            () => {
-
-                const theme =
-                    option.dataset.theme;
-
-
-                localStorage.setItem(
-                    "theme",
-                    theme
-                );
-
-
-                applyTheme(theme);
-
-
-                if (themeModal) {
-
-                    themeModal.classList.remove(
-                        "open"
-                    );
-
-                }
-
-            }
-        );
-
-    });
-
-
-    if (themeCancel) {
-
-        themeCancel.addEventListener(
-            "click",
-            () => {
-
-                themeModal.classList.remove(
-                    "open"
-                );
-
-            }
-        );
-
-    }
-
-
-    /* NOTIFICATIONS */
-
-    function updateNotifications() {
-
-        const enabled =
-            localStorage.getItem(
-                "notifications"
-            ) !== "false";
-
-
-        if (!notificationStatus) {
-            return;
-        }
-
-
-        notificationStatus.textContent =
-            enabled
-                ? "ON"
-                : "OFF";
-
-
-        notificationStatus.className =
-            enabled
-                ? "badge-on"
-                : "badge-off";
-
-    }
-
-
-    if (notificationToggle) {
-
-        notificationToggle.addEventListener(
-            "click",
-            () => {
-
-                const enabled =
-                    localStorage.getItem(
-                        "notifications"
-                    ) !== "false";
-
-
-                localStorage.setItem(
-                    "notifications",
-                    String(!enabled)
-                );
-
-
-                updateNotifications();
-
-            }
-        );
-
-    }
-
-
-    /* LANGUAGE */
-
-    function applyLanguage() {
-
-        const lang =
-            getLang();
-
-
-        document
-            .querySelectorAll(
-                "[data-i18n]"
-            )
-            .forEach(element => {
-
-                const key =
-                    element.dataset.i18n;
-
-
-                if (
-                    translations[lang] &&
-                    translations[lang][key]
-                ) {
-
-                    element.textContent =
-                        translations[lang][key];
-
-                }
-
-            });
-
-
-        if (languageValue) {
-
-            if (lang === "ru") {
-
-                languageValue.textContent =
-                    "Русский";
-
-            } else if (
-                lang === "uz"
-            ) {
-
-                languageValue.textContent =
-                    "O‘zbekcha";
-
-            } else {
-
-                languageValue.textContent =
-                    "Тоҷикӣ";
-
-            }
-
-        }
-
-
-        updateSubscriber();
-
-        updateNotifications();
-
-        applyTheme(
-            localStorage.getItem(
-                "theme"
-            ) || "light"
-        );
-
-
-        renderCategories();
-
-        renderProducts();
-
-        updateCart();
-
-        updateFavoritesCount();
-
-    }
-
-
-    if (languageToggle) {
-
-        languageToggle.addEventListener(
-            "click",
-            () => {
-
-                if (languageModal) {
-
-                    languageModal.classList.add(
-                        "open"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    document.querySelectorAll(
-        ".language-option"
-    ).forEach(option => {
-
-        option.addEventListener(
-            "click",
-            () => {
-
-                const lang =
-                    option.dataset.lang;
-
-
-                if (
-                    !translations[lang]
-                ) {
-                    return;
-                }
-
-
-                localStorage.setItem(
-                    "lang",
-                    lang
-                );
-
-
-                if (languageModal) {
-
-                    languageModal.classList.remove(
-                        "open"
-                    );
-
-                }
-
-
-                applyLanguage();
-
-            }
-        );
-
-    });
-
-
-    if (languageCancel) {
-
-        languageCancel.addEventListener(
-            "click",
-            () => {
-
-                languageModal.classList.remove(
-                    "open"
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ADMIN */
-
-    if (adminModeToggle) {
-
-        adminModeToggle.addEventListener(
-            "click",
-            () => {
-
-                const link =
-                    adminModeToggle.dataset.adminLink ||
-                    "admin.html";
-
-
-                window.location.href =
-                    link;
-
-            }
-        );
-
-    }
-
-
-    /* CART */
-
-    function getCart() {
-
-        let cart;
-
-        try {
-
-            cart = JSON.parse(
-                localStorage.getItem(
-                    "varzid_cart"
-                ) || "[]"
-            );
-
-        } catch (error) {
-
-            cart = [];
-
-        }
-
-
-        if (!Array.isArray(cart)) {
-
-            cart = [];
-
-        }
-
-
-        return cart;
-
-    }
-
-
-    function saveCart(cart) {
-
-        localStorage.setItem(
-            "varzid_cart",
-            JSON.stringify(cart)
-        );
-
-    }
-
-
-    function addToCart(product) {
-
-        const cart =
-            getCart();
-
-
-        const products =
-            ensureProducts();
-
-
-        const currentProduct =
-            products[product.id];
-
-
-        const stock =
-            currentProduct
-                ? Number(currentProduct.qty) || 0
-                : Number(product.stock) || 0;
-
-
-        const existing =
-            cart.find(
-                item =>
-                    item.id === product.id
-            );
-
-
-        if (existing) {
-
-            if (
-                Number(existing.qty) >=
-                stock
-            ) {
-
-                alert(
-                    t("noStock")
-                );
-
-                return;
-
-            }
-
-
-            existing.qty += 1;
-
-        } else {
-
-            if (stock <= 0) {
-
-                alert(
-                    t("noStock")
-                );
-
-                return;
-
-            }
-
-
-            cart.push({
-
-                id: product.id,
-
-                name: product.name,
-
-                price:
-                    Number(product.price) || 0,
-
-                unit:
-                    product.unit || "кг",
-
-                qty: 1
-
-            });
-
-        }
-
-
-        saveCart(cart);
-
-        updateCart();
-
-    }
-
-
-    function updateCart() {
-
-        const cart =
-            getCart();
-
-
-        if (!cartItems) {
-            return;
-        }
-
-
-        cartItems.innerHTML = "";
-
-
-        let total = 0;
-
-        let count = 0;
-
-
-        if (
-            cart.length === 0
-        ) {
-
-            cartEmpty.style.display =
-                "block";
-
-        } else {
-
-            cartEmpty.style.display =
-                "none";
-
-        }
-
-
-        cart.forEach(item => {
-
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-            row.className =
-                "cart-item";
-
-
-            const info =
-                document.createElement(
-                    "div"
-                );
-
-            info.className =
-                "cart-item-info";
-
-
-            const name =
-                document.createElement(
-                    "div"
-                );
-
-            name.className =
-                "cart-item-name";
-
-            name.textContent =
-                item.name;
-
-
-            const price =
-                document.createElement(
-                    "div"
-                );
-
-            price.className =
-                "cart-item-price";
-
-            price.textContent =
-                `${item.price} сомонӣ / ${item.unit}`;
-
-
-            info.appendChild(name);
-
-            info.appendChild(price);
-
-
-            const controls =
-                document.createElement(
-                    "div"
-                );
-
-            controls.className =
-                "cart-controls";
-
-
-            const minus =
-                document.createElement(
-                    "button"
-                );
-
-            minus.className =
-                "quantity-btn";
-
-            minus.textContent =
-                "−";
-
-
-            const number =
-                document.createElement(
-                    "span"
-                );
-
-            number.className =
-                "quantity-number";
-
-            number.textContent =
-                item.qty;
-
-
-            const plus =
-                document.createElement(
-                    "button"
-                );
-
-            plus.className =
-                "quantity-btn";
-
-            plus.textContent =
-                "+";
-
-
-            minus.addEventListener(
-                "click",
-                () => {
-
-                    item.qty -= 1;
-
-
-                    if (
-                        item.qty <= 0
-                    ) {
-
-                        const index =
-                            cart.indexOf(
-                                item
-                            );
-
-
-                        if (index !== -1) {
-
-                            cart.splice(
-                                index,
-                                1
-                            );
-
-                        }
-
-                    }
-
-
-                    saveCart(cart);
-
-                    updateCart();
-
-                }
-            );
-
-
-            plus.addEventListener(
-                "click",
-                () => {
-
-                    const products =
-                        ensureProducts();
-
-
-                    const product =
-                        products[item.id];
-
-
-                    const stock =
-                        product
-                            ? Number(product.qty) || 0
-                            : 0;
-
-
-                    if (
-                        item.qty >=
-                        stock
-                    ) {
-
-                        alert(
-                            t("noStock")
-                        );
-
-                        return;
-
-                    }
-
-
-                    item.qty += 1;
-
-
-                    saveCart(cart);
-
-                    updateCart();
-
-                }
-            );
-
-
-            controls.appendChild(
-                minus
-            );
-
-            controls.appendChild(
-                number
-            );
-
-            controls.appendChild(
-                plus
-            );
-
-
-            const remove =
-                document.createElement(
-                    "button"
-                );
-
-            remove.className =
-                "remove-cart-item";
-
-            remove.textContent =
-                "×";
-
-
-            remove.addEventListener(
-                "click",
-                () => {
-
-                    const index =
-                        cart.indexOf(
-                            item
-                        );
-
-
-                    if (index !== -1) {
-
-                        cart.splice(
-                            index,
-                            1
-                        );
-
-                    }
-
-
-                    saveCart(cart);
-
-                    updateCart();
-
-                }
-            );
-
-
-            row.appendChild(info);
-
-            row.appendChild(
-                controls
-            );
-
-            row.appendChild(
-                remove
-            );
-
-
-            cartItems.appendChild(
-                row
-            );
-
-
-            total +=
-                Number(item.price) *
-                Number(item.qty);
-
-
-            count +=
-                Number(item.qty);
-
         });
 
+    if ($('subscribeBtn')) {
+        $('subscribeBtn').onclick = () => {
 
-        if (cartTotal) {
+            const subscribed =
+                localStorage.getItem(KEYS.sub) === 'true';
 
-            cartTotal.textContent =
-                total.toFixed(2)
-                    .replace(".00", "");
+            localStorage.setItem(
+                KEYS.sub,
+                String(!subscribed)
+            );
 
-        }
-
-
-        if (cartCount) {
-
-            cartCount.textContent =
-                count;
-
-
-            cartCount.style.display =
-                count > 0
-                    ? "flex"
-                    : "none";
-
-        }
-
+            updateSettingsText();
+        };
     }
 
+    if ($('homeNav')) {
+        $('homeNav').onclick = () => {
 
-    if (cartBtn) {
+            currentCategory = ALL;
 
-        cartBtn.addEventListener(
-            "click",
-            () => {
+            renderAll();
+        };
+    }
 
-                if (cartPanel) {
+    if ($('cartNav')) {
+        $('cartNav').onclick = () =>
+            openModal('cartModal');
+    }
 
-                    cartPanel.classList.toggle(
-                        "open"
-                    );
+    if ($('favoritesNav')) {
+        $('favoritesNav').onclick = () => {
 
-                }
+            const message =
+                lang === 'ru'
+                    ? 'Избранное пока пусто.'
+                    : lang === 'uz'
+                        ? 'Sevimlilar hozircha bo‘sh.'
+                        : 'Дӯстдоштаҳо ҳоло холӣ аст.';
 
-                if (dropdownMenu) {
+            const list =
+                $('productList');
 
-                    dropdownMenu.classList.remove(
-                        "open"
-                    );
-
-                }
-
-                if (settingsMenu) {
-
-                    settingsMenu.classList.remove(
-                        "open"
-                    );
-
-                }
-
+            if (list) {
+                list.innerHTML =
+                    `<div class="empty">${message}</div>`;
             }
-        );
-
+        };
     }
 
-
-    if (cartClose) {
-
-        cartClose.addEventListener(
-            "click",
-            () => {
-
-                cartPanel.classList.remove(
-                    "open"
-                );
-
-            }
-        );
-
+    if ($('profileNav')) {
+        $('profileNav').onclick = () =>
+            openModal('settingsModal');
     }
 
+    /*
+       АДМИН:
+       дигар дар storefront парол намепурсад.
+       Админ аз settings ба admin.html меравад.
+    */
 
-    if (homeBtn) {
+    if ($('adminSetting')) {
+        $('adminSetting').onclick = () => {
 
-        homeBtn.addEventListener(
-            "click",
-            () => {
-
-                favoritesMode =
-                    false;
-
-                currentCategory =
-                    "Варзидан";
-
-                renderCategories();
-
-                renderProducts();
-
-                cartPanel.classList.remove(
-                    "open"
-                );
-
-
-                setBottomActive(
-                    homeBtn
-                );
-
-            }
-        );
-
+            window.location.href = 'admin.html';
+        };
     }
 
+    /*
+       + категория дар storefront пинҳон карда мешавад.
+       Категорияҳоро танҳо аз admin.html идора мекунем.
+    */
 
-    if (favoritesBtn) {
-
-        favoritesBtn.addEventListener(
-            "click",
-            () => {
-
-                favoritesMode =
-                    true;
-
-                renderProducts();
-
-                if (cartPanel) {
-
-                    cartPanel.classList.remove(
-                        "open"
-                    );
-
-                }
-
-
-                setBottomActive(
-                    favoritesBtn
-                );
-
-                updateFavoritesCount();
-
-            }
-        );
-
+    if ($('addCategoryTop')) {
+        $('addCategoryTop').style.display = 'none';
     }
 
-
-    /* WHATSAPP ORDER */
-
-    if (buyCartBtn) {
-
-        buyCartBtn.addEventListener(
-            "click",
-            () => {
-
-                const cart =
-                    getCart();
-
-
-                if (
-                    cart.length === 0
-                ) {
-
-                    return;
-
-                }
-
-
-                const lines = [];
-
-
-                lines.push(
-                    t("orderGreeting")
-                );
-
-
-                lines.push("");
-
-
-                cart.forEach(item => {
-
-                    lines.push(
-                        `${item.name} — ${item.qty} ${item.unit} × ${item.price} сомонӣ`
-                    );
-
-                });
-
-
-                const total =
-                    cart.reduce(
-                        (sum, item) =>
-                            sum +
-                            (
-                                Number(item.price) *
-                                Number(item.qty)
-                            ),
-                        0
-                    );
-
-
-                lines.push("");
-
-                lines.push(
-                    `${t("sum")} ${total} сомонӣ`
-                );
-
-
-                lines.push("");
-
-                lines.push(
-                    t("delivery")
-                );
-
-
-                const message =
-                    encodeURIComponent(
-                        lines.join("\n")
-                    );
-
-
-                window.open(
-                    `https://wa.me/992000001606?text=${message}`,
-                    "_blank"
-                );
-
-            }
-        );
-
+    if ($('buyBtn')) {
+        $('buyBtn').onclick = sendOrder;
     }
 
+    document
+        .querySelectorAll('[data-close]')
+        .forEach(button => {
 
-    /* CLOSE MENUS WHEN CLICKING OUTSIDE */
+            button.onclick = () =>
+                closeModal(
+                    button.dataset.close
+                );
+        });
 
     document.addEventListener(
-        "click",
+        'click',
         event => {
 
             if (
-                brandToggle &&
-                dropdownMenu &&
-                !brandToggle.contains(event.target) &&
-                !dropdownMenu.contains(event.target)
+                event.target.classList.contains('modal')
             ) {
-
-                dropdownMenu.classList.remove(
-                    "open"
-                );
-
-
-                brandToggle.classList.remove(
-                    "active"
-                );
-
+                closeModal(event.target.id);
             }
-
-
-            if (
-                settingsToggle &&
-                settingsMenu &&
-                !settingsToggle.contains(event.target) &&
-                !settingsMenu.contains(event.target)
-            ) {
-
-                settingsMenu.classList.remove(
-                    "open"
-                );
-
-            }
-
         }
     );
+}
 
 
-    /* MODAL OUTSIDE CLICK */
+/* =========================
+   OLD DATA MIGRATION
+========================= */
 
-    if (themeModal) {
+function migrateOldProducts() {
 
-        themeModal.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    themeModal
-                ) {
-
-                    themeModal.classList.remove(
-                        "open"
-                    );
-
-                }
-
-            }
-        );
-
+    if (!Array.isArray(products)) {
+        products = [];
     }
 
+    products = products.map(product => {
 
-    if (languageModal) {
+        if (!product.id) {
+            product.id = newId();
+        }
 
-        languageModal.addEventListener(
-            "click",
-            event => {
+        if (!product.category) {
+            product.category =
+                product.name || 'Орд';
+        }
 
-                if (
-                    event.target ===
-                    languageModal
-                ) {
+        if (product.qty === undefined) {
+            product.qty = 0;
+        }
 
-                    languageModal.classList.remove(
-                        "open"
-                    );
+        if (!product.unit) {
+            product.unit = 'кг';
+        }
 
-                }
+        if (product.price === undefined) {
+            product.price = 0;
+        }
 
-            }
-        );
+        if (product.active === undefined) {
+            product.active =
+                Number(product.qty) > 0;
+        }
 
-    }
+        return product;
+    });
 
+    const usedCategories =
+        products
+            .map(product => product.category)
+            .filter(Boolean);
 
-    /* INITIAL */
+    usedCategories.forEach(category => {
 
-    if (
-        !localStorage.getItem("theme")
-    ) {
-
-        localStorage.setItem(
-            "theme",
-            "light"
-        );
-
-    }
-
-
-    if (
-        !localStorage.getItem(
-            "notifications"
-        )
-    ) {
-
-        localStorage.setItem(
-            "notifications",
-            "true"
-        );
-
-    }
+        if (
+            category !== 'Варзидан' &&
+            !categories.includes(category)
+        ) {
+            categories.push(category);
+        }
+    });
+}
 
 
-    ensureProducts();
+/* =========================
+   RENDER ALL
+========================= */
 
-    applyLanguage();
+function renderAll() {
 
-    updateSubscriber();
-
-    updateNotifications();
+    applyTheme();
 
     renderCategories();
 
     renderProducts();
 
-    updateCart();
+    renderCart();
 
-    updateFavoritesCount();
+    updateSettingsText();
+}
 
-});
+
+/* =========================
+   START
+========================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        migrateOldProducts();
+
+        persist();
+
+        setupEvents();
+
+        renderAll();
+    }
+);
