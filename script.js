@@ -205,6 +205,299 @@ document.addEventListener("DOMContentLoaded", () => {
     let favoritesMode = false;
 
 
+    /* =========================
+       IMAGE VIEWER
+    ========================= */
+
+    function createImageViewer() {
+
+        if (document.getElementById("varzidImageViewer")) {
+            return;
+        }
+
+        const style =
+            document.createElement("style");
+
+        style.id =
+            "varzidImageViewerStyle";
+
+        style.textContent = `
+            #varzidImageViewer {
+                position: fixed;
+                inset: 0;
+                z-index: 99999;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                background: rgba(0,0,0,.94);
+                padding: 18px;
+                box-sizing: border-box;
+                touch-action: pan-y;
+            }
+
+            #varzidImageViewer.open {
+                display: flex;
+            }
+
+            #varzidImageViewer img {
+                max-width: 100%;
+                max-height: 88vh;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                border-radius: 10px;
+                user-select: none;
+                -webkit-user-select: none;
+                -webkit-user-drag: none;
+            }
+
+            #varzidImageBack {
+                position: absolute;
+                left: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 52px;
+                height: 52px;
+                border: 0;
+                border-radius: 50%;
+                background: rgba(0,0,0,.55);
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+                font-weight: 400;
+                line-height: 1;
+                cursor: pointer;
+                z-index: 2;
+                box-shadow: 0 2px 12px rgba(0,0,0,.25);
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            #varzidImageBack:active {
+                transform: translateY(-50%) scale(.92);
+                background: rgba(0,0,0,.72);
+            }
+
+            #varzidImageViewerName {
+                position: absolute;
+                left: 50%;
+                bottom: 18px;
+                transform: translateX(-50%);
+                color: #fff;
+                font-size: 14px;
+                font-weight: 500;
+                text-align: center;
+                max-width: 75%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                opacity: .9;
+            }
+
+            @media (max-width: 480px) {
+                #varzidImageBack {
+                    left: 12px;
+                    width: 50px;
+                    height: 50px;
+                    font-size: 38px;
+                }
+
+                #varzidImageViewer {
+                    padding: 12px;
+                }
+
+                #varzidImageViewer img {
+                    max-height: 84vh;
+                }
+            }
+        `;
+
+        document.head.appendChild(style);
+
+
+        const viewer =
+            document.createElement("div");
+
+        viewer.id =
+            "varzidImageViewer";
+
+
+        const backButton =
+            document.createElement("button");
+
+        backButton.id =
+            "varzidImageBack";
+
+        backButton.type =
+            "button";
+
+        backButton.textContent =
+            "‹";
+
+        backButton.setAttribute(
+            "aria-label",
+            "Баромадан аз акс"
+        );
+
+
+        const image =
+            document.createElement("img");
+
+        image.id =
+            "varzidLargeImage";
+
+        image.alt =
+            "";
+
+
+        const imageName =
+            document.createElement("div");
+
+        imageName.id =
+            "varzidImageViewerName";
+
+
+        viewer.appendChild(
+            backButton
+        );
+
+        viewer.appendChild(
+            image
+        );
+
+        viewer.appendChild(
+            imageName
+        );
+
+
+        document.body.appendChild(
+            viewer
+        );
+
+
+        function closeViewer() {
+
+            viewer.classList.remove(
+                "open"
+            );
+
+            image.src = "";
+
+            imageName.textContent = "";
+
+            document.body.style.overflow = "";
+        }
+
+
+        backButton.addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                closeViewer();
+
+            }
+        );
+
+
+        viewer.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === viewer
+                ) {
+
+                    closeViewer();
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    !viewer.classList.contains(
+                        "open"
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeViewer();
+
+                }
+
+            }
+        );
+
+
+        return {
+            viewer,
+            image,
+            imageName,
+            closeViewer
+        };
+
+    }
+
+
+    const imageViewer =
+        createImageViewer();
+
+
+    function openProductImage(
+        imageUrl,
+        productName
+    ) {
+
+        if (
+            !imageUrl ||
+            !imageViewer
+        ) {
+
+            return;
+
+        }
+
+
+        imageViewer.image.src =
+            imageUrl;
+
+        imageViewer.image.alt =
+            productName || "";
+
+
+        imageViewer.imageName.textContent =
+            productName || "";
+
+
+        imageViewer.viewer.classList.add(
+            "open"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
     function getLang() {
 
         const lang =
@@ -215,6 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         return lang;
+
     }
 
 
@@ -502,6 +796,8 @@ document.addEventListener("DOMContentLoaded", () => {
             JSON.stringify(favorites)
         );
 
+        updateFavoritesCount();
+
     }
 
 
@@ -536,6 +832,113 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         saveFavorites(favorites);
+
+    }
+
+
+    function updateFavoritesCount() {
+
+        if (!favoritesBtn) {
+            return;
+        }
+
+
+        const count =
+            getFavorites().length;
+
+
+        let badge =
+            document.getElementById(
+                "favoritesCount"
+            );
+
+
+        if (!badge) {
+
+            badge =
+                document.createElement("span");
+
+            badge.id =
+                "favoritesCount";
+
+            badge.textContent =
+                "0";
+
+            badge.style.position =
+                "absolute";
+
+            badge.style.top =
+                "5px";
+
+            badge.style.right =
+                "calc(50% - 25px)";
+
+            badge.style.minWidth =
+                "17px";
+
+            badge.style.height =
+                "17px";
+
+            badge.style.padding =
+                "0 4px";
+
+            badge.style.boxSizing =
+                "border-box";
+
+            badge.style.borderRadius =
+                "10px";
+
+            badge.style.background =
+                "var(--main-green, #16843a)";
+
+            badge.style.color =
+                "#fff";
+
+            badge.style.fontSize =
+                "10px";
+
+            badge.style.fontWeight =
+                "600";
+
+            badge.style.lineHeight =
+                "17px";
+
+            badge.style.textAlign =
+                "center";
+
+            badge.style.display =
+                "none";
+
+            badge.style.zIndex =
+                "10";
+
+            if (
+                getComputedStyle(
+                    favoritesBtn
+                ).position === "static"
+            ) {
+
+                favoritesBtn.style.position =
+                    "relative";
+
+            }
+
+
+            favoritesBtn.appendChild(
+                badge
+            );
+
+        }
+
+
+        badge.textContent =
+            count;
+
+
+        badge.style.display =
+            count > 0
+                ? "block"
+                : "none";
 
     }
 
@@ -601,8 +1004,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "path"
             );
 
-
-        /* Айнан ҳамон шакли дили Дӯстдоштаҳо */
 
         path.setAttribute(
             "d",
@@ -688,8 +1089,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "product-image-box";
 
 
-        /* ДИЛИ МАҲСУЛОТ */
-
         const favoriteButton =
             createFavoriteButton(
                 category
@@ -705,14 +1104,41 @@ document.addEventListener("DOMContentLoaded", () => {
             const img =
                 document.createElement("img");
 
-            img.src = product.image;
+            img.src =
+                product.image;
 
-            img.alt = category;
+            img.alt =
+                category;
 
             img.className =
                 "product-image";
 
-            imageBox.appendChild(img);
+            img.setAttribute(
+                "draggable",
+                "false"
+            );
+
+
+            img.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                    openProductImage(
+                        product.image,
+                        category
+                    );
+
+                }
+            );
+
+
+            imageBox.appendChild(
+                img
+            );
 
         } else {
 
@@ -725,12 +1151,16 @@ document.addEventListener("DOMContentLoaded", () => {
             noImage.textContent =
                 t("noImage");
 
-            imageBox.appendChild(noImage);
+            imageBox.appendChild(
+                noImage
+            );
 
         }
 
 
-        card.appendChild(imageBox);
+        card.appendChild(
+            imageBox
+        );
 
 
         const info =
@@ -750,7 +1180,9 @@ document.addEventListener("DOMContentLoaded", () => {
             category;
 
 
-        info.appendChild(name);
+        info.appendChild(
+            name
+        );
 
 
         const price =
@@ -777,7 +1209,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        info.appendChild(price);
+        info.appendChild(
+            price
+        );
 
 
         const unit =
@@ -806,7 +1240,9 @@ document.addEventListener("DOMContentLoaded", () => {
             unitText;
 
 
-        info.appendChild(unit);
+        info.appendChild(
+            unit
+        );
 
 
         const status =
@@ -841,7 +1277,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        info.appendChild(status);
+        info.appendChild(
+            status
+        );
 
 
         const addButton =
@@ -893,10 +1331,14 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        info.appendChild(addButton);
+        info.appendChild(
+            addButton
+        );
 
 
-        card.appendChild(info);
+        card.appendChild(
+            info
+        );
 
 
         return card;
@@ -923,12 +1365,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let categoriesToShow = [];
 
-
-        /*
-         * ВАРЗИДАН:
-         * танҳо категорияи асосӣ мемонад.
-         * Худи "Варзидан" ҳамчун маҳсулот НИШОН ДОДА НАМЕШАВАД.
-         */
 
         if (favoritesMode) {
 
@@ -988,11 +1424,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 "products-empty";
 
             empty.textContent =
-                favoritesMode
-                    ? t("noProducts")
-                    : t("noProducts");
+                t("noProducts");
 
-            productGrid.appendChild(empty);
+            productGrid.appendChild(
+                empty
+            );
+
+            updateFavoritesCount();
 
             return;
 
@@ -1004,11 +1442,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const product =
                 products[category];
 
-
-            /*
-             * Агар маҳсулоти категория
-             * вуҷуд надошта бошад, нишон надиҳ.
-             */
 
             if (!product) {
                 return;
@@ -1023,6 +1456,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         });
+
+
+        updateFavoritesCount();
 
     }
 
@@ -1110,7 +1546,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            card.appendChild(name);
+            card.appendChild(
+                name
+            );
 
 
             if (category !== "Варзидан") {
@@ -1484,7 +1922,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             localStorage.getItem(
                                 "subCount"
                             ) || 0
-                            );
+                        );
 
 
                     count += 1;
@@ -1891,6 +2329,8 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProducts();
 
         updateCart();
+
+        updateFavoritesCount();
 
     }
 
@@ -2542,6 +2982,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     favoritesBtn
                 );
 
+                updateFavoritesCount();
+
             }
         );
 
@@ -2763,5 +3205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProducts();
 
     updateCart();
+
+    updateFavoritesCount();
 
 });
