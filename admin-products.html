@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VARZID — Admin Products</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#111;
+    color:#fff;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:#151515;
+    border-bottom:1px solid #292929;
+    padding:16px;
+}
+
+.header-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+.title{
+    font-size:21px;
+    font-weight:700;
+}
+
+.subtitle{
+    margin-top:4px;
+    color:#888;
+    font-size:12px;
+}
+
+.close-btn{
+    width:40px;
+    height:40px;
+    border:0;
+    border-radius:50%;
+    background:#242424;
+    color:#fff;
+    font-size:24px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:16px;
+}
+
+.section{
+    margin-bottom:18px;
+}
+
+.section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:700;
+}
+
+.add-btn{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:#16843a;
+    color:#fff;
+    font-size:25px;
+    line-height:1;
+}
+
+.empty{
+    border:1px dashed #383838;
+    border-radius:14px;
+    padding:20px;
+    text-align:center;
+    color:#777;
+    font-size:13px;
+}
+
+.category-list,
+.product-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.item{
+    background:#191919;
+    border:1px solid #292929;
+    border-radius:14px;
+    padding:13px;
+}
+
+.item-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.item-name{
+    font-size:15px;
+    font-weight:600;
+}
+
+.item-info{
+    margin-top:6px;
+    color:#999;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.item-actions{
+    display:flex;
+    gap:7px;
+}
+
+.small-btn{
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:9px;
+    background:#292929;
+    color:#fff;
+}
+
+.delete-btn{
+    color:#ff7777;
+}
+
+.form-box{
+    display:none;
+    background:#191919;
+    border:1px solid #303030;
+    border-radius:16px;
+    padding:15px;
+    margin-top:10px;
+}
+
+.form-box.active{
+    display:block;
+}
+
+.field{
+    margin-bottom:12px;
+}
+
+.field label{
+    display:block;
+    color:#aaa;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.field input,
+.field select,
+.field textarea{
+    width:100%;
+    border:1px solid #333;
+    border-radius:10px;
+    background:#101010;
+    color:#fff;
+    padding:12px;
+    outline:none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color:#16843a;
+}
+
+textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.form-actions{
+    display:flex;
+    gap:8px;
+    margin-top:5px;
+}
+
+.save-btn{
+    flex:1;
+    border:0;
+    border-radius:10px;
+    padding:12px;
+    background:#16843a;
+    color:#fff;
+    font-weight:600;
+}
+
+.cancel-btn{
+    border:0;
+    border-radius:10px;
+    padding:12px 18px;
+    background:#292929;
+    color:#fff;
+}
+
+.photo-box{
+    border:1px dashed #383838;
+    border-radius:12px;
+    padding:14px;
+    text-align:center;
+}
+
+.photo-preview{
+    width:100%;
+    max-height:180px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-top:10px;
+    display:none;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.status{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+    background:#222;
+    border:1px solid #333;
+    color:#fff;
+    padding:10px 15px;
+    border-radius:10px;
+    font-size:12px;
+    display:none;
+    z-index:50;
+}
+
+@media(max-width:500px){
+    .row{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-top">
+        <div>
+            <div class="title">VARZID</div>
+            <div class="subtitle">Admin • Маҳсулот</div>
+        </div>
+
+        <button class="close-btn" id="closePage">×</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- CATEGORIES -->
+    <section class="section">
+
+        <div class="section-head">
+            <div class="section-title">Категорияҳо</div>
+            <button class="add-btn" id="addCategoryBtn">+</button>
+        </div>
+
+        <div class="form-box" id="categoryForm">
+
+            <div class="field">
+                <label>Номи категория</label>
+                <input
+                    id="categoryName"
+                    type="text"
+                    placeholder="Масалан: Гандум"
+                >
+            </div>
+
+            <div class="form-actions">
+                <button class="cancel-btn" id="cancelCategory">
+                    ×
+                </button>
+
+                <button class="save-btn" id="saveCategory">
+                    Илова кардан
+                </button>
+            </div>
+
+        </div>
+
+        <div class="category-list" id="categoryList"></div>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+    <section class="section">
+
+        <div class="section-head">
+            <div class="section-title">Маҳсулот</div>
+            <button class="add-btn" id="addProductBtn">+</button>
+        </div>
+
+        <div class="form-box" id="productForm">
+
+            <div class="field">
+                <label>Номи маҳсулот</label>
+                <input
+                    id="productName"
+                    type="text"
+                    placeholder="Масалан: Гандум"
+                >
+            </div>
+
+            <div class="field">
+                <label>Категория</label>
+
+                <select id="productCategory">
+                    <option value="">Категорияро интихоб кунед</option>
+                </select>
+            </div>
+
+            <div class="row">
+
+                <div class="field">
+                    <label>Нарх</label>
+                    <input
+                        id="productPrice"
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder="0"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Воҳид</label>
+
+                    <select id="productUnit">
+
+                        <option value="кг">кг</option>
+                        <option value="г">г</option>
+                        <option value="тонна">тонна</option>
+                        <option value="литр">литр</option>
+                        <option value="мл">мл</option>
+                        <option value="дона">дона</option>
+                        <option value="штук">штук</option>
+                        <option value="сар">сар</option>
+                        <option value="халта">халта</option>
+                        <option value="қуттӣ">қуттӣ</option>
+                        <option value="баста">баста</option>
+                        <option value="ҷуфт">ҷуфт</option>
+                        <option value="комплект">комплект</option>
+                        <option value="метр">метр</option>
+                        <option value="м²">м²</option>
+                        <option value="м³">м³</option>
+                        <option value="дигар">дигар</option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="field">
+                <label>Миқдор</label>
+
+                <input
+                    id="productQuantity"
+                    type="number"
+                    min="0"
+                    step="any"
+                    placeholder="Масалан: 500"
+                >
+            </div>
+
+
+            <div class="field">
+
+                <label>Акс</label>
+
+                <div class="photo-box">
+
+                    <input
+                        id="productPhoto"
+                        type="file"
+                        accept="image/*"
+                    >
+
+                    <img
+                        id="photoPreview"
+                        class="photo-preview"
+                        alt="Акс"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Тавсиф</label>
+
+                <textarea
+                    id="productDescription"
+                    placeholder="Агар лозим бошад..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    class="cancel-btn"
+                    id="cancelProduct"
+                >
+                    ×
+                </button>
+
+                <button
+                    class="save-btn"
+                    id="saveProduct"
+                >
+                    Илова кардан
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="product-list" id="productList"></div>
+
+    </section>
+
+</main>
+
+<div class="status" id="status"></div>
+
+
+<script>
+/*
+    VARZID ADMIN PRODUCTS SYSTEM
+
+    Ин система маълумоти маҳсулотро нигоҳ медорад.
+    Барои иловаи маҳсулоти нав дигар код тағйир дода намешавад.
+*/
+
+
+const CATEGORY_KEY = "varzid_categories";
+const PRODUCT_KEY = "varzid_products";
+
+
+let categories =
+    JSON.parse(localStorage.getItem(CATEGORY_KEY) || "[]");
+
+let products =
+    JSON.parse(localStorage.getItem(PRODUCT_KEY) || "[]");
+
+
+let editingProductId = null;
+let editingCategoryId = null;
+let currentPhoto = "";
+
+
+/* -----------------------------
+   ELEMENTS
+----------------------------- */
+
+const categoryForm =
+    document.getElementById("categoryForm");
+
+const productForm =
+    document.getElementById("productForm");
+
+const categoryList =
+    document.getElementById("categoryList");
+
+const productList =
+    document.getElementById("productList");
+
+const productCategory =
+    document.getElementById("productCategory");
+
+const productPhoto =
+    document.getElementById("productPhoto");
+
+const photoPreview =
+    document.getElementById("photoPreview");
+
+const statusBox =
+    document.getElementById("status");
+
+
+/* -----------------------------
+   ID
+----------------------------- */
+
+function createId(prefix){
+
+    return prefix + "_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random()
+            .toString(36)
+            .slice(2,8);
+}
+
+
+/* -----------------------------
+   SAVE
+----------------------------- */
+
+function saveData(){
+
+    localStorage.setItem(
+        CATEGORY_KEY,
+        JSON.stringify(categories)
+    );
+
+    localStorage.setItem(
+        PRODUCT_KEY,
+        JSON.stringify(products)
+    );
+}
+
+
+/* -----------------------------
+   STATUS
+----------------------------- */
+
+function showStatus(message){
+
+    statusBox.textContent = message;
+    statusBox.style.display = "block";
+
+    clearTimeout(showStatus.timer);
+
+    showStatus.timer =
+        setTimeout(() => {
+
+            statusBox.style.display = "none";
+
+        },1800);
+}
+
+
+/* -----------------------------
+   CATEGORY FORM
+----------------------------- */
+
+document
+.getElementById("addCategoryBtn")
+.addEventListener("click",() => {
+
+    editingCategoryId = null;
+
+    document
+        .getElementById("categoryName")
+        .value = "";
+
+    categoryForm.classList.toggle("active");
+
+});
+
+
+document
+.getElementById("cancelCategory")
+.addEventListener("click",() => {
+
+    categoryForm.classList.remove("active");
+
+});
+
+
+document
+.getElementById("saveCategory")
+.addEventListener("click",() => {
+
+    const name =
+        document
+        .getElementById("categoryName")
+        .value
+        .trim();
+
+    if(!name){
+
+        showStatus("Номи категорияро нависед");
+        return;
+    }
+
+
+    if(editingCategoryId){
+
+        const category =
+            categories.find(
+                item => item.id === editingCategoryId
+            );
+
+        if(category){
+
+            category.name = name;
+        }
+
+    }else{
+
+        categories.push({
+
+            id:createId("cat"),
+
+            name:name,
+
+            createdAt:new Date().toISOString(),
+
+            updatedAt:new Date().toISOString()
+
+        });
+
+    }
+
+
+    saveData();
+
+    renderCategories();
+
+    renderCategorySelect();
+
+    categoryForm.classList.remove("active");
+
+    showStatus("Категория нигоҳ дошта шуд");
+
+});
+
+
+/* -----------------------------
+   RENDER CATEGORIES
+----------------------------- */
+
+function renderCategories(){
+
+    categoryList.innerHTML = "";
+
+
+    if(categories.length === 0){
+
+        categoryList.innerHTML = `
+            <div class="empty">
+                Ҳоло категория нест.<br>
+                Барои оғоз + ро пахш кунед.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    categories.forEach(category => {
+
+        const count =
+            products.filter(
+                product =>
+                product.categoryId === category.id
+            ).length;
+
+
+        const item =
+            document.createElement("div");
+
+        item.className = "item";
+
+
+        item.innerHTML = `
+
+            <div class="item-top">
+
+                <div>
+
+                    <div class="item-name">
+                        ${escapeHtml(category.name)}
+                    </div>
+
+                    <div class="item-info">
+                        ${count} маҳсулот
+                    </div>
+
+                </div>
+
+
+                <div class="item-actions">
+
+                    <button
+                        class="small-btn"
+                        onclick="editCategory('${category.id}')"
+                    >
+                        ✎
+                    </button>
+
+                    <button
+                        class="small-btn delete-btn"
+                        onclick="deleteCategory('${category.id}')"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        categoryList.appendChild(item);
+
+    });
+
+}
+
+
+/* -----------------------------
+   CATEGORY SELECT
+----------------------------- */
+
+function renderCategorySelect(){
+
+    productCategory.innerHTML =
+        `<option value="">
+            Категорияро интихоб кунед
+        </option>`;
+
+
+    categories.forEach(category => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = category.id;
+
+        option.textContent = category.name;
+
+        productCategory.appendChild(option);
+
+    });
+
+}
+
+
+/* -----------------------------
+   EDIT CATEGORY
+----------------------------- */
+
+window.editCategory = function(id){
+
+    const category =
+        categories.find(
+            item => item.id === id
+        );
+
+    if(!category) return;
+
+
+    editingCategoryId = id;
+
+    document
+        .getElementById("categoryName")
+        .value = category.name;
+
+    categoryForm.classList.add("active");
+
+};
+
+
+/* -----------------------------
+   DELETE CATEGORY
+----------------------------- */
+
+window.deleteCategory = function(id){
+
+    const used =
+        products.some(
+            product =>
+            product.categoryId === id
+        );
+
+
+    if(used){
+
+        showStatus(
+            "Аввал маҳсулоти ин категорияро тағйир диҳед"
+        );
+
+        return;
+    }
+
+
+    categories =
+        categories.filter(
+            item => item.id !== id
+        );
+
+
+    saveData();
+
+    renderCategories();
+
+    renderCategorySelect();
+
+    showStatus("Категория нест карда шуд");
+
+};
+
+
+/* -----------------------------
+   ADD PRODUCT
+----------------------------- */
+
+document
+.getElementById("addProductBtn")
+.addEventListener("click",() => {
+
+    editingProductId = null;
+
+    clearProductForm();
+
+    productForm.classList.toggle("active");
+
+});
+
+
+/* -----------------------------
+   CANCEL PRODUCT
+----------------------------- */
+
+document
+.getElementById("cancelProduct")
+.addEventListener("click",() => {
+
+    productForm.classList.remove("active");
+
+    clearProductForm();
+
+});
+
+
+/* -----------------------------
+   PHOTO
+----------------------------- */
+
+productPhoto.addEventListener(
+    "change",
+    function(){
+
+        const file = this.files[0];
+
+        if(!file){
+
+            currentPhoto = "";
+
+            photoPreview.style.display = "none";
+
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = function(event){
+
+            currentPhoto =
+                event.target.result;
+
+            photoPreview.src =
+                currentPhoto;
+
+            photoPreview.style.display =
+                "block";
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+    }
+);
+
+
+/* -----------------------------
+   SAVE PRODUCT
+----------------------------- */
+
+document
+.getElementById("saveProduct")
+.addEventListener("click",() => {
+
+    const name =
+        document
+        .getElementById("productName")
+        .value
+        .trim();
+
+
+    const categoryId =
+        productCategory.value;
+
+
+    const price =
+        document
+        .getElementById("productPrice")
+        .value;
+
+
+    const unit =
+        document
+        .getElementById("productUnit")
+        .value;
+
+
+    const quantity =
+        document
+        .getElementById("productQuantity")
+        .value;
+
+
+    const description =
+        document
+        .getElementById("productDescription")
+        .value
+        .trim();
+
+
+    if(!name){
+
+        showStatus("Номи маҳсулотро нависед");
+
+        return;
+    }
+
+
+    if(!categoryId){
+
+        showStatus("Категорияро интихоб кунед");
+
+        return;
+    }
+
+
+    if(editingProductId){
+
+        const product =
+            products.find(
+                item =>
+                item.id === editingProductId
+            );
+
+
+        if(product){
+
+            product.name = name;
+
+            product.categoryId =
+                categoryId;
+
+            product.price =
+                price === ""
+                    ? null
+                    : Number(price);
+
+            product.unit =
+                unit;
+
+            product.quantity =
+                quantity === ""
+                    ? 0
+                    : Number(quantity);
+
+            product.description =
+                description;
+
+            if(currentPhoto){
+
+                product.photos =
+                    [currentPhoto];
+
+            }
+
+            product.updatedAt =
+                new Date().toISOString();
+
+        }
+
+
+        showStatus(
+            "Маҳсулот тағйир дода шуд"
+        );
+
+
+    }else{
+
+        products.push({
+
+            id:createId("item"),
+
+            name:name,
+
+            categoryId:categoryId,
+
+            type:"product",
+
+            action:"sell",
+
+            price:
+                price === ""
+                    ? null
+                    : Number(price),
+
+            unit:unit,
+
+            quantity:
+                quantity === ""
+                    ? 0
+                    : Number(quantity),
+
+            photos:
+                currentPhoto
+                    ? [currentPhoto]
+                    : [],
+
+            description:description,
+
+            location:"",
+
+            status:
+                Number(quantity) > 0
+                    ? "active"
+                    : "out_of_stock",
+
+            createdAt:
+                new Date().toISOString(),
+
+            updatedAt:
+                new Date().toISOString()
+
+        });
+
+
+        showStatus(
+            "Маҳсулоти нав илова шуд"
+        );
+
+    }
+
+
+    saveData();
+
+    renderProducts();
+
+    renderCategories();
+
+    productForm.classList.remove("active");
+
+    clearProductForm();
+
+});
+
+
+/* -----------------------------
+   RENDER PRODUCTS
+----------------------------- */
+
+function renderProducts(){
+
+    productList.innerHTML = "";
+
+
+    if(products.length === 0){
+
+        productList.innerHTML = `
+            <div class="empty">
+                Ҳоло маҳсулот нест.<br>
+                Барои илова кардан + ро пахш кунед.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    products.forEach(product => {
+
+        const category =
+            categories.find(
+                item =>
+                item.id === product.categoryId
+            );
+
+
+        const categoryName =
+            category
+                ? category.name
+                : "Бе категория";
+
+
+        const item =
+            document.createElement("div");
+
+        item.className = "item";
+
+
+        const priceText =
+            product.price === null
+                ? "Нарх гузошта нашудааст"
+                : `${product.price} сомонӣ / ${product.unit}`;
+
+
+        const photoText =
+            product.photos &&
+            product.photos.length
+                ? "Акс дорад"
+                : "Акс нест";
+
+
+        item.innerHTML = `
+
+            <div class="item-top">
+
+                <div>
+
+                    <div class="item-name">
+                        ${escapeHtml(product.name)}
+                    </div>
+
+                    <div class="item-info">
+
+                        Категория:
+                        ${escapeHtml(categoryName)}
+                        <br>
+
+                        ${escapeHtml(priceText)}
+                        <br>
+
+                        Миқдор:
+                        ${product.quantity}
+                        ${escapeHtml(product.unit)}
+                        <br>
+
+                        ${photoText}
+
+                    </div>
+
+                </div>
+
+
+                <div class="item-actions">
+
+                    <button
+                        class="small-btn"
+                        onclick="editProduct('${product.id}')"
+                    >
+                        ✎
+                    </button>
+
+                    <button
+                        class="small-btn delete-btn"
+                        onclick="deleteProduct('${product.id}')"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        productList.appendChild(item);
+
+    });
+
+}
+
+
+/* -----------------------------
+   EDIT PRODUCT
+----------------------------- */
+
+window.editProduct = function(id){
+
+    const product =
+        products.find(
+            item =>
+            item.id === id
+        );
+
+
+    if(!product) return;
+
+
+    editingProductId = id;
+
+
+    document
+        .getElementById("productName")
+        .value =
+        product.name || "";
+
+
+    productCategory.value =
+        product.categoryId || "";
+
+
+    document
+        .getElementById("productPrice")
+        .value =
+        product.price === null
+            ? ""
+            : product.price;
+
+
+    document
+        .getElementById("productUnit")
+        .value =
+        product.unit || "кг";
+
+
+    document
+        .getElementById("productQuantity")
+        .value =
+        product.quantity || 0;
+
+
+    document
+        .getElementById("productDescription")
+        .value =
+        product.description || "";
+
+
+    currentPhoto =
+        product.photos &&
+        product.photos.length
+            ? product.photos[0]
+            : "";
+
+
+    if(currentPhoto){
+
+        photoPreview.src =
+            currentPhoto;
+
+        photoPreview.style.display =
+            "block";
+
+    }else{
+
+        photoPreview.style.display =
+            "none";
+
+    }
+
+
+    productForm.classList.add("active");
+
+};
+
+
+/* -----------------------------
+   DELETE PRODUCT
+----------------------------- */
+
+window.deleteProduct = function(id){
+
+    products =
+        products.filter(
+            item =>
+            item.id !== id
+        );
+
+
+    saveData();
+
+    renderProducts();
+
+    renderCategories();
+
+    showStatus(
+        "Маҳсулот нест карда шуд"
+    );
+
+};
+
+
+/* -----------------------------
+   CLEAR FORM
+----------------------------- */
+
+function clearProductForm(){
+
+    document
+        .getElementById("productName")
+        .value = "";
+
+
+    productCategory.value = "";
+
+
+    document
+        .getElementById("productPrice")
+        .value = "";
+
+
+    document
+        .getElementById("productUnit")
+        .value = "кг";
+
+
+    document
+        .getElementById("productQuantity")
+        .value = "";
+
+
+    document
+        .getElementById("productDescription")
+        .value = "";
+
+
+    productPhoto.value = "";
+
+    currentPhoto = "";
+
+    photoPreview.src = "";
+
+    photoPreview.style.display =
+        "none";
+
+}
+
+
+/* -----------------------------
+   SECURITY
+----------------------------- */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* -----------------------------
+   CLOSE
+----------------------------- */
+
+document
+.getElementById("closePage")
+.addEventListener("click",() => {
+
+    if(document.referrer){
+
+        history.back();
+
+    }else{
+
+        window.location.href =
+            "../index.html";
+
+    }
+
+});
+
+
+/* -----------------------------
+   START
+----------------------------- */
+
+renderCategories();
+
+renderCategorySelect();
+
+renderProducts();
+
+</script>
+
+</body>
+</html>
