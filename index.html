@@ -1,738 +1,717 @@
-
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VARZID — Admin Products</title>
-<style>
-*{box-sizing:border-box;}
-body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
-button,input,select,textarea{font:inherit;}
-button{cursor:pointer;}
-.header{position:sticky;top:0;z-index:20;background:#151515;border-bottom:1px solid #292929;padding:16px;}
-.header-top{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.title{font-size:21px;font-weight:700;}
-.subtitle{margin-top:4px;color:#888;font-size:12px;}
-.close-btn{width:40px;height:40px;border:0;border-radius:50%;background:#242424;color:#fff;font-size:24px;}
-.container{max-width:800px;margin:auto;padding:16px;}
-.section{margin-bottom:18px;}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
-.section-title{font-size:16px;font-weight:700;}
-.add-btn{width:38px;height:38px;border:0;border-radius:50%;background:#16843a;color:#fff;font-size:25px;line-height:1;}
-.empty{border:1px dashed #383838;border-radius:14px;padding:20px;text-align:center;color:#777;font-size:13px;}
-.category-list,.product-list{display:flex;flex-direction:column;gap:10px;}
-.item{background:#191919;border:1px solid #292929;border-radius:14px;padding:13px;}
-.item-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.item-name{font-size:15px;font-weight:600;}
-.item-info{margin-top:6px;color:#999;font-size:12px;line-height:1.6;}
-.item-actions{display:flex;gap:7px;}
-.small-btn{width:34px;height:34px;border:0;border-radius:9px;background:#292929;color:#fff;}
-.delete-btn{color:#ff7777;}
-.form-box{display:none;background:#191919;border:1px solid #303030;border-radius:16px;padding:15px;margin-top:10px;}
-.form-box.active{display:block;}
-.field{margin-bottom:12px;}
-.field label{display:block;color:#aaa;font-size:12px;margin-bottom:6px;}
-.field input,.field select,.field textarea{width:100%;border:1px solid #333;border-radius:10px;background:#101010;color:#fff;padding:12px;outline:none;}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:#16843a;}
-textarea{min-height:80px;resize:vertical;}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.form-actions{display:flex;gap:8px;margin-top:5px;}
-.save-btn{flex:1;border:0;border-radius:10px;padding:12px;background:#16843a;color:#fff;font-weight:600;}
-.cancel-btn{border:0;border-radius:10px;padding:12px 18px;background:#292929;color:#fff;}
-.photo-box{border:1px dashed #383838;border-radius:12px;padding:14px;text-align:center;}
-.photo-preview{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px;display:none;}
-.hidden{display:none!important;}
-.status{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#222;border:1px solid #333;color:#fff;padding:10px 15px;border-radius:10px;font-size:12px;display:none;z-index:50;}
-@media(max-width:500px){.row{grid-template-columns:1fr;}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varzid</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #22c55e;
+            --accent-hover: #16a34a;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --border-color: #334155;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --surface-color: #ffffff;
+            --surface-hover: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-color: #16a34a;
+            --accent-hover: #15803d;
+            --danger-color: #dc2626;
+            --danger-hover: #b91c1c;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        header {
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 0.5px;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-btn:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .settings-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* Horizontal Categories Bar */
+        .categories-container {
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            scrollbar-width: none;
+        }
+
+        .categories-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-chip {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .category-chip.active {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+        }
+
+        .category-chip:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .category-chip.active:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .add-category-btn {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .add-category-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .delete-cat-btn {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 4px;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .delete-cat-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Main Content Area */
+        main {
+            flex: 1;
+            padding: 16px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .product-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 14px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .product-unit {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+        }
+
+        .settings-option {
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+        }
+
+        .settings-option:hover {
+            background-color: var(--surface-hover);
+        }
+    </style>
 </head>
 <body>
 
-<header class="header">
-    <div class="header-top">
-        <div>
-            <div class="title" data-i18n="app_title">VARZID</div>
-            <div class="subtitle" data-i18n="admin_subtitle">Админ • Продукты</div>
-        </div>
+    <!-- Header -->
+    <header>
+        <div class="logo" id="logoText">VARZID</div>
+        <button class="settings-btn" id="settingsBtn" title="Настройки">
+            <svg class="settings-icon" viewBox="0 0 24 24">
+                <path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zM12 10c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm6 6v-1.1c-.83-.52-1.83-.9-3-.9-1.17 0-2.17.38-3 .9V16h-4v2h10v-2h-4zm-10 1.25c.67-.47 1.5-.75 2.5-.75s1.83.28 2.5.75V19H8v-1.75zM20 10.5v1.8l-1.46.3c-.11.39-.28.75-.5 1.08l1.02 1.08-1.27 1.27-1.08-1.02c-.33.22-.69.39-1.08.5l-.3 1.46h-1.8l-.3-1.46c-.39-.11-.75-.28-1.08-.5l-1.08 1.02-1.27-1.27 1.02-1.08c-.22-.33-.39-.69-.5-1.08L4 12.3v-1.8l1.46-.3c.11-.39.28-.75.5-1.08L4.94 8.04l1.27-1.27 1.08 1.02c.33-.22.69-.39 1.08-.5l.3-1.46h1.8l.3 1.46c.39.11.75.28 1.08.5l1.08-1.02 1.27 1.27-1.02 1.08c.22.33.39.69.5 1.08L20 10.5z"/>
+            </svg>
+        </button>
+    </header>
 
-        <div style="display:flex; align-items:center; gap:10px;">
-            <select id="langSelect" style="background:#242424; color:#fff; border:1px solid #333; border-radius:8px; padding:6px 10px; outline:none; font-size:13px;">
-                <option value="ru" selected>Русский</option>
-                <option value="tg">Тоҷикӣ</option>
-                <option value="uz">Oʻzbekcha</option>
-            </select>
-            <button class="close-btn" id="closePage">×</button>
-        </div>
+    <!-- Horizontal Categories -->
+    <div class="categories-container" id="categoriesContainer">
+        <!-- Injected via JS -->
     </div>
-</header>
 
-<main class="container">
-
-    <!-- CATEGORIES -->
-    <section class="section">
-
-        <div class="section-head">
-            <div class="section-title" data-i18n="categories_title">Категории</div>
-            <button class="add-btn" id="addCategoryBtn">+</button>
+    <!-- Main Content -->
+    <main>
+        <div class="section-title" id="sectionTitle">Для вас</div>
+        <div class="products-grid" id="productsGrid">
+            <!-- Injected via JS -->
         </div>
+    </main>
 
-        <div class="form-box" id="categoryForm">
-
-            <div class="field">
-                <label data-i18n="cat_name_label">Название категории</label>
-                <input
-                    id="categoryName"
-                    type="text"
-                    data-i18n-placeholder="cat_name_placeholder"
-                    placeholder="Например: Пшеница"
-                >
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span id="settingsTitle">Настройки</span>
+                <button class="settings-btn" id="closeSettingsBtn">&times;</button>
             </div>
-
-            <div class="form-actions">
-                <button class="cancel-btn" id="cancelCategory">
-                    ×
-                </button>
-
-                <button class="save-btn" id="saveCategory" data-i18n="add_btn">
-                    Добавить
-                </button>
-            </div>
-
-        </div>
-
-        <div class="category-list" id="categoryList"></div>
-
-    </section>
-
-
-    <!-- PRODUCTS -->
-    <section class="section">
-
-        <div class="section-head">
-            <div class="section-title" data-i18n="products_title">Продукты</div>
-            <button class="add-btn" id="addProductBtn">+</button>
-        </div>
-
-        <div class="form-box" id="productForm">
-
-            <div class="field">
-                <label data-i18n="prod_name_label">Название продукта</label>
-                <input
-                    id="productName"
-                    type="text"
-                    data-i18n-placeholder="prod_name_placeholder"
-                    placeholder="Например: Пшеница"
-                >
-            </div>
-
-            <div class="field">
-                <label data-i18n="prod_cat_label">Категория</label>
-
-                <select id="productCategory">
-                    <option value="" data-i18n="select_cat_opt">Выберите категорию</option>
-                </select>
-            </div>
-
-            <div class="row">
-
-                <div class="field">
-                    <label data-i18n="price_label">Цена</label>
-                    <input
-                        id="productPrice"
-                        type="number"
-                        min="0"
-                        step="any"
-                        placeholder="0"
-                    >
+            <div class="modal-body" style="gap: 4px;">
+                <div class="settings-option" id="themeToggleOption">
+                    <span id="themeLabel">Ночной режим</span>
+                    <input type="checkbox" id="themeCheckbox" checked style="cursor: pointer; width: 18px; height: 18px; accent-color: var(--accent-color);">
                 </div>
-
-                <div class="field">
-                    <label data-i18n="unit_label">Единица</label>
-
-                    <select id="productUnit">
-
-                        <option value="кг">кг</option>
-                        <option value="г">г</option>
-                        <option value="тонна">тонна</option>
-                        <option value="литр">литр</option>
-                        <option value="мл">мл</option>
-                        <option value="дона">дона</option>
-                        <option value="штук">штук</option>
-                        <option value="сар">сар</option>
-                        <option value="халта">халта</option>
-                        <option value="қуттӣ">қуттӣ</option>
-                        <option value="баста">баста</option>
-                        <option value="ҷуфт">ҷуфт</option>
-                        <option value="комплект">комплект</option>
-                        <option value="метр">метр</option>
-                        <option value="м²">м²</option>
-                        <option value="м³">м³</option>
-                        <option value="дигар">дигар</option>
-
+                <div style="margin: 8px 0; border-top: 1px solid var(--border-color);"></div>
+                <div class="form-group" style="padding: 4px 12px;">
+                    <label id="langLabel" style="margin-bottom: 4px;">Язык</label>
+                    <select class="form-control" id="langSelect">
+                        <option value="ru" selected>Русский</option>
+                        <option value="tj">Тоҷикӣ</option>
+                        <option value="uz">O'zbekcha</option>
                     </select>
                 </div>
-
-            </div>
-
-            <div class="field">
-                <label data-i18n="qty_label">Количество</label>
-
-                <input
-                    id="productQuantity"
-                    type="number"
-                    min="0"
-                    step="any"
-                    data-i18n-placeholder="qty_placeholder"
-                    placeholder="Например: 500"
-                >
-            </div>
-
-
-            <div class="field">
-
-                <label data-i18n="photo_label">Фото</label>
-
-                <div class="photo-box">
-
-                    <input
-                        id="productPhoto"
-                        type="file"
-                        accept="image/*"
-                    >
-
-                    <img
-                        id="photoPreview"
-                        class="photo-preview"
-                        alt="Фото"
-                    >
-
+                <div style="margin: 8px 0; border-top: 1px solid var(--border-color);"></div>
+                <div class="settings-option" id="adminToggleOption">
+                    <span id="adminModeLabel">Режим Админа</span>
+                    <input type="checkbox" id="adminCheckbox" style="cursor: pointer; width: 18px; height: 18px; accent-color: var(--accent-color);">
                 </div>
-
             </div>
-
-
-            <div class="field">
-
-                <label data-i18n="desc_label">Описание</label>
-
-                <textarea
-                    id="productDescription"
-                    data-i18n-placeholder="desc_placeholder"
-                    placeholder="Если необходимо..."
-                ></textarea>
-
-            </div>
-
-
-            <div class="form-actions">
-
-                <button
-                    class="cancel-btn"
-                    id="cancelProduct"
-                >
-                    ×
-                </button>
-
-                <button
-                    class="save-btn"
-                    id="saveProduct"
-                    data-i18n="add_btn"
-                >
-                    Добавить
-                </button>
-
-            </div>
-
         </div>
+    </div>
 
-
-        <div class="product-list" id="productList"></div>
-
-    </section>
-
-</main>
-
-<div class="status" id="status"></div>
-
-
-<script>
-const translations = {
-    ru: {
-        app_title: "VARZID",
-        admin_subtitle: "Админ • Продукты",
-        categories_title: "Категории",
-        cat_name_label: "Название категории",
-        cat_name_placeholder: "Например: Пшеница",
-        add_btn: "Добавить",
-        products_title: "Продукты",
-        prod_name_label: "Название продукта",
-        prod_name_placeholder: "Например: Пшеница",
-        prod_cat_label: "Категория",
-        select_cat_opt: "Выберите категорию",
-        price_label: "Цена",
-        unit_label: "Единица",
-        qty_label: "Количество",
-        qty_placeholder: "Например: 500",
-        photo_label: "Фото",
-        desc_label: "Описание",
-        desc_placeholder: "Если необходимо...",
-        empty_cat: "Пока нет категорий.<br>Нажмите +, чтобы начать.",
-        empty_prod: "Пока нет продуктов.<br>Нажмите +, чтобы добавить.",
-        status_cat_saved: "Категория сохранена",
-        status_cat_deleted: "Категория удалена",
-        status_prod_saved: "Продукт изменен",
-        status_prod_added: "Новый продукт добавлен",
-        status_prod_deleted: "Продукт удален",
-        status_no_cat_name: "Введите название категории",
-        status_no_prod_name: "Введите название продукта",
-        status_no_prod_cat: "Выберите категорию",
-        status_change_cat_first: "Сначала измените категорию этого продукта",
-        lbl_products_count: "продуктов",
-        lbl_category: "Категория:",
-        lbl_price_not_set: "Цена не установлена",
-        lbl_qty: "Количество:",
-        lbl_has_photo: "Есть фото",
-        lbl_no_photo: "Нет фото",
-        lbl_no_category_name: "Без категории"
-    },
-    tg: {
-        app_title: "VARZID",
-        admin_subtitle: "Админ • Маҳсулот",
-        categories_title: "Категорияҳо",
-        cat_name_label: "Номи категория",
-        cat_name_placeholder: "Масалан: Гандум",
-        add_btn: "Илова кардан",
-        products_title: "Маҳсулот",
-        prod_name_label: "Номи маҳсулот",
-        prod_name_placeholder: "Масалан: Гандум",
-        prod_cat_label: "Категория",
-        select_cat_opt: "Категорияро интихоб кунед",
-        price_label: "Нарх",
-        unit_label: "Воҳид",
-        qty_label: "Миқдор",
-        qty_placeholder: "Масалан: 500",
-        photo_label: "Акс",
-        desc_label: "Тавсиф",
-        desc_placeholder: "Агар лозим бошад...",
-        empty_cat: "Ҳоло категория нест.<br>Барои оғоз + ро пахш кунед.",
-        empty_prod: "Ҳоло маҳсулот нест.<br>Барои илова кардан + ро пахш кунед.",
-        status_cat_saved: "Категория нигоҳ дошта шуд",
-        status_cat_deleted: "Категория нест карда шуд",
-        status_prod_saved: "Маҳсулот тағйир дода шуд",
-        status_prod_added: "Маҳсулоти нав илова шуд",
-        status_prod_deleted: "Маҳсулот нест карда шуд",
-        status_no_cat_name: "Номи категорияро нависед",
-        status_no_prod_name: "Номи маҳсулотро нависед",
-        status_no_prod_cat: "Категорияро интихоб кунед",
-        status_change_cat_first: "Аввал маҳсулоти ин категорияро тағйир диҳед",
-        lbl_products_count: "маҳсулот",
-        lbl_category: "Категория:",
-        lbl_price_not_set: "Нарх гузошта нашудааст",
-        lbl_qty: "Миқдор:",
-        lbl_has_photo: "Акс дорад",
-        lbl_no_photo: "Акс нест",
-        lbl_no_category_name: "Бе категория"
-    },
-    uz: {
-        app_title: "VARZID",
-        admin_subtitle: "Admin • Mahsulotlar",
-        categories_title: "Kategoriyalar",
-        cat_name_label: "Kategoriya nomi",
-        cat_name_placeholder: "Masalan: Bug'doy",
-        add_btn: "Qo'shish",
-        products_title: "Mahsulotlar",
-        prod_name_label: "Mahsulot nomi",
-        prod_name_placeholder: "Masalan: Bug'doy",
-        prod_cat_label: "Kategoriya",
-        select_cat_opt: "Kategoriyani tanlang",
-        price_label: "Narx",
-        unit_label: "Birlik",
-        qty_label: "Miqdor",
-        qty_placeholder: "Masalan: 500",
-        photo_label: "Rasm",
-        desc_label: "Tavsif",
-        desc_placeholder: "Agar kerak bo'lsa...",
-        empty_cat: "Hozircha kategoriya yo'q.<br>Boshlash uchun + ni bosing.",
-        empty_prod: "Hozircha mahsulot yo'q.<br>Qo'shish uchun + ni bosing.",
-        status_cat_saved: "Kategoriya saqlandi",
-        status_cat_deleted: "Kategoriya o'chirildi",
-        status_prod_saved: "Mahsulot o'zgartirildi",
-        status_prod_added: "Yangi mahsulot qo'shildi",
-        status_prod_deleted: "Mahsulot o'chirildi",
-        status_no_cat_name: "Kategoriya nomini yozing",
-        status_no_prod_name: "Mahsulot nomini yozing",
-        status_no_prod_cat: "Kategoriyani tanlang",
-        status_change_cat_first: "Avval bu kategoriyadagi mahsulotlarni o'zgartiring",
-        lbl_products_count: "ta mahsulot",
-        lbl_category: "Kategoriya:",
-        lbl_price_not_set: "Narx belgilanmagan",
-        lbl_qty: "Miqdor:",
-        lbl_has_photo: "Rasm bor",
-        lbl_no_photo: "Rasm yo'q",
-        lbl_no_category_name: "Kategoriyasiz"
-    }
-};
-
-let currentLang = localStorage.getItem("varzid_lang") || "ru";
-document.getElementById("langSelect").value = currentLang;
-
-function t(key) {
-    return translations[currentLang][key] || translations["ru"][key] || key;
-}
-
-function updateLanguage() {
-    document.querySelectorAll("[data-i18n]").forEach(el => {
-        const k = el.getAttribute("data-i18n");
-        if(translations[currentLang][k]) {
-            el.textContent = translations[currentLang][k];
-        }
-    });
-    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
-        const k = el.getAttribute("data-i18n-placeholder");
-        if(translations[currentLang][k]) {
-            el.placeholder = translations[currentLang][k];
-        }
-    });
-    renderCategories();
-    renderCategorySelect();
-    renderProducts();
-}
-
-document.getElementById("langSelect").addEventListener("change", function() {
-    currentLang = this.value;
-    localStorage.setItem("varzid_lang", currentLang);
-    updateLanguage();
-});
-
-
-const CATEGORY_KEY = "varzid_categories";
-const PRODUCT_KEY = "varzid_products";
-
-let categories = JSON.parse(localStorage.getItem(CATEGORY_KEY) || "[]");
-let products = JSON.parse(localStorage.getItem(PRODUCT_KEY) || "[]");
-
-let editingProductId = null;
-let editingCategoryId = null;
-let currentPhoto = "";
-
-const categoryForm = document.getElementById("categoryForm");
-const productForm = document.getElementById("productForm");
-const categoryList = document.getElementById("categoryList");
-const productList = document.getElementById("productList");
-const productCategory = document.getElementById("productCategory");
-const productPhoto = document.getElementById("productPhoto");
-const photoPreview = document.getElementById("photoPreview");
-const statusBox = document.getElementById("status");
-
-function createId(prefix){
-    return prefix + "_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,8);
-}
-
-function saveData(){
-    localStorage.setItem(CATEGORY_KEY, JSON.stringify(categories));
-    localStorage.setItem(PRODUCT_KEY, JSON.stringify(products));
-}
-
-function showStatus(message){
-    statusBox.textContent = message;
-    statusBox.style.display = "block";
-    clearTimeout(showStatus.timer);
-    showStatus.timer = setTimeout(() => {
-        statusBox.style.display = "none";
-    },1800);
-}
-
-document.getElementById("addCategoryBtn").addEventListener("click",() => {
-    editingCategoryId = null;
-    document.getElementById("categoryName").value = "";
-    categoryForm.classList.toggle("active");
-});
-
-document.getElementById("cancelCategory").addEventListener("click",() => {
-    categoryForm.classList.remove("active");
-});
-
-document.getElementById("saveCategory").addEventListener("click",() => {
-    const name = document.getElementById("categoryName").value.trim();
-    if(!name){
-        showStatus(t("status_no_cat_name"));
-        return;
-    }
-
-    if(editingCategoryId){
-        const category = categories.find(item => item.id === editingCategoryId);
-        if(category){
-            category.name = name;
-        }
-    }else{
-        categories.push({
-            id: createId("cat"),
-            name: name,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        });
-    }
-
-    saveData();
-    renderCategories();
-    renderCategorySelect();
-    categoryForm.classList.remove("active");
-    showStatus(t("status_cat_saved"));
-});
-
-function renderCategories(){
-    categoryList.innerHTML = "";
-    if(categories.length === 0){
-        categoryList.innerHTML = `<div class="empty">${t("empty_cat")}</div>`;
-        return;
-    }
-
-    categories.forEach(category => {
-        const count = products.filter(product => product.categoryId === category.id).length;
-        const item = document.createElement("div");
-        item.className = "item";
-
-        item.innerHTML = `
-            <div class="item-top">
-                <div>
-                    <div class="item-name">${escapeHtml(category.name)}</div>
-                    <div class="item-info">${count} ${t("lbl_products_count")}</div>
-                </div>
-                <div class="item-actions">
-                    <button class="small-btn" onclick="editCategory('${category.id}')">✎</button>
-                    <button class="small-btn delete-btn" onclick="deleteCategory('${category.id}')">×</button>
+    <!-- Add Category Modal -->
+    <div class="modal-overlay" id="addCategoryModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span id="addCatModalTitle">Добавить категорию</span>
+                <button class="settings-btn" id="closeAddCatBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label id="catNameLabel">Название категории</label>
+                    <input type="text" class="form-control" id="newCategoryInput" placeholder="Гандум, Орд, Корм...">
                 </div>
             </div>
-        `;
-        categoryList.appendChild(item);
-    });
-}
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelCatBtn">Отмена</button>
+                <button class="btn btn-primary" id="saveCatBtn">Добавить</button>
+            </div>
+        </div>
+    </div>
 
-function renderCategorySelect(){
-    const currentVal = productCategory.value;
-    productCategory.innerHTML = `<option value="">${t("select_cat_opt")}</option>`;
+    <!-- Confirm Delete Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span id="deleteModalTitle">Удаление</span>
+            </div>
+            <div class="modal-body">
+                <p id="deleteConfirmText">Вы действительно хотите удалить эту категорию?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDeleteBtn">Нет</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
 
-    categories.forEach(category => {
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-        productCategory.appendChild(option);
-    });
-    productCategory.value = currentVal;
-}
-
-window.editCategory = function(id){
-    const category = categories.find(item => item.id === id);
-    if(!category) return;
-
-    editingCategoryId = id;
-    document.getElementById("categoryName").value = category.name;
-    categoryForm.classList.add("active");
-};
-
-window.deleteCategory = function(id){
-    const used = products.some(product => product.categoryId === id);
-    if(used){
-        showStatus(t("status_change_cat_first"));
-        return;
-    }
-
-    categories = categories.filter(item => item.id !== id);
-    saveData();
-    renderCategories();
-    renderCategorySelect();
-    showStatus(t("status_cat_deleted"));
-};
-
-document.getElementById("addProductBtn").addEventListener("click",() => {
-    editingProductId = null;
-    clearProductForm();
-    productForm.classList.toggle("active");
-});
-
-document.getElementById("cancelProduct").addEventListener("click",() => {
-    productForm.classList.remove("active");
-    clearProductForm();
-});
-
-productPhoto.addEventListener("change", function(){
-    const file = this.files[0];
-    if(!file){
-        currentPhoto = "";
-        photoPreview.style.display = "none";
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(event){
-        currentPhoto = event.target.result;
-        photoPreview.src = currentPhoto;
-        photoPreview.style.display = "block";
-    };
-    reader.readAsDataURL(file);
-});
-
-document.getElementById("saveProduct").addEventListener("click",() => {
-    const name = document.getElementById("productName").value.trim();
-    const categoryId = productCategory.value;
-    const price = document.getElementById("productPrice").value;
-    const unit = document.getElementById("productUnit").value;
-    const quantity = document.getElementById("productQuantity").value;
-    const description = document.getElementById("productDescription").value.trim();
-
-    if(!name){
-        showStatus(t("status_no_prod_name"));
-        return;
-    }
-
-    if(!categoryId){
-        showStatus(t("status_no_prod_cat"));
-        return;
-    }
-
-    if(editingProductId){
-        const product = products.find(item => item.id === editingProductId);
-        if(product){
-            product.name = name;
-            product.categoryId = categoryId;
-            product.price = price === "" ? null : Number(price);
-            product.unit = unit;
-            product.quantity = quantity === "" ? 0 : Number(quantity);
-            product.description = description;
-            if(currentPhoto){
-                product.photos = [currentPhoto];
+    <script>
+        const translations = {
+            ru: {
+                logo: "VARZID",
+                forYou: "Для вас",
+                settings: "Настройки",
+                nightMode: "Ночной режим",
+                language: "Язык",
+                adminMode: "Режим Админа",
+                addCategory: "Добавить категорию",
+                catNamePlaceholder: "Название категории",
+                cancel: "Отмена",
+                add: "Добавить",
+                deleteTitle: "Удаление",
+                deleteConfirm: "Вы действительно хотите удалить эту категорию?",
+                yes: "Удалить",
+                no: "Нет",
+                products: [
+                    { name: "Гандум (Пшеница)", price: "3.50 сомони", unit: "1 кг", cat: "Гандум" },
+                    { name: "Орд (Мука)", price: "320 сомони", unit: "Мешок (50 кг)", cat: "Орд" },
+                    { name: "Корм", price: "150 сомони", unit: "Мешок", cat: "Корм" },
+                    { name: "Каду (Тыква)", price: "5.00 сомони", unit: "1 кг", cat: "Каду" },
+                    { name: "Ҷав (Ячмень)", price: "3.00 сомони", unit: "1 кг", cat: "Ҷав" },
+                    { name: "Селитра", price: "280 сомони", unit: "Мешок (50 кг)", cat: "Селитра" },
+                    { name: "Карбамид", price: "300 сомони", unit: "Мешок (50 кг)", cat: "Карбамид" },
+                    { name: "Гуспанд (Баран)", price: "2000 сомони", unit: "1 штук", cat: "Чорво" },
+                    { name: "Замини алаф (Трава аренда/продажа)", price: "500 сомони", unit: "1 сотих", cat: "Замин ва алаф" }
+                ]
+            },
+            tj: {
+                logo: "VARZID",
+                forYou: "Барои шумо",
+                settings: "Танзимот",
+                nightMode: "Режими шабона",
+                language: "Забон",
+                adminMode: "Ҳолати Админ",
+                addCategory: "Илова кардани категория",
+                catNamePlaceholder: "Номи категория",
+                cancel: "Бекор кардан",
+                add: "Илова",
+                deleteTitle: "Нест кардан",
+                deleteConfirm: "Оё шумо воқеан мехоҳед ин категорияро нест кунед?",
+                yes: "Нест кудан",
+                no: "Не",
+                products: [
+                    { name: "Гандум", price: "3.50 сомонӣ", unit: "1 кг", cat: "Гандум" },
+                    { name: "Орд", price: "320 сомонӣ", unit: "Халта (50 кг)", cat: "Орд" },
+                    { name: "Корм", price: "150 сомонӣ", unit: "Халта", cat: "Корм" },
+                    { name: "Каду", price: "5.00 сомонӣ", unit: "1 кг", cat: "Каду" },
+                    { name: "Ҷав", price: "3.00 сомонӣ", unit: "1 кг", cat: "Ҷав" },
+                    { name: "Селитра", price: "280 сомонӣ", unit: "Халта (50 кг)", cat: "Селитра" },
+                    { name: "Карбамид", price: "300 сомонӣ", unit: "Халта (50 кг)", cat: "Карбамид" },
+                    { name: "Гусванд", price: "2000 сомонӣ", unit: "1 дона", cat: "Чорво" },
+                    { name: "Замини алаф", price: "500 сомонӣ", unit: "1 сотих", cat: "Замин ва алаф" }
+                ]
+            },
+            uz: {
+                logo: "VARZID",
+                forYou: "Siz uchun",
+                settings: "Sozlamalar",
+                nightMode: "Tungi rejim",
+                language: "Til",
+                adminMode: "Admin rejimi",
+                addCategory: "Kategoriya qo'shish",
+                catNamePlaceholder: "Kategoriya nomi",
+                cancel: "Bekor qilish",
+                add: "Qo'shish",
+                deleteTitle: "O'chirish",
+                deleteConfirm: "Haqiqatan ham bu kategoriyani o'chirmoqchimisiz?",
+                yes: "O'chirish",
+                no: "Yo'q",
+                products: [
+                    { name: "Bug'doy", price: "3.50 somoniy", unit: "1 kg", cat: "Гандум" },
+                    { name: "Un", price: "320 somoniy", unit: "Qop (50 kg)", cat: "Орд" },
+                    { name: "Korm", price: "150 somoniy", unit: "Qop", cat: "Корм" },
+                    { name: "Qovoq", price: "5.00 somoniy", unit: "1 kg", cat: "Каду" },
+                    { name: "Arpa", price: "3.00 somoniy", unit: "1 kg", cat: "Ҷав" },
+                    { name: "Selitra", price: "280 somoniy", unit: "Qop (50 kg)", cat: "Селитра" },
+                    { name: "Karbamid", price: "300 somoniy", unit: "Qop (50 kg)", cat: "Карбамид" },
+                    { name: "Qo'y", price: "2000 somoniy", unit: "1 dona", cat: "Чорво" },
+                    { name: "O't yeri", price: "500 somoniy", unit: "1 sotix", cat: "Замин ва алаф" }
+                ]
             }
-            product.updatedAt = new Date().toISOString();
+        };
+
+        let currentLang = 'ru';
+        let isAdmin = false;
+        let currentCategory = 'all';
+        let categories = ['Гандум', 'Орд', 'Корм', 'Каду', 'Ҷав', 'Селитра', 'Карбамид', 'Чорво', 'Замин ва алаф', 'Кишоварзӣ', 'Аксессуарҳо'];
+        let categoryToDelete = null;
+
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const productsGrid = document.getElementById('productsGrid');
+        const sectionTitle = document.getElementById('sectionTitle');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        const themeCheckbox = document.getElementById('themeCheckbox');
+        const themeToggleOption = document.getElementById('themeToggleOption');
+        const langSelect = document.getElementById('langSelect');
+        const adminCheckbox = document.getElementById('adminCheckbox');
+        const adminToggleOption = document.getElementById('adminToggleOption');
+        
+        const addCategoryModal = document.getElementById('addCategoryModal');
+        const closeAddCatBtn = document.getElementById('closeAddCatBtn');
+        const cancelCatBtn = document.getElementById('cancelCatBtn');
+        const saveCatBtn = document.getElementById('saveCatBtn');
+        const newCategoryInput = document.getElementById('newCategoryInput');
+
+        const deleteModal = document.getElementById('deleteModal');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        function renderUI() {
+            const t = translations[currentLang];
+            document.getElementById('logoText').innerText = t.logo;
+            document.getElementById('settingsTitle').innerText = t.settings;
+            document.getElementById('themeLabel').innerText = t.nightMode;
+            document.getElementById('langLabel').innerText = t.language;
+            document.getElementById('adminModeLabel').innerText = t.adminMode;
+            document.getElementById('addCatModalTitle').innerText = t.addCategory;
+            document.getElementById('catNameLabel').innerText = t.catNamePlaceholder;
+            newCategoryInput.placeholder = t.catNamePlaceholder;
+            document.getElementById('cancelCatBtn').innerText = t.cancel;
+            document.getElementById('saveCatBtn').innerText = t.add;
+            document.getElementById('deleteModalTitle').innerText = t.deleteTitle;
+            document.getElementById('deleteConfirmText').innerText = t.deleteConfirm;
+            document.getElementById('cancelDeleteBtn').innerText = t.no;
+            document.getElementById('confirmDeleteBtn').innerText = t.yes;
+
+            renderCategories();
+            renderProducts();
         }
-        showStatus(t("status_prod_saved"));
-    }else{
-        products.push({
-            id: createId("item"),
-            name: name,
-            categoryId: categoryId,
-            type: "product",
-            action: "sell",
-            price: price === "" ? null : Number(price),
-            unit: unit,
-            quantity: quantity === "" ? 0 : Number(quantity),
-            photos: currentPhoto ? [currentPhoto] : [],
-            description: description,
-            location: "",
-            status: Number(quantity) > 0 ? "active" : "out_of_stock",
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        });
-        showStatus(t("status_prod_added"));
-    }
 
-    saveData();
-    renderProducts();
-    renderCategories();
-    productForm.classList.remove("active");
-    clearProductForm();
-});
+        function renderCategories() {
+            const t = translations[currentLang];
+            let html = '';
 
-function renderProducts(){
-    productList.innerHTML = "";
-    if(products.length === 0){
-        productList.innerHTML = `<div class="empty">${t("empty_prod")}</div>`;
-        return;
-    }
+            // First button ("Для вас" / "Varzid") for showing all products
+            const isAllActive = currentCategory === 'all';
+            html += `<button class="category-chip ${isAllActive ? 'active' : ''}" onclick="selectCategory('all')">${t.forYou}</button>`;
 
-    products.forEach(product => {
-        const category = categories.find(item => item.id === product.categoryId);
-        const categoryName = category ? category.name : t("lbl_no_category_name");
-        const item = document.createElement("div");
-        item.className = "item";
+            // Categories list (scrollable)
+            categories.forEach(cat => {
+                const isActive = currentCategory === cat;
+                html += `<button class="category-chip ${isActive ? 'active' : ''}" onclick="selectCategory('${cat}')">
+                    ${cat}
+                    ${isAdmin ? `<span class="delete-cat-btn" onclick="event.stopPropagation(); promptDeleteCategory('${cat}')">&times;</span>` : ''}
+                </button>`;
+            });
 
-        const priceText = product.price === null ? t("lbl_price_not_set") : `${product.price} сомонӣ / ${product.unit}`;
-        const photoText = product.photos && product.photos.length ? t("lbl_has_photo") : t("lbl_no_photo");
+            // Last add (+) button - visible only for Admin
+            if (isAdmin) {
+                html += `<button class="add-category-btn" onclick="openAddCategoryModal()" title="${t.addCategory}">+</button>`;
+            }
 
-        item.innerHTML = `
-            <div class="item-top">
-                <div>
-                    <div class="item-name">${escapeHtml(product.name)}</div>
-                    <div class="item-info">
-                        ${t("lbl_category")} ${escapeHtml(categoryName)}<br>
-                        ${escapeHtml(priceText)}<br>
-                        ${t("lbl_qty")} ${product.quantity} ${escapeHtml(product.unit)}<br>
-                        ${photoText}
+            categoriesContainer.innerHTML = html;
+        }
+
+        function renderProducts() {
+            const t = translations[currentLang];
+            sectionTitle.innerText = currentCategory === 'all' ? t.forYou : currentCategory;
+
+            const filtered = currentCategory === 'all' 
+                ? t.products 
+                : t.products.filter(p => p.cat === currentCategory);
+
+            if (filtered.length === 0) {
+                productsGrid.innerHTML = `<div style="color: var(--text-secondary); grid-column: 1/-1; text-align: center; padding: 40px;">Пусто / Холӣ</div>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(p => {
+                html += `
+                    <div class="product-card">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-price">${p.price}</div>
+                        <div class="product-unit">${p.unit}</div>
                     </div>
-                </div>
-                <div class="item-actions">
-                    <button class="small-btn" onclick="editProduct('${product.id}')">✎</button>
-                    <button class="small-btn delete-btn" onclick="deleteProduct('${product.id}')">×</button>
-                </div>
-            </div>
-        `;
-        productList.appendChild(item);
-    });
-}
+                `;
+            });
+            productsGrid.innerHTML = html;
+        }
 
-window.editProduct = function(id){
-    const product = products.find(item => item.id === id);
-    if(!product) return;
+        window.selectCategory = function(cat) {
+            currentCategory = cat;
+            renderCategories();
+            renderProducts();
+        };
 
-    editingProductId = id;
-    document.getElementById("productName").value = product.name || "";
-    productCategory.value = product.categoryId || "";
-    document.getElementById("productPrice").value = product.price === null ? "" : product.price;
-    document.getElementById("productUnit").value = product.unit || "кг";
-    document.getElementById("productQuantity").value = product.quantity || 0;
-    document.getElementById("productDescription").value = product.description || "";
-    currentPhoto = product.photos && product.photos.length ? product.photos[0] : "";
+        window.promptDeleteCategory = function(cat) {
+            categoryToDelete = cat;
+            deleteModal.classList.add('open');
+        };
 
-    if(currentPhoto){
-        photoPreview.src = currentPhoto;
-        photoPreview.style.display = "block";
-    }else{
-        photoPreview.style.display = "none";
-    }
+        window.openAddCategoryModal = function() {
+            newCategoryInput.value = '';
+            addCategoryModal.classList.add('open');
+            setTimeout(() => newCategoryInput.focus(), 100);
+        };
 
-    productForm.classList.add("active");
-};
+        settingsBtn.addEventListener('click', () => settingsModal.classList.add('open'));
+        closeSettingsBtn.addEventListener('click', () => settingsModal.classList.remove('open'));
+        settingsModal.addEventListener('click', (e) => { if(e.target === settingsModal) settingsModal.classList.remove('open'); });
 
-window.deleteProduct = function(id){
-    products = products.filter(item => item.id !== id);
-    saveData();
-    renderProducts();
-    renderCategories();
-    showStatus(t("status_prod_deleted"));
-};
+        themeToggleOption.addEventListener('click', () => {
+            themeCheckbox.checked = !themeCheckbox.checked;
+            updateTheme();
+        });
+        themeCheckbox.addEventListener('change', updateTheme);
 
-function clearProductForm(){
-    document.getElementById("productName").value = "";
-    productCategory.value = "";
-    document.getElementById("productPrice").value = "";
-    document.getElementById("productUnit").value = "кг";
-    document.getElementById("productQuantity").value = "";
-    document.getElementById("productDescription").value = "";
-    productPhoto.value = "";
-    currentPhoto = "";
-    photoPreview.src = "";
-    photoPreview.style.display = "none";
-}
+        function updateTheme() {
+            if (themeCheckbox.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
 
-function escapeHtml(value){
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
+        langSelect.addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            renderUI();
+        });
 
-document.getElementById("closePage").addEventListener("click",() => {
-    if(document.referrer){
-        history.back();
-    }else{
-        window.location.href = "../index.html";
-    }
-});
+        adminToggleOption.addEventListener('click', () => {
+            adminCheckbox.checked = !adminCheckbox.checked;
+            isAdmin = adminCheckbox.checked;
+            renderCategories();
+        });
+        adminCheckbox.addEventListener('change', (e) => {
+            isAdmin = e.target.checked;
+            renderCategories();
+        });
 
-updateLanguage();
-</script>
+        closeAddCatBtn.addEventListener('click', () => addCategoryModal.classList.remove('open'));
+        cancelCatBtn.addEventListener('click', () => addCategoryModal.classList.remove('open'));
+        addCategoryModal.addEventListener('click', (e) => { if(e.target === addCategoryModal) addCategoryModal.classList.remove('open'); });
 
+        saveCatBtn.addEventListener('click', () => {
+            const val = newCategoryInput.value.trim();
+            if (val && !categories.includes(val)) {
+                categories.push(val);
+                addCategoryModal.classList.remove('open');
+                renderCategories();
+            }
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteModal.classList.remove('open');
+            categoryToDelete = null;
+        });
+        deleteModal.addEventListener('click', (e) => { if(e.target === deleteModal) deleteModal.classList.remove('open'); });
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (categoryToDelete) {
+                categories = categories.filter(c => c !== categoryToDelete);
+                if (currentCategory === categoryToDelete) {
+                    currentCategory = 'all';
+                }
+                categoryToDelete = null;
+                deleteModal.classList.remove('open');
+                renderUI();
+            }
+        });
+
+        renderUI();
+    </script>
 </body>
 </html>
