@@ -58,17 +58,21 @@
             z-index: 100;
         }
 
-        .logo {
-            font-size: 20px;
+        .logo-dropdown {
+            font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 10px;
         }
 
-        .logo span {
+        .logo-dropdown span {
             color: var(--accent-color);
         }
 
@@ -172,6 +176,7 @@
             margin: 0 auto;
         }
 
+        /* Gallery Grid Layout */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -253,6 +258,7 @@
             width: 90%;
             max-width: 380px;
             padding: 20px;
+            position: relative;
         }
 
         .modal-header {
@@ -328,9 +334,11 @@
 </head>
 <body>
 
-    <!-- Header: Only Logo and Settings -->
+    <!-- Header: VARZID ^ dropdown style -->
     <header>
-        <div class="logo" onclick="selectCategory('all')">VARZID <span>^</span></div>
+        <div class="logo-dropdown" onclick="selectCategory('all')">
+            VARZID <span>^</span>
+        </div>
         <div class="header-right">
             <button class="icon-btn" id="settingsBtn" title="Танзимот">
                 <svg class="icon-svg" viewBox="0 0 24 24">
@@ -340,11 +348,11 @@
         </div>
     </header>
 
-    <!-- Categories Bar: Front Plus & End Plus -->
+    <!-- Categories Bar with Front & End Plus buttons -->
     <div class="categories-container" id="categoriesContainer">
-        <button class="plus-chip-btn visible" id="frontPlusBtn" onclick="openAddCatModal('category')" title="Иловаи категория">+</button>
-        <!-- Dynamic categories will be inserted here -->
-        <button class="plus-chip-btn" id="endPlusBtn" onclick="openAddCatModal('product')" title="Иловаи маҳсулот">+</button>
+        <button class="plus-chip-btn" id="frontPlusBtn" onclick="openAddModal('category')" title="Иловаи категория">+</button>
+        <!-- Dynamic categories -->
+        <button class="plus-chip-btn" id="endPlusBtn" onclick="openAddModal('product')" title="Иловаи маҳсулот">+</button>
     </div>
 
     <!-- Main Content Gallery -->
@@ -378,14 +386,12 @@
         </div>
     </div>
 
-    <!-- Add Modal for Category or Product -->
+    <!-- Add Modal -->
     <div class="modal-overlay" id="addModal">
         <div class="modal">
             <div class="modal-header" id="modalHeaderTitle">Илова</div>
-            <button class="icon-btn" onclick="closeModal('addModal')" style="position: absolute; right: 24px; top: 20px;">&times;</button>
-            <div id="modalBodyContent">
-                <!-- Injected via JS -->
-            </div>
+            <button class="icon-btn" onclick="closeModal('addModal')" style="position: absolute; right: 20px; top: 18px;">&times;</button>
+            <div id="modalBodyContent"></div>
         </div>
     </div>
 
@@ -419,7 +425,6 @@
             const pass = document.getElementById('adminPassInput').value;
             if (pass === '1234') {
                 isAdmin = true;
-                // Show both plus buttons when admin is logged in
                 frontPlusBtn.classList.add('visible');
                 endPlusBtn.classList.add('visible');
                 closeModal('settingsModal');
@@ -430,7 +435,7 @@
             }
         }
 
-        function openAddCatModal(type) {
+        function openAddModal(type) {
             if (!isAdmin) {
                 alert('Лутфан аввал ба Режими Админ ворид шавед!');
                 return;
@@ -440,7 +445,7 @@
             const bodyEl = document.getElementById('modalBodyContent');
 
             if (type === 'category') {
-                titleEl.innerText = 'Илова кардани категория';
+                titleEl.innerText = 'Иловаи категорияи калон';
                 bodyEl.innerHTML = `
                     <div class="form-group">
                         <label>Номи категория (Масалан: Кишоварзӣ, Аксессуарҳо)</label>
@@ -452,14 +457,14 @@
                     </div>
                 `;
             } else {
-                titleEl.innerText = 'Илова кардани маҳсулот / эълон';
+                titleEl.innerText = 'Иловаи маҳсулот / эълон';
                 bodyEl.innerHTML = `
                     <div class="form-group">
-                        <label>Номи маҳсулот (Гов, Гусванд, Мошин, Замини алаф...)</label>
+                        <label>Номи маҳсулот (Гов, Гусванд, Мург, Мошин, Замин...)</label>
                         <input type="text" class="form-control" id="inputName" placeholder="Ном...">
                     </div>
                     <div class="form-group">
-                        <label>Нарх ва вариант (Фурӯш / Аренда)</label>
+                        <label>Нарх ва вариант (Фурӯш / Аренда ва ғ.)</label>
                         <input type="text" class="form-control" id="inputPrice" placeholder="Масалан: 2000 сомонӣ / Фурӯш">
                     </div>
                     <div class="form-group">
@@ -509,9 +514,8 @@
 
         function renderCategories() {
             let html = '';
-            // Always keep front plus button first (if admin)
             if (isAdmin) {
-                html += `<button class="plus-chip-btn visible" onclick="openAddCatModal('category')" title="Иловаи категория">+</button>`;
+                html += `<button class="plus-chip-btn visible" onclick="openAddModal('category')" title="Иловаи категория">+</button>`;
             }
 
             categories.forEach(c => {
@@ -522,9 +526,8 @@
                 </button>`;
             });
 
-            // End plus button for products
             if (isAdmin) {
-                html += `<button class="plus-chip-btn visible" onclick="openAddCatModal('product')" title="Иловаи маҳсулот">+</button>`;
+                html += `<button class="plus-chip-btn visible" onclick="openAddModal('product')" title="Иловаи маҳсулот">+</button>`;
             }
 
             categoriesContainer.innerHTML = html;
