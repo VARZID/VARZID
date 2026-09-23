@@ -76,7 +76,6 @@
             color: var(--accent-color);
         }
 
-        /* Front + or "Для вас" button */
         .front-toggle-btn {
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
@@ -122,7 +121,6 @@
             fill: currentColor;
         }
 
-        /* Categories Bar */
         .categories-container {
             background-color: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
@@ -159,7 +157,6 @@
             border-color: var(--accent-color);
         }
 
-        /* End Admin + Button */
         .admin-plus-btn {
             background-color: var(--accent-color);
             color: #ffffff;
@@ -169,7 +166,7 @@
             border-radius: 50%;
             font-size: 18px;
             cursor: pointer;
-            display: none; /* Hidden by default for customers */
+            display: none;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
@@ -200,32 +197,6 @@
             gap: 16px;
         }
 
-        .product-card {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .product-name {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .product-price {
-            font-size: 14px;
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-
-        .product-unit {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
         .empty-state {
             color: var(--text-secondary);
             grid-column: 1 / -1;
@@ -233,7 +204,6 @@
             padding: 40px;
         }
 
-        /* Modal Overlays */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -337,17 +307,15 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="header-left">
             <div class="logo">VARZID <span>^</span></div>
-            <!-- Front Button (Can toggle text between + and "Для вас") -->
-            <button class="front-toggle-btn" id="frontToggleBtn" onclick="selectCategory('all')">
-                <span>+</span> <span id="frontBtnText">Для вас</span>
+            <button class="front-toggle-btn" onclick="selectCategory('all')">
+                <span>+</span> <span>Для вас</span>
             </button>
         </div>
         <div class="header-right">
-            <button class="icon-btn" id="settingsBtn" title="Настройки / Танзимот">
+            <button class="icon-btn" id="settingsBtn" title="Настройки">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zM12 10c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm6 6v-1.1c-.83-.52-1.83-.9-3-.9-1.17 0-2.17.38-3 .9V16h-4v2h10v-2h-4zm-10 1.25c.67-.47 1.5-.75 2.5-.75s1.83.28 2.5.75V19H8v-1.75zM20 10.5v1.8l-1.46.3c-.11.39-.28.75-.5 1.08l1.02 1.08-1.27 1.27-1.08-1.02c-.33.22-.69.39-1.08.5l-.3 1.46h-1.8l-.3-1.46c-.39-.11-.75-.28-1.08-.5l-1.08 1.02-1.27-1.27 1.02-1.08c-.22-.33-.39-.69-.5-1.08L4 12.3v-1.8l1.46-.3c.11-.39.28-.75.5-1.08L4.94 8.04l1.27-1.27 1.08 1.02c.33-.22.69-.39 1.08-.5l.3-1.46h1.8l.3 1.46c.39.11.75.28 1.08.5l1.08-1.02 1.27 1.27-1.02 1.08c.22.33.39.69.5 1.08L20 10.5z"/>
                 </svg>
@@ -355,20 +323,16 @@
         </div>
     </header>
 
-    <!-- Horizontal Categories -->
     <div class="categories-container" id="categoriesContainer">
-        <!-- Dynamic categories injected here -->
-        <button class="admin-plus-btn" id="adminPlusBtn" onclick="openAddModal()" title="Добавить категорию">+</button>
+        <button class="admin-plus-btn" id="adminPlusBtn" onclick="openAddModal()" title="Добавить">+</button>
     </div>
 
-    <!-- Main Content -->
     <main>
         <div class="products-grid" id="productsGrid">
-            <!-- Products injected here -->
+            <div class="empty-state">Ҳоло ягон категория ё мол нест.</div>
         </div>
     </main>
 
-    <!-- Settings Modal (Admin Login & Preferences) -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal">
             <div class="modal-header">
@@ -377,23 +341,14 @@
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div class="settings-option">
-                    <span>Режими шабона / Ночной режим</span>
+                    <span>Режими шабона</span>
                     <input type="checkbox" id="themeCheck" checked style="width: 18px; height: 18px; accent-color: var(--accent-color);">
-                </div>
-                <div style="border-top: 1px solid var(--border-color);"></div>
-                <div class="form-group">
-                    <label>Забон / Язык</label>
-                    <select class="form-control" id="langSelect">
-                        <option value="ru" selected>Русский</option>
-                        <option value="tj">Тоҷикӣ</option>
-                        <option value="uz">O'zbekcha</option>
-                    </select>
                 </div>
                 <div style="border-top: 1px solid var(--border-color);"></div>
                 <div class="form-group">
                     <label>Режими Админ (Парол)</label>
                     <div style="display: flex; gap: 8px;">
-                        <input type="password" class="form-control" id="adminPassInput" placeholder="Паролро ворид кунед" style="flex: 1;">
+                        <input type="password" class="form-control" id="adminPassInput" placeholder="Парол: 1234" style="flex: 1;">
                         <button class="btn btn-primary" onclick="checkAdmin()">Вход</button>
                     </div>
                 </div>
@@ -401,7 +356,6 @@
         </div>
     </div>
 
-    <!-- Admin Add Category/Product Modal -->
     <div class="modal-overlay" id="addModal">
         <div class="modal">
             <div class="modal-header">
@@ -409,12 +363,12 @@
                 <button class="icon-btn" onclick="closeModal('addModal')">&times;</button>
             </div>
             <div class="form-group">
-                <label>Номи категория (Масалан: Кишоварзӣ, Замини алаф, Чорво...)</label>
+                <label>Номи категория</label>
                 <input type="text" class="form-control" id="newCatName" placeholder="Ном...">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal('addModal')">Бекор</button>
-                <button class="btn btn-primary" onclick="saveNewCategory()">Илова кардан</button>
+                <button class="btn btn-primary" onclick="saveNewCategory()">Илова</button>
             </div>
         </div>
     </div>
@@ -422,24 +376,8 @@
     <script>
         let isAdmin = false;
         let currentCat = 'all';
-
-        // Sample initial big/small categories & items
-        let categories = [
-            { name: "Кишоварзӣ", type: "major" },
-            { name: "Аксессуарҳо", type: "major" },
-            { name: "Замини алаф (фуруш/аренда)", type: "admin_item" },
-            { name: "Чорво (гов, гусванд, буз, мург)", type: "admin_item" },
-            { name: "Мошин", type: "admin_item" },
-            { name: "Инструментҳо", type: "admin_item" }
-        ];
-
-        let products = [
-            { name: "Гандум ва Орд", price: "3.50 сомонӣ / кг", unit: "Кишоварзӣ", cat: "Кишоварзӣ" },
-            { name: "Корм ва Каду", price: "4.00 сомонӣ / кг", unit: "Кишоварзӣ", cat: "Кишоварзӣ" },
-            { name: "Селитра ва Карбамид", price: "280 сомонӣ / халта", unit: "Кишоварзӣ", cat: "Кишоварзӣ" },
-            { name: "Замини алаф (Аренда)", price: "500 сомонӣ", unit: "1 сотих", cat: "Замини алаф (фуруш/аренда)" },
-            { name: "Гусванд", price: "2000 сомонӣ", unit: "1 дона", cat: "Чорво (гов, гусванд, буз, мург)" }
-        ];
+        let categories = [];
+        let products = [];
 
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsModal = document.getElementById('settingsModal');
@@ -459,7 +397,6 @@
             document.documentElement.setAttribute('data-theme', themeCheck.checked ? 'dark' : 'light');
         });
 
-        // Admin verification (Simple password protection, e.g., "1234")
         function checkAdmin() {
             const pass = document.getElementById('adminPassInput').value;
             if (pass === '1234') {
@@ -481,8 +418,8 @@
 
         function saveNewCategory() {
             const name = document.getElementById('newCatName').value.trim();
-            if (name) {
-                categories.push({ name: name, type: "admin_item" });
+            if (name && !categories.includes(name)) {
+                categories.push(name);
                 closeModal('addModal');
                 renderCategories();
             }
@@ -491,24 +428,21 @@
         function deleteCategory(name, event) {
             event.stopPropagation();
             if (!isAdmin) return;
-            categories = categories.filter(c => c.name !== name);
+            categories = categories.filter(c => c !== name);
             if (currentCat === name) currentCat = 'all';
             renderCategories();
             renderProducts();
         }
 
         function renderCategories() {
-            // Keep the admin button at the end
             let html = '';
             categories.forEach(c => {
-                const active = currentCat === c.name ? 'active' : '';
-                html += `<button class="category-chip ${active}" onclick="selectCategory('${c.name}')">
-                    ${c.name}
-                    ${isAdmin ? `<span class="delete-cat" onclick="deleteCategory('${c.name}', event)">&times;</span>` : ''}
+                const active = currentCat === c ? 'active' : '';
+                html += `<button class="category-chip ${active}" onclick="selectCategory('${c}')">
+                    ${c}
+                    ${isAdmin ? `<span class="delete-cat" onclick="deleteCategory('${c}', event)">&times;</span>` : ''}
                 </button>`;
             });
-            
-            // Re-insert before admin plus button
             categoriesContainer.innerHTML = html;
             categoriesContainer.appendChild(adminPlusBtn);
         }
@@ -525,24 +459,22 @@
                 : products.filter(p => p.cat === currentCat);
 
             if (filtered.length === 0) {
-                productsGrid.innerHTML = `<div class="empty-state">Ҳоло дар ин категория мол ё эълон мавҷуд нест.</div>`;
+                productsGrid.innerHTML = `<div class="empty-state">Холӣ аст.</div>`;
                 return;
             }
 
             let html = '';
             filtered.forEach(p => {
                 html += `
-                    <div class="product-card">
-                        <div class="product-name">${p.name}</div>
-                        <div class="product-price">${p.price}</div>
-                        <div class="product-unit">${p.unit}</div>
+                    <div style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
+                        <div style="font-weight: 600;">${p.name}</div>
+                        <div style="color: var(--accent-color);">${p.price}</div>
                     </div>
                 `;
             });
             productsGrid.innerHTML = html;
         }
 
-        // Initial load
         renderCategories();
         renderProducts();
     </script>
