@@ -45,6 +45,7 @@
             flex-direction: column;
         }
 
+        /* Top Header */
         header {
             background-color: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
@@ -57,16 +58,11 @@
             z-index: 100;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .logo {
             font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -74,23 +70,6 @@
 
         .logo span {
             color: var(--accent-color);
-        }
-
-        .front-toggle-btn {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 13px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .front-toggle-btn:hover {
-            background-color: var(--surface-hover);
         }
 
         .header-right {
@@ -121,6 +100,7 @@
             fill: currentColor;
         }
 
+        /* Categories Bar */
         .categories-container {
             background-color: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
@@ -157,7 +137,8 @@
             border-color: var(--accent-color);
         }
 
-        .admin-plus-btn {
+        /* Plus buttons for Categories and Products */
+        .plus-chip-btn {
             background-color: var(--accent-color);
             color: #ffffff;
             border: none;
@@ -166,13 +147,13 @@
             border-radius: 50%;
             font-size: 18px;
             cursor: pointer;
-            display: none;
+            display: none; /* Hidden until Admin login */
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
 
-        .admin-plus-btn.visible {
+        .plus-chip-btn.visible {
             display: inline-flex;
         }
 
@@ -193,8 +174,47 @@
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .product-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-img-placeholder {
+            width: 100%;
+            height: 110px;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 13px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .product-details {
+            font-size: 11px;
+            color: var(--text-secondary);
         }
 
         .empty-state {
@@ -204,6 +224,7 @@
             padding: 40px;
         }
 
+        /* Modals */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -307,15 +328,11 @@
 </head>
 <body>
 
+    <!-- Header: Only Logo and Settings -->
     <header>
-        <div class="header-left">
-            <div class="logo">VARZID <span>^</span></div>
-            <button class="front-toggle-btn" onclick="selectCategory('all')">
-                <span>+</span> <span>Для вас</span>
-            </button>
-        </div>
+        <div class="logo" onclick="selectCategory('all')">VARZID <span>^</span></div>
         <div class="header-right">
-            <button class="icon-btn" id="settingsBtn" title="Настройки">
+            <button class="icon-btn" id="settingsBtn" title="Танзимот">
                 <svg class="icon-svg" viewBox="0 0 24 24">
                     <path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zM12 10c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm6 6v-1.1c-.83-.52-1.83-.9-3-.9-1.17 0-2.17.38-3 .9V16h-4v2h10v-2h-4zm-10 1.25c.67-.47 1.5-.75 2.5-.75s1.83.28 2.5.75V19H8v-1.75zM20 10.5v1.8l-1.46.3c-.11.39-.28.75-.5 1.08l1.02 1.08-1.27 1.27-1.08-1.02c-.33.22-.69.39-1.08.5l-.3 1.46h-1.8l-.3-1.46c-.39-.11-.75-.28-1.08-.5l-1.08 1.02-1.27-1.27 1.02-1.08c-.22-.33-.39-.69-.5-1.08L4 12.3v-1.8l1.46-.3c.11-.39.28-.75.5-1.08L4.94 8.04l1.27-1.27 1.08 1.02c.33-.22.69-.39 1.08-.5l.3-1.46h1.8l.3 1.46c.39.11.75.28 1.08.5l1.08-1.02 1.27 1.27-1.02 1.08c.22.33.39.69.5 1.08L20 10.5z"/>
                 </svg>
@@ -323,20 +340,25 @@
         </div>
     </header>
 
+    <!-- Categories Bar: Front Plus & End Plus -->
     <div class="categories-container" id="categoriesContainer">
-        <button class="admin-plus-btn" id="adminPlusBtn" onclick="openAddModal()" title="Добавить">+</button>
+        <button class="plus-chip-btn visible" id="frontPlusBtn" onclick="openAddCatModal('category')" title="Иловаи категория">+</button>
+        <!-- Dynamic categories will be inserted here -->
+        <button class="plus-chip-btn" id="endPlusBtn" onclick="openAddCatModal('product')" title="Иловаи маҳсулот">+</button>
     </div>
 
+    <!-- Main Content Gallery -->
     <main>
         <div class="products-grid" id="productsGrid">
-            <div class="empty-state">Ҳоло ягон категория ё мол нест.</div>
+            <div class="empty-state">Холӣ аст.</div>
         </div>
     </main>
 
+    <!-- Settings Modal -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal">
             <div class="modal-header">
-                <span>Танзимот / Настройки</span>
+                <span>Танзимот</span>
                 <button class="icon-btn" onclick="closeModal('settingsModal')">&times;</button>
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -356,19 +378,13 @@
         </div>
     </div>
 
+    <!-- Add Modal for Category or Product -->
     <div class="modal-overlay" id="addModal">
         <div class="modal">
-            <div class="modal-header">
-                <span>Илова кардани категория (Админ)</span>
-                <button class="icon-btn" onclick="closeModal('addModal')">&times;</button>
-            </div>
-            <div class="form-group">
-                <label>Номи категория</label>
-                <input type="text" class="form-control" id="newCatName" placeholder="Ном...">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('addModal')">Бекор</button>
-                <button class="btn btn-primary" onclick="saveNewCategory()">Илова</button>
+            <div class="modal-header" id="modalHeaderTitle">Илова</div>
+            <button class="icon-btn" onclick="closeModal('addModal')" style="position: absolute; right: 24px; top: 20px;">&times;</button>
+            <div id="modalBodyContent">
+                <!-- Injected via JS -->
             </div>
         </div>
     </div>
@@ -378,13 +394,15 @@
         let currentCat = 'all';
         let categories = [];
         let products = [];
+        let addType = 'category';
 
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsModal = document.getElementById('settingsModal');
         const addModal = document.getElementById('addModal');
         const themeCheck = document.getElementById('themeCheck');
         const categoriesContainer = document.getElementById('categoriesContainer');
-        const adminPlusBtn = document.getElementById('adminPlusBtn');
+        const frontPlusBtn = document.getElementById('frontPlusBtn');
+        const endPlusBtn = document.getElementById('endPlusBtn');
         const productsGrid = document.getElementById('productsGrid');
 
         settingsBtn.addEventListener('click', () => settingsModal.classList.add('open'));
@@ -401,7 +419,9 @@
             const pass = document.getElementById('adminPassInput').value;
             if (pass === '1234') {
                 isAdmin = true;
-                adminPlusBtn.classList.add('visible');
+                // Show both plus buttons when admin is logged in
+                frontPlusBtn.classList.add('visible');
+                endPlusBtn.classList.add('visible');
                 closeModal('settingsModal');
                 alert('Режими админ фаъол шуд!');
                 renderCategories();
@@ -410,18 +430,70 @@
             }
         }
 
-        function openAddModal() {
-            if (!isAdmin) return;
-            document.getElementById('newCatName').value = '';
+        function openAddCatModal(type) {
+            if (!isAdmin) {
+                alert('Лутфан аввал ба Режими Админ ворид шавед!');
+                return;
+            }
+            addType = type;
+            const titleEl = document.getElementById('modalHeaderTitle');
+            const bodyEl = document.getElementById('modalBodyContent');
+
+            if (type === 'category') {
+                titleEl.innerText = 'Илова кардани категория';
+                bodyEl.innerHTML = `
+                    <div class="form-group">
+                        <label>Номи категория (Масалан: Кишоварзӣ, Аксессуарҳо)</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Ном...">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal('addModal')">Бекор</button>
+                        <button class="btn btn-primary" onclick="saveItem()">Илова</button>
+                    </div>
+                `;
+            } else {
+                titleEl.innerText = 'Илова кардани маҳсулот / эълон';
+                bodyEl.innerHTML = `
+                    <div class="form-group">
+                        <label>Номи маҳсулот (Гов, Гусванд, Мошин, Замини алаф...)</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Ном...">
+                    </div>
+                    <div class="form-group">
+                        <label>Нарх ва вариант (Фурӯш / Аренда)</label>
+                        <input type="text" class="form-control" id="inputPrice" placeholder="Масалан: 2000 сомонӣ / Фурӯш">
+                    </div>
+                    <div class="form-group">
+                        <label>Категория</label>
+                        <select class="form-control" id="inputCat">
+                            ${categories.map(c => `<option value="${c}">${c}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal('addModal')">Бекор</button>
+                        <button class="btn btn-primary" onclick="saveItem()">Илова</button>
+                    </div>
+                `;
+            }
             addModal.classList.add('open');
         }
 
-        function saveNewCategory() {
-            const name = document.getElementById('newCatName').value.trim();
-            if (name && !categories.includes(name)) {
-                categories.push(name);
-                closeModal('addModal');
-                renderCategories();
+        function saveItem() {
+            if (addType === 'category') {
+                const name = document.getElementById('inputName').value.trim();
+                if (name && !categories.includes(name)) {
+                    categories.push(name);
+                    closeModal('addModal');
+                    renderCategories();
+                }
+            } else {
+                const name = document.getElementById('inputName').value.trim();
+                const price = document.getElementById('inputPrice').value.trim();
+                const cat = document.getElementById('inputCat').value;
+                if (name) {
+                    products.push({ name, price, cat });
+                    closeModal('addModal');
+                    renderProducts();
+                }
             }
         }
 
@@ -429,6 +501,7 @@
             event.stopPropagation();
             if (!isAdmin) return;
             categories = categories.filter(c => c !== name);
+            products = products.filter(p => p.cat !== name);
             if (currentCat === name) currentCat = 'all';
             renderCategories();
             renderProducts();
@@ -436,6 +509,11 @@
 
         function renderCategories() {
             let html = '';
+            // Always keep front plus button first (if admin)
+            if (isAdmin) {
+                html += `<button class="plus-chip-btn visible" onclick="openAddCatModal('category')" title="Иловаи категория">+</button>`;
+            }
+
             categories.forEach(c => {
                 const active = currentCat === c ? 'active' : '';
                 html += `<button class="category-chip ${active}" onclick="selectCategory('${c}')">
@@ -443,8 +521,13 @@
                     ${isAdmin ? `<span class="delete-cat" onclick="deleteCategory('${c}', event)">&times;</span>` : ''}
                 </button>`;
             });
+
+            // End plus button for products
+            if (isAdmin) {
+                html += `<button class="plus-chip-btn visible" onclick="openAddCatModal('product')" title="Иловаи маҳсулот">+</button>`;
+            }
+
             categoriesContainer.innerHTML = html;
-            categoriesContainer.appendChild(adminPlusBtn);
         }
 
         function selectCategory(cat) {
@@ -466,9 +549,11 @@
             let html = '';
             filtered.forEach(p => {
                 html += `
-                    <div style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
-                        <div style="font-weight: 600;">${p.name}</div>
-                        <div style="color: var(--accent-color);">${p.price}</div>
+                    <div class="product-card">
+                        <div class="product-img-placeholder">Акс</div>
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-price">${p.price || ''}</div>
+                        <div class="product-details">${p.cat}</div>
                     </div>
                 `;
             });
