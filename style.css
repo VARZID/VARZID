@@ -1,10 +1,10 @@
-
 :root {
     --bg-color: #0b0f19;
     --card-bg: #161b22;
     --text-color: #ffffff;
     --text-muted: #8b949e;
     --accent-color: #2ea043;
+    --danger-color: #da3633;
     --border-color: #30363d;
 }
 
@@ -14,6 +14,7 @@
     --text-color: #24292e;
     --text-muted: #586069;
     --accent-color: #28a745;
+    --danger-color: #cb2431;
     --border-color: #e1e4e8;
 }
 
@@ -84,15 +85,6 @@ body {
     padding-bottom: 5px;
 }
 
-.category-scroll-container::-webkit-scrollbar {
-    height: 4px;
-}
-
-.category-scroll-container::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 2px;
-}
-
 .category-btn {
     background: var(--bg-color);
     color: var(--text-color);
@@ -128,11 +120,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .products-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 15px;
 }
 
@@ -144,6 +137,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    position: relative;
 }
 
 .product-title {
@@ -154,6 +148,24 @@ body {
 .product-price {
     color: var(--accent-color);
     font-weight: bold;
+}
+
+/* Тугмаи куштани маҳсулот (× сурх) */
+.delete-product-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .hidden {
@@ -170,6 +182,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1000;
 }
 
 .modal-content {
@@ -177,19 +190,21 @@ body {
     border: 1px solid var(--border-color);
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    width: 320px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .setting-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
-.setting-group button, .setting-group select, .close-btn {
+.setting-group button, .setting-group select, .setting-group input, .modal-content input, .modal-content select, .modal-content textarea, .close-btn {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid var(--border-color);
