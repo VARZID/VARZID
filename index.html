@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
 <head>
@@ -23,34 +22,61 @@
     </header>
 
     <nav id="categoryMenu" class="category-menu hidden">
+        <!-- Тугмаи + дар аввали категорияҳо -->
+        <button id="addCategoryStartBtn" class="admin-plus-btn hidden" title="Илова кардани категория">+</button>
         <div class="category-scroll-container" id="categoryListContainer"></div>
-        <button id="addCategoryBtn" class="admin-plus-btn hidden" title="Илова кардани категория">+</button>
+        <!-- Тугмаи + дар охири категорияҳо -->
+        <button id="addCategoryEndBtn" class="admin-plus-btn hidden" title="Илова кардани категория">+</button>
     </nav>
 
     <main class="main-content">
         <div class="admin-action-bar">
+            <!-- Тугмаи + барои илова кардани маҳсулот -->
             <button id="addProductBtn" class="admin-plus-btn hidden" title="Илова кардани маҳсулот">+</button>
         </div>
         <div id="productsGallery" class="products-gallery"></div>
     </main>
 
+    <!-- Модали танзимот ва воридшавии админ -->
     <div id="settingsModal" class="modal hidden">
         <div class="modal-content">
-            <h3 data-i18n="settings_title">Настройки</h3>
+            <h3>Настройки</h3>
             <div class="setting-group">
-                <label data-i18n="theme_label">Цветовая схема</label>
-                <button id="dayModeBtn" data-i18n="day_mode">Дневной режим</button>
-                <button id="nightModeBtn" data-i18n="night_mode">Ночной режим</button>
+                <label>Режим админа (Код: 1604)</label>
+                <input type="password" id="adminCodeInput" placeholder="Введите код админа">
+                <button id="adminLoginBtn">Войти как Админ</button>
+            </div>
+            <hr style="border-color: var(--border-color);">
+            <div class="setting-group">
+                <label>Цветовая схема</label>
+                <button id="dayModeBtn">Дневной режим</button>
+                <button id="nightModeBtn">Ночной режим</button>
             </div>
             <div class="setting-group">
-                <label data-i18n="lang_label">Язык / Забон / Tili</label>
+                <label>Язык</label>
                 <select id="langSelect">
                     <option value="ru">Русский</option>
                     <option value="tj">Тоҷикӣ</option>
                     <option value="uz">O'zbekcha</option>
                 </select>
             </div>
-            <button id="closeModalBtn" class="close-btn" data-i18n="cancel">Отменить</button>
+            <button id="closeModalBtn" class="close-btn">Отменить</button>
+        </div>
+    </div>
+
+    <!-- Модали илова кардани маҳсулот (бо имконияти то 10 акс ва нархгузорӣ) -->
+    <div id="addProductModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Добавить товар</h3>
+            <input type="text" id="newProdTitle" placeholder="Название товара">
+            <select id="newProdCategory"></select>
+            <input type="number" id="newProdPrice" placeholder="Цена">
+            <input type="text" id="newProdUnit" placeholder="Единица (кг, литр, шт, другое...)">
+            <textarea id="newProdDesc" placeholder="Описание"></textarea>
+            <label>Загрузить фото (до 10 штук):</label>
+            <input type="file" id="newProdImages" multiple accept="image/*">
+            <button id="saveProductBtn">Сохранить</button>
+            <button id="closeProdModalBtn" class="close-btn">Отменить</button>
         </div>
     </div>
 
