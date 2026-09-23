@@ -14,7 +14,6 @@
             --accent-color: #22c55e;
             --accent-hover: #16a34a;
             --danger-color: #ef4444;
-            --danger-hover: #dc2626;
             --border-color: #334155;
         }
 
@@ -27,7 +26,6 @@
             --accent-color: #16a34a;
             --accent-hover: #15803d;
             --danger-color: #dc2626;
-            --danger-hover: #b91c1c;
             --border-color: #cbd5e1;
         }
 
@@ -35,7 +33,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             transition: background-color 0.2s, color 0.2s;
         }
 
@@ -47,7 +45,6 @@
             flex-direction: column;
         }
 
-        /* Top Header */
         header {
             background-color: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
@@ -60,14 +57,50 @@
             z-index: 100;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .logo {
             font-size: 20px;
             font-weight: 700;
-            color: var(--accent-color);
-            letter-spacing: 0.5px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .settings-btn {
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        /* Front + or "Для вас" button */
+        .front-toggle-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .front-toggle-btn:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-btn {
             background: none;
             border: none;
             color: var(--text-primary);
@@ -79,17 +112,17 @@
             justify-content: center;
         }
 
-        .settings-btn:hover {
+        .icon-btn:hover {
             background-color: var(--surface-hover);
         }
 
-        .settings-icon {
+        .icon-svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
 
-        /* Horizontal Categories Bar */
+        /* Categories Bar */
         .categories-container {
             background-color: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
@@ -126,15 +159,8 @@
             border-color: var(--accent-color);
         }
 
-        .category-chip:hover {
-            background-color: var(--surface-hover);
-        }
-
-        .category-chip.active:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .add-category-btn {
+        /* End Admin + Button */
+        .admin-plus-btn {
             background-color: var(--accent-color);
             color: #ffffff;
             border: none;
@@ -142,47 +168,30 @@
             height: 32px;
             border-radius: 50%;
             font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
-            display: inline-flex;
+            display: none; /* Hidden by default for customers */
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
 
-        .add-category-btn:hover {
-            background-color: var(--accent-hover);
+        .admin-plus-btn.visible {
+            display: inline-flex;
         }
 
-        .delete-cat-btn {
-            background: none;
-            border: none;
+        .delete-cat {
             color: var(--danger-color);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
             margin-left: 4px;
-            padding: 2px 4px;
-            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        .delete-cat-btn:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-        }
-
-        /* Main Content Area */
         main {
             flex: 1;
             padding: 16px;
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
         }
 
         .products-grid {
@@ -217,7 +226,14 @@
             color: var(--text-secondary);
         }
 
-        /* Modal Overlay */
+        .empty-state {
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* Modal Overlays */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -231,7 +247,7 @@
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.2s;
         }
 
         .modal-overlay.open {
@@ -244,19 +260,12 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
             width: 90%;
-            max-width: 400px;
+            max-width: 380px;
             padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            transform: translateY(20px);
-            transition: transform 0.2s ease;
-        }
-
-        .modal-overlay.open .modal {
-            transform: translateY(0);
         }
 
         .modal-header {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             margin-bottom: 16px;
             display: flex;
@@ -264,17 +273,11 @@
             align-items: center;
         }
 
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 6px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
@@ -299,7 +302,8 @@
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 8px;
+            margin-top: 16px;
         }
 
         .btn {
@@ -317,40 +321,17 @@
             border: 1px solid var(--border-color);
         }
 
-        .btn-secondary:hover {
-            background-color: var(--surface-hover);
-        }
-
         .btn-primary {
             background-color: var(--accent-color);
             color: #ffffff;
         }
 
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: #ffffff;
-        }
-
-        .btn-danger:hover {
-            background-color: var(--danger-hover);
-        }
-
         .settings-option {
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
+            padding: 10px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 15px;
-        }
-
-        .settings-option:hover {
-            background-color: var(--surface-hover);
+            font-size: 14px;
         }
     </style>
 </head>
@@ -358,262 +339,193 @@
 
     <!-- Header -->
     <header>
-        <div class="logo" id="logoText">VARZID</div>
-        <button class="settings-btn" id="settingsBtn" title="Настройки">
-            <svg class="settings-icon" viewBox="0 0 24 24">
-                <path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zM12 10c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm6 6v-1.1c-.83-.52-1.83-.9-3-.9-1.17 0-2.17.38-3 .9V16h-4v2h10v-2h-4zm-10 1.25c.67-.47 1.5-.75 2.5-.75s1.83.28 2.5.75V19H8v-1.75zM20 10.5v1.8l-1.46.3c-.11.39-.28.75-.5 1.08l1.02 1.08-1.27 1.27-1.08-1.02c-.33.22-.69.39-1.08.5l-.3 1.46h-1.8l-.3-1.46c-.39-.11-.75-.28-1.08-.5l-1.08 1.02-1.27-1.27 1.02-1.08c-.22-.33-.39-.69-.5-1.08L4 12.3v-1.8l1.46-.3c.11-.39.28-.75.5-1.08L4.94 8.04l1.27-1.27 1.08 1.02c.33-.22.69-.39 1.08-.5l.3-1.46h1.8l.3 1.46c.39.11.75.28 1.08.5l1.08-1.02 1.27 1.27-1.02 1.08c.22.33.39.69.5 1.08L20 10.5z"/>
-            </svg>
-        </button>
+        <div class="header-left">
+            <div class="logo">VARZID <span>^</span></div>
+            <!-- Front Button (Can toggle text between + and "Для вас") -->
+            <button class="front-toggle-btn" id="frontToggleBtn" onclick="selectCategory('all')">
+                <span>+</span> <span id="frontBtnText">Для вас</span>
+            </button>
+        </div>
+        <div class="header-right">
+            <button class="icon-btn" id="settingsBtn" title="Настройки / Танзимот">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M12 2C9.24 2 7 4.24 7 7c0 2.76 2.24 5 5 5s5-2.24 5-5c0-2.76-2.24-5-5-5zM12 10c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm6 6v-1.1c-.83-.52-1.83-.9-3-.9-1.17 0-2.17.38-3 .9V16h-4v2h10v-2h-4zm-10 1.25c.67-.47 1.5-.75 2.5-.75s1.83.28 2.5.75V19H8v-1.75zM20 10.5v1.8l-1.46.3c-.11.39-.28.75-.5 1.08l1.02 1.08-1.27 1.27-1.08-1.02c-.33.22-.69.39-1.08.5l-.3 1.46h-1.8l-.3-1.46c-.39-.11-.75-.28-1.08-.5l-1.08 1.02-1.27-1.27 1.02-1.08c-.22-.33-.39-.69-.5-1.08L4 12.3v-1.8l1.46-.3c.11-.39.28-.75.5-1.08L4.94 8.04l1.27-1.27 1.08 1.02c.33-.22.69-.39 1.08-.5l.3-1.46h1.8l.3 1.46c.39.11.75.28 1.08.5l1.08-1.02 1.27 1.27-1.02 1.08c.22.33.39.69.5 1.08L20 10.5z"/>
+                </svg>
+            </button>
+        </div>
     </header>
 
     <!-- Horizontal Categories -->
     <div class="categories-container" id="categoriesContainer">
-        <!-- Injected via JS -->
+        <!-- Dynamic categories injected here -->
+        <button class="admin-plus-btn" id="adminPlusBtn" onclick="openAddModal()" title="Добавить категорию">+</button>
     </div>
 
     <!-- Main Content -->
     <main>
-        <div class="section-title" id="sectionTitle">Для вас</div>
         <div class="products-grid" id="productsGrid">
-            <!-- Injected via JS -->
+            <!-- Products injected here -->
         </div>
     </main>
 
-    <!-- Settings Modal -->
+    <!-- Settings Modal (Admin Login & Preferences) -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal">
             <div class="modal-header">
-                <span id="settingsTitle">Настройки</span>
-                <button class="settings-btn" id="closeSettingsBtn">&times;</button>
+                <span>Танзимот / Настройки</span>
+                <button class="icon-btn" onclick="closeModal('settingsModal')">&times;</button>
             </div>
-            <div class="modal-body" style="gap: 4px;">
-                <div class="settings-option" id="themeToggleOption">
-                    <span id="themeLabel">Ночной режим</span>
-                    <input type="checkbox" id="themeCheckbox" checked style="cursor: pointer; width: 18px; height: 18px; accent-color: var(--accent-color);">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="settings-option">
+                    <span>Режими шабона / Ночной режим</span>
+                    <input type="checkbox" id="themeCheck" checked style="width: 18px; height: 18px; accent-color: var(--accent-color);">
                 </div>
-                <div style="margin: 8px 0; border-top: 1px solid var(--border-color);"></div>
-                <div class="form-group" style="padding: 4px 12px;">
-                    <label id="langLabel" style="margin-bottom: 4px;">Язык</label>
+                <div style="border-top: 1px solid var(--border-color);"></div>
+                <div class="form-group">
+                    <label>Забон / Язык</label>
                     <select class="form-control" id="langSelect">
                         <option value="ru" selected>Русский</option>
                         <option value="tj">Тоҷикӣ</option>
                         <option value="uz">O'zbekcha</option>
                     </select>
                 </div>
-                <div style="margin: 8px 0; border-top: 1px solid var(--border-color);"></div>
-                <div class="settings-option" id="adminToggleOption">
-                    <span id="adminModeLabel">Режим Админа</span>
-                    <input type="checkbox" id="adminCheckbox" style="cursor: pointer; width: 18px; height: 18px; accent-color: var(--accent-color);">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Category Modal -->
-    <div class="modal-overlay" id="addCategoryModal">
-        <div class="modal">
-            <div class="modal-header">
-                <span id="addCatModalTitle">Добавить категорию</span>
-                <button class="settings-btn" id="closeAddCatBtn">&times;</button>
-            </div>
-            <div class="modal-body">
+                <div style="border-top: 1px solid var(--border-color);"></div>
                 <div class="form-group">
-                    <label id="catNameLabel">Название категории</label>
-                    <input type="text" class="form-control" id="newCategoryInput" placeholder="Гандум, Орд, Корм...">
+                    <label>Режими Админ (Парол)</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="password" class="form-control" id="adminPassInput" placeholder="Паролро ворид кунед" style="flex: 1;">
+                        <button class="btn btn-primary" onclick="checkAdmin()">Вход</button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelCatBtn">Отмена</button>
-                <button class="btn btn-primary" id="saveCatBtn">Добавить</button>
             </div>
         </div>
     </div>
 
-    <!-- Confirm Delete Modal -->
-    <div class="modal-overlay" id="deleteModal">
+    <!-- Admin Add Category/Product Modal -->
+    <div class="modal-overlay" id="addModal">
         <div class="modal">
             <div class="modal-header">
-                <span id="deleteModalTitle">Удаление</span>
+                <span>Илова кардани категория (Админ)</span>
+                <button class="icon-btn" onclick="closeModal('addModal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <p id="deleteConfirmText">Вы действительно хотите удалить эту категорию?</p>
+            <div class="form-group">
+                <label>Номи категория (Масалан: Кишоварзӣ, Замини алаф, Чорво...)</label>
+                <input type="text" class="form-control" id="newCatName" placeholder="Ном...">
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelDeleteBtn">Нет</button>
-                <button class="btn btn-danger" id="confirmDeleteBtn">Удалить</button>
+                <button class="btn btn-secondary" onclick="closeModal('addModal')">Бекор</button>
+                <button class="btn btn-primary" onclick="saveNewCategory()">Илова кардан</button>
             </div>
         </div>
     </div>
 
     <script>
-        const translations = {
-            ru: {
-                logo: "VARZID",
-                forYou: "Для вас",
-                settings: "Настройки",
-                nightMode: "Ночной режим",
-                language: "Язык",
-                adminMode: "Режим Админа",
-                addCategory: "Добавить категорию",
-                catNamePlaceholder: "Название категории",
-                cancel: "Отмена",
-                add: "Добавить",
-                deleteTitle: "Удаление",
-                deleteConfirm: "Вы действительно хотите удалить эту категорию?",
-                yes: "Удалить",
-                no: "Нет",
-                products: [
-                    { name: "Гандум (Пшеница)", price: "3.50 сомони", unit: "1 кг", cat: "Гандум" },
-                    { name: "Орд (Мука)", price: "320 сомони", unit: "Мешок (50 кг)", cat: "Орд" },
-                    { name: "Корм", price: "150 сомони", unit: "Мешок", cat: "Корм" },
-                    { name: "Каду (Тыква)", price: "5.00 сомони", unit: "1 кг", cat: "Каду" },
-                    { name: "Ҷав (Ячмень)", price: "3.00 сомони", unit: "1 кг", cat: "Ҷав" },
-                    { name: "Селитра", price: "280 сомони", unit: "Мешок (50 кг)", cat: "Селитра" },
-                    { name: "Карбамид", price: "300 сомони", unit: "Мешок (50 кг)", cat: "Карбамид" },
-                    { name: "Гуспанд (Баран)", price: "2000 сомони", unit: "1 штук", cat: "Чорво" },
-                    { name: "Замини алаф (Трава аренда/продажа)", price: "500 сомони", unit: "1 сотих", cat: "Замин ва алаф" }
-                ]
-            },
-            tj: {
-                logo: "VARZID",
-                forYou: "Барои шумо",
-                settings: "Танзимот",
-                nightMode: "Режими шабона",
-                language: "Забон",
-                adminMode: "Ҳолати Админ",
-                addCategory: "Илова кардани категория",
-                catNamePlaceholder: "Номи категория",
-                cancel: "Бекор кардан",
-                add: "Илова",
-                deleteTitle: "Нест кардан",
-                deleteConfirm: "Оё шумо воқеан мехоҳед ин категорияро нест кунед?",
-                yes: "Нест кудан",
-                no: "Не",
-                products: [
-                    { name: "Гандум", price: "3.50 сомонӣ", unit: "1 кг", cat: "Гандум" },
-                    { name: "Орд", price: "320 сомонӣ", unit: "Халта (50 кг)", cat: "Орд" },
-                    { name: "Корм", price: "150 сомонӣ", unit: "Халта", cat: "Корм" },
-                    { name: "Каду", price: "5.00 сомонӣ", unit: "1 кг", cat: "Каду" },
-                    { name: "Ҷав", price: "3.00 сомонӣ", unit: "1 кг", cat: "Ҷав" },
-                    { name: "Селитра", price: "280 сомонӣ", unit: "Халта (50 кг)", cat: "Селитра" },
-                    { name: "Карбамид", price: "300 сомонӣ", unit: "Халта (50 кг)", cat: "Карбамид" },
-                    { name: "Гусванд", price: "2000 сомонӣ", unit: "1 дона", cat: "Чорво" },
-                    { name: "Замини алаф", price: "500 сомонӣ", unit: "1 сотих", cat: "Замин ва алаф" }
-                ]
-            },
-            uz: {
-                logo: "VARZID",
-                forYou: "Siz uchun",
-                settings: "Sozlamalar",
-                nightMode: "Tungi rejim",
-                language: "Til",
-                adminMode: "Admin rejimi",
-                addCategory: "Kategoriya qo'shish",
-                catNamePlaceholder: "Kategoriya nomi",
-                cancel: "Bekor qilish",
-                add: "Qo'shish",
-                deleteTitle: "O'chirish",
-                deleteConfirm: "Haqiqatan ham bu kategoriyani o'chirmoqchimisiz?",
-                yes: "O'chirish",
-                no: "Yo'q",
-                products: [
-                    { name: "Bug'doy", price: "3.50 somoniy", unit: "1 kg", cat: "Гандум" },
-                    { name: "Un", price: "320 somoniy", unit: "Qop (50 kg)", cat: "Орд" },
-                    { name: "Korm", price: "150 somoniy", unit: "Qop", cat: "Корм" },
-                    { name: "Qovoq", price: "5.00 somoniy", unit: "1 kg", cat: "Каду" },
-                    { name: "Arpa", price: "3.00 somoniy", unit: "1 kg", cat: "Ҷав" },
-                    { name: "Selitra", price: "280 somoniy", unit: "Qop (50 kg)", cat: "Селитра" },
-                    { name: "Karbamid", price: "300 somoniy", unit: "Qop (50 kg)", cat: "Карбамид" },
-                    { name: "Qo'y", price: "2000 somoniy", unit: "1 dona", cat: "Чорво" },
-                    { name: "O't yeri", price: "500 somoniy", unit: "1 sotix", cat: "Замин ва алаф" }
-                ]
-            }
-        };
-
-        let currentLang = 'ru';
         let isAdmin = false;
-        let currentCategory = 'all';
-        let categories = ['Гандум', 'Орд', 'Корм', 'Каду', 'Ҷав', 'Селитра', 'Карбамид', 'Чорво', 'Замин ва алаф', 'Кишоварзӣ', 'Аксессуарҳо'];
-        let categoryToDelete = null;
+        let currentCat = 'all';
 
-        const categoriesContainer = document.getElementById('categoriesContainer');
-        const productsGrid = document.getElementById('productsGrid');
-        const sectionTitle = document.getElementById('sectionTitle');
+        // Sample initial big/small categories & items
+        let categories = [
+            { name: "Кишоварзӣ", type: "major" },
+            { name: "Аксессуарҳо", type: "major" },
+            { name: "Замини алаф (фуруш/аренда)", type: "admin_item" },
+            { name: "Чорво (гов, гусванд, буз, мург)", type: "admin_item" },
+            { name: "Мошин", type: "admin_item" },
+            { name: "Инструментҳо", type: "admin_item" }
+        ];
+
+        let products = [
+            { name: "Гандум ва Орд", price: "3.50 сомонӣ / кг", unit: "Кишоварзӣ", cat: "Кишоварзӣ" },
+            { name: "Корм ва Каду", price: "4.00 сомонӣ / кг", unit: "Кишоварзӣ", cat: "Кишоварзӣ" },
+            { name: "Селитра ва Карбамид", price: "280 сомонӣ / халта", unit: "Кишоварзӣ", cat: "Кишоварзӣ" },
+            { name: "Замини алаф (Аренда)", price: "500 сомонӣ", unit: "1 сотих", cat: "Замини алаф (фуруш/аренда)" },
+            { name: "Гусванд", price: "2000 сомонӣ", unit: "1 дона", cat: "Чорво (гов, гусванд, буз, мург)" }
+        ];
+
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsModal = document.getElementById('settingsModal');
-        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-        const themeCheckbox = document.getElementById('themeCheckbox');
-        const themeToggleOption = document.getElementById('themeToggleOption');
-        const langSelect = document.getElementById('langSelect');
-        const adminCheckbox = document.getElementById('adminCheckbox');
-        const adminToggleOption = document.getElementById('adminToggleOption');
-        
-        const addCategoryModal = document.getElementById('addCategoryModal');
-        const closeAddCatBtn = document.getElementById('closeAddCatBtn');
-        const cancelCatBtn = document.getElementById('cancelCatBtn');
-        const saveCatBtn = document.getElementById('saveCatBtn');
-        const newCategoryInput = document.getElementById('newCategoryInput');
+        const addModal = document.getElementById('addModal');
+        const themeCheck = document.getElementById('themeCheck');
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const adminPlusBtn = document.getElementById('adminPlusBtn');
+        const productsGrid = document.getElementById('productsGrid');
 
-        const deleteModal = document.getElementById('deleteModal');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        settingsBtn.addEventListener('click', () => settingsModal.classList.add('open'));
 
-        function renderUI() {
-            const t = translations[currentLang];
-            document.getElementById('logoText').innerText = t.logo;
-            document.getElementById('settingsTitle').innerText = t.settings;
-            document.getElementById('themeLabel').innerText = t.nightMode;
-            document.getElementById('langLabel').innerText = t.language;
-            document.getElementById('adminModeLabel').innerText = t.adminMode;
-            document.getElementById('addCatModalTitle').innerText = t.addCategory;
-            document.getElementById('catNameLabel').innerText = t.catNamePlaceholder;
-            newCategoryInput.placeholder = t.catNamePlaceholder;
-            document.getElementById('cancelCatBtn').innerText = t.cancel;
-            document.getElementById('saveCatBtn').innerText = t.add;
-            document.getElementById('deleteModalTitle').innerText = t.deleteTitle;
-            document.getElementById('deleteConfirmText').innerText = t.deleteConfirm;
-            document.getElementById('cancelDeleteBtn').innerText = t.no;
-            document.getElementById('confirmDeleteBtn').innerText = t.yes;
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
 
+        themeCheck.addEventListener('change', () => {
+            document.documentElement.setAttribute('data-theme', themeCheck.checked ? 'dark' : 'light');
+        });
+
+        // Admin verification (Simple password protection, e.g., "1234")
+        function checkAdmin() {
+            const pass = document.getElementById('adminPassInput').value;
+            if (pass === '1234') {
+                isAdmin = true;
+                adminPlusBtn.classList.add('visible');
+                closeModal('settingsModal');
+                alert('Режими админ фаъол шуд!');
+                renderCategories();
+            } else {
+                alert('Пароли нодуруст!');
+            }
+        }
+
+        function openAddModal() {
+            if (!isAdmin) return;
+            document.getElementById('newCatName').value = '';
+            addModal.classList.add('open');
+        }
+
+        function saveNewCategory() {
+            const name = document.getElementById('newCatName').value.trim();
+            if (name) {
+                categories.push({ name: name, type: "admin_item" });
+                closeModal('addModal');
+                renderCategories();
+            }
+        }
+
+        function deleteCategory(name, event) {
+            event.stopPropagation();
+            if (!isAdmin) return;
+            categories = categories.filter(c => c.name !== name);
+            if (currentCat === name) currentCat = 'all';
             renderCategories();
             renderProducts();
         }
 
         function renderCategories() {
-            const t = translations[currentLang];
+            // Keep the admin button at the end
             let html = '';
-
-            // First button ("Для вас" / "Varzid") for showing all products
-            const isAllActive = currentCategory === 'all';
-            html += `<button class="category-chip ${isAllActive ? 'active' : ''}" onclick="selectCategory('all')">${t.forYou}</button>`;
-
-            // Categories list (scrollable)
-            categories.forEach(cat => {
-                const isActive = currentCategory === cat;
-                html += `<button class="category-chip ${isActive ? 'active' : ''}" onclick="selectCategory('${cat}')">
-                    ${cat}
-                    ${isAdmin ? `<span class="delete-cat-btn" onclick="event.stopPropagation(); promptDeleteCategory('${cat}')">&times;</span>` : ''}
+            categories.forEach(c => {
+                const active = currentCat === c.name ? 'active' : '';
+                html += `<button class="category-chip ${active}" onclick="selectCategory('${c.name}')">
+                    ${c.name}
+                    ${isAdmin ? `<span class="delete-cat" onclick="deleteCategory('${c.name}', event)">&times;</span>` : ''}
                 </button>`;
             });
-
-            // Last add (+) button - visible only for Admin
-            if (isAdmin) {
-                html += `<button class="add-category-btn" onclick="openAddCategoryModal()" title="${t.addCategory}">+</button>`;
-            }
-
+            
+            // Re-insert before admin plus button
             categoriesContainer.innerHTML = html;
+            categoriesContainer.appendChild(adminPlusBtn);
+        }
+
+        function selectCategory(cat) {
+            currentCat = cat;
+            renderCategories();
+            renderProducts();
         }
 
         function renderProducts() {
-            const t = translations[currentLang];
-            sectionTitle.innerText = currentCategory === 'all' ? t.forYou : currentCategory;
-
-            const filtered = currentCategory === 'all' 
-                ? t.products 
-                : t.products.filter(p => p.cat === currentCategory);
+            let filtered = currentCat === 'all' 
+                ? products 
+                : products.filter(p => p.cat === currentCat);
 
             if (filtered.length === 0) {
-                productsGrid.innerHTML = `<div style="color: var(--text-secondary); grid-column: 1/-1; text-align: center; padding: 40px;">Пусто / Холӣ</div>`;
+                productsGrid.innerHTML = `<div class="empty-state">Ҳоло дар ин категория мол ё эълон мавҷуд нест.</div>`;
                 return;
             }
 
@@ -630,88 +542,9 @@
             productsGrid.innerHTML = html;
         }
 
-        window.selectCategory = function(cat) {
-            currentCategory = cat;
-            renderCategories();
-            renderProducts();
-        };
-
-        window.promptDeleteCategory = function(cat) {
-            categoryToDelete = cat;
-            deleteModal.classList.add('open');
-        };
-
-        window.openAddCategoryModal = function() {
-            newCategoryInput.value = '';
-            addCategoryModal.classList.add('open');
-            setTimeout(() => newCategoryInput.focus(), 100);
-        };
-
-        settingsBtn.addEventListener('click', () => settingsModal.classList.add('open'));
-        closeSettingsBtn.addEventListener('click', () => settingsModal.classList.remove('open'));
-        settingsModal.addEventListener('click', (e) => { if(e.target === settingsModal) settingsModal.classList.remove('open'); });
-
-        themeToggleOption.addEventListener('click', () => {
-            themeCheckbox.checked = !themeCheckbox.checked;
-            updateTheme();
-        });
-        themeCheckbox.addEventListener('change', updateTheme);
-
-        function updateTheme() {
-            if (themeCheckbox.checked) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-        }
-
-        langSelect.addEventListener('change', (e) => {
-            currentLang = e.target.value;
-            renderUI();
-        });
-
-        adminToggleOption.addEventListener('click', () => {
-            adminCheckbox.checked = !adminCheckbox.checked;
-            isAdmin = adminCheckbox.checked;
-            renderCategories();
-        });
-        adminCheckbox.addEventListener('change', (e) => {
-            isAdmin = e.target.checked;
-            renderCategories();
-        });
-
-        closeAddCatBtn.addEventListener('click', () => addCategoryModal.classList.remove('open'));
-        cancelCatBtn.addEventListener('click', () => addCategoryModal.classList.remove('open'));
-        addCategoryModal.addEventListener('click', (e) => { if(e.target === addCategoryModal) addCategoryModal.classList.remove('open'); });
-
-        saveCatBtn.addEventListener('click', () => {
-            const val = newCategoryInput.value.trim();
-            if (val && !categories.includes(val)) {
-                categories.push(val);
-                addCategoryModal.classList.remove('open');
-                renderCategories();
-            }
-        });
-
-        cancelDeleteBtn.addEventListener('click', () => {
-            deleteModal.classList.remove('open');
-            categoryToDelete = null;
-        });
-        deleteModal.addEventListener('click', (e) => { if(e.target === deleteModal) deleteModal.classList.remove('open'); });
-
-        confirmDeleteBtn.addEventListener('click', () => {
-            if (categoryToDelete) {
-                categories = categories.filter(c => c !== categoryToDelete);
-                if (currentCategory === categoryToDelete) {
-                    currentCategory = 'all';
-                }
-                categoryToDelete = null;
-                deleteModal.classList.remove('open');
-                renderUI();
-            }
-        });
-
-        renderUI();
+        // Initial load
+        renderCategories();
+        renderProducts();
     </script>
 </body>
 </html>
