@@ -1,1 +1,60 @@
 
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VARZID</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="brand-section">
+            <span class="brand-title">VARZID</span>
+            <button id="categoryToggle" class="category-dropdown-btn">▼</button>
+        </div>
+        <div class="user-settings-section">
+            <button id="settingsBtn" class="profile-settings-btn" aria-label="Settings">
+                <svg class="user-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <svg class="gear-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <nav id="categoryMenu" class="category-menu hidden">
+        <div class="category-scroll-container" id="categoryListContainer"></div>
+        <button id="addCategoryBtn" class="admin-plus-btn hidden" title="Илова кардани категория">+</button>
+    </nav>
+
+    <main class="main-content">
+        <div class="admin-action-bar">
+            <button id="addProductBtn" class="admin-plus-btn hidden" title="Илова кардани маҳсулот">+</button>
+        </div>
+        <div id="productsGallery" class="products-gallery"></div>
+    </main>
+
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <h3 data-i18n="settings_title">Настройки</h3>
+            <div class="setting-group">
+                <label data-i18n="theme_label">Цветовая схема</label>
+                <button id="dayModeBtn" data-i18n="day_mode">Дневной режим</button>
+                <button id="nightModeBtn" data-i18n="night_mode">Ночной режим</button>
+            </div>
+            <div class="setting-group">
+                <label data-i18n="lang_label">Язык / Забон / Tili</label>
+                <select id="langSelect">
+                    <option value="ru">Русский</option>
+                    <option value="tj">Тоҷикӣ</option>
+                    <option value="uz">O'zbekcha</option>
+                </select>
+            </div>
+            <button id="closeModalBtn" class="close-btn" data-i18n="cancel">Отменить</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
